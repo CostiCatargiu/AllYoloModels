@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/YOLOnas/super-gradients" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Yolov5" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Yolov6" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Yolov6/YOLOv6-on-Custom-Dataset" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Yolov7" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Yolov9" vcs="Git" />
+  </component>
+</project>
