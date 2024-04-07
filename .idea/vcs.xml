@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/YoloModels/YoloV5" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/YoloModels/YoloV6" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/YoloModels/YoloV7" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/YoloModels/YoloV8" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/YoloModels/YoloV9" vcs="Git" />
+  </component>
+</project>
