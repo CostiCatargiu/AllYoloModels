@@ -1,18 +1,27 @@
 #!/bin/bash
 
-# Set default values for optional parameters
+source UtilFunctions.sh
+
+datasetPath=$(yq e '.datasetPath' parameters.yaml)
 source_video="/home/constantin/Doctorat/FireDataset/VideoFire/VideoNoFire/Video1.mp4"
-conf_thr="0.6"
+conf_thr=0.6
+device=0
+
+#Delete cache labels
+delete_cache
 
 # Function to display usage information
 usage() {
     echo "Usage: $0 <required param> [optional_param1] [optional_param2]"
     echo "Parameters:"
-    echo "  required_param: YoloModel that want to use: egg. yolov5s, yolov5m, yolov6s, yolov7, yolov8s, yolov8m, yolov9, yolonas"
+    echo "  required_param: YoloModel that want to use for eval: egg. yolov5s, yolov5m, yolov6s, yolov7, yolov8s, yolov8m, yolov9-c, gelan-c, yolonas"
     echo "  optional_param1 (weights): default: = /ExperimentalResults/YoloV.../weights/model.pt"
-    echo "  optional_param1 (source_video): default: = $source_video"
-    echo "  optional_param2 (conf_thr): default: = $conf_thr"
+    echo "  optional_param2 (source_video): default: = $source_video"
+    echo "  optional_param3 (conf_thr): default: = $conf_thr"
+    echo "  optional_param4 (device): default: = $device"
+
 }
+
 
 # Check if the required parameter is provided
 if [ "$#" -eq 0 ]; then
@@ -35,8 +44,12 @@ while [[ "$#" -gt 0 ]]; do
             conf_thr="$2"
             shift 2
             ;;
-     -p2|--weights)
+       -p3|--weights)
             weights="$2"
+            shift 2
+            ;;
+       -p4|--device)
+            device="$2"
             shift 2
             ;;
         *)  # Unknown option
@@ -47,11 +60,22 @@ while [[ "$#" -gt 0 ]]; do
     esac
 done
 
-
 current_location=$(pwd)
 experimetsPath=$current_location/ExperimentalResults
 inferenceScriptsPath=$current_location/InferenceScripts/
+cpu_name=$(cat /proc/cpuinfo | grep "model name" | head -n1 | cut -d ":" -f2 | sed 's/^ *//')
+gpu_name=$(nvidia-smi --query-gpu=name --format=csv,noheader | head -n1)
+
 export PARAMETER="$select_model"
+
+if [[ "$device" == *"cpu"* ]]; then
+  device_name=$cpu_name
+else
+  device_name=$gpu_name
+fi
+
+export DEVICE_PARAMETER="$device_name"
+
 
 if [[ "$select_model" == *"yolov5"* ]]; then
     if [ -z "$weights" ]; then
@@ -62,12 +86,13 @@ if [[ "$select_model" == *"yolov5"* ]]; then
     cp "$source_file" "$destination_directory"
     cd "$current_location/YoloModels/YoloV5/"
     python3 InferenceYoloV5.py \
-        --data /home/constantin/Doctorat/FireDataset/RoboflowDS/Yolov5/DSall/data.yaml \
+        --data $datasetPath \
         --weights $weights \
         --source $source_video \
         --conf-thres $conf_thr \
         --project $experimetsPath/YoloV5/infer \
         --name exp \
+        --device $device \
         --view-img
 
 elif [[ "$select_model" == *"yolov6"* ]]; then
@@ -110,7 +135,9 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
         --source $source_video \
         --project $experimetsPath/YoloV7/infer \
         --name exp \
-        --view-img
+        --view-img \
+        --device $device
+
 
 elif [[ "$select_model" == *"yolov8"* ]]; then
     if [ -z "$weights" ]; then
@@ -129,6 +156,7 @@ elif [[ "$select_model" == *"yolov8"* ]]; then
         --conf-thres $conf_thr \
         --project $experimetsPath/YoloV8/infer \
         --name exp \
+        --device $device
 
 elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; then    # Source file path
     source_file="$inferenceScriptsPath/InferenceYoloV9dual.py"
@@ -153,7 +181,8 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
         --conf-thres $conf_thr \
         --project $experimetsPath/YoloV9/infer \
         --name exp \
-        --view-img
+        --view-img \
+        --device $device
 
 elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; then    # Source file path
     source_file="$inferenceScriptsPath/InferenceYoloV9gelan.py"
@@ -178,7 +207,9 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
         --conf-thres $conf_thr \
         --project $experimetsPath/YoloV9/infer \
         --name exp \
-        --view-img
+        --view-img \
+        --device $device
+
 
 else
     echo "Invalid model. Please provide either 'yolov5', 'yolov6', 'yolov7', 'yolov8', 'yolov9' or 'yolonas'."

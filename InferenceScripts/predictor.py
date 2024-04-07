@@ -35,12 +35,8 @@ import threading
 from pathlib import Path
 
 import cv2, time, os
-import torch
+import torch, sys
 import numpy as np
-import supervision as sv
-from supervision.geometry.core import Point
-from supervision.draw.utils import draw_text
-from collections import deque
 
 from ultralytics.cfg import get_cfg, get_save_dir
 from ultralytics.data import load_inference_source
@@ -50,6 +46,8 @@ from ultralytics.utils import DEFAULT_CFG, LOGGER, MACOS, WINDOWS, callbacks, co
 from ultralytics.utils.checks import check_imgsz, check_imshow
 from ultralytics.utils.files import increment_path
 from ultralytics.utils.torch_utils import select_device, smart_inference_mode
+sys.path.append('../../InferenceScripts')
+from UtilFunctions import show_inference, CalcFPS, set_parameters
 
 STREAM_WARNING = """
 WARNING ⚠️ inference results will accumulate in RAM unless `stream=True` is passed, causing potential out-of-memory
@@ -63,6 +61,7 @@ Example:
         probs = r.probs  # Class probabilities for classification outputs
 """
 
+text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color = set_parameters()
 
 class BasePredictor:
     """
@@ -262,7 +261,6 @@ class BasePredictor:
                 self.run_callbacks("on_predict_postprocess_end")
                 t2 = time.time()
                 inference_time = t2 - t1
-                inference_time_ms = inference_time * 1000
                 fps_calculator.update(1.0 / (t2 - t1))
                 avg_fps = fps_calculator.accumulate()
 
@@ -276,7 +274,8 @@ class BasePredictor:
                         "postprocess": profilers[2].dt * 1e3 / n,
                     }
                     if self.args.verbose or self.args.save or self.args.save_txt or self.args.show:
-                        s[i] += self.write_results(i, Path(paths[i]), im, s, inference_time_ms, avg_fps)
+                        s[i] += self.write_results(i, Path(paths[i]), im, s, inference_time
+, avg_fps)
 
                 # Print batch results
                 if self.args.verbose:
@@ -303,6 +302,7 @@ class BasePredictor:
             LOGGER.info(f"Results saved to {colorstr('bold', self.save_dir)}{s}")
         self.run_callbacks("on_predict_end")
 
+
     def setup_model(self, model, verbose=True):
         """Initialize YOLO model with given parameters and set it to evaluation mode."""
         self.model = AutoBackend(
@@ -320,7 +320,8 @@ class BasePredictor:
         self.args.half = self.model.fp16  # update half
         self.model.eval()
 
-    def write_results(self, i, p, im, s, inference_time_ms, avg_fps):
+    def write_results(self, i, p, im, s, inference_time
+, avg_fps):
         """Write inference results to a file or directory."""
         string = ""  # print string
         if len(im.shape) == 3:
@@ -353,11 +354,11 @@ class BasePredictor:
             result.save_txt(f"{self.txt_path}.txt", save_conf=self.args.save_conf)
         if self.args.save_crop:
             result.save_crop(save_dir=self.save_dir / "crops", file_name=self.txt_path.stem)
-        if self.args.show:
-            self.show(str(p), inference_time_ms, avg_fps)
         if self.args.save:
             self.save_predicted_images(str(self.save_dir / p.name), frame)
-
+        if self.args.show:
+            self.show(p, inference_time
+, avg_fps)
         return string
 
     def save_predicted_images(self, save_path="", frame=0):
@@ -395,41 +396,10 @@ class BasePredictor:
             self.windows.append(p)
             cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
             cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
-        text_anchor = Point(x=100, y=50)
-        text_anchor1 = Point(x=240, y=50)
-        text_anchor2 = Point(x=110, y=95)
-        text_anchor3 = Point(x=190, y=95)
-        text_anchor4 = Point(x=150, y=140)
-        yolo_model = os.environ.get('PARAMETER')
 
-        text_overlay = f'Inference Time:'
-        text_overlay1 = f'{inf_time:.2f}'
-        text_overlay2 = f'FPS:'
-        text_overlay3 = f'{fps:.2f}'
-
-        text_overlay4 = f'Model: {yolo_model}'
-        text_thickness = 2
-        text_color = sv.Color.ROBOFLOW
-        background_color = sv.Color.WHITE
-        annotated_frame = draw_text(scene=im0, text=text_overlay, text_anchor=text_anchor,
-                                    text_color=text_color, background_color=background_color,
-                                    text_thickness=text_thickness, text_scale=0.8)
-        annotated_frame = draw_text(scene=annotated_frame, text=text_overlay1, text_anchor=text_anchor1,
-                                    text_color=text_color, background_color=background_color,
-                                    text_thickness=text_thickness, text_scale=0.8)
-        annotated_frame = draw_text(scene=annotated_frame, text=text_overlay2, text_anchor=text_anchor2,
-                                    text_color=text_color, background_color=background_color,
-                                    text_thickness=text_thickness, text_scale=0.8)
-        annotated_frame = draw_text(scene=annotated_frame, text=text_overlay3, text_anchor=text_anchor3,
-                                    text_color=text_color, background_color=background_color,
-                                    text_thickness=text_thickness, text_scale=0.8)
-        annotated_frame = draw_text(scene=annotated_frame, text=text_overlay4, text_anchor=text_anchor4,
-                                    text_color=text_color, background_color=background_color,
-                                    text_thickness=text_thickness, text_scale=0.8)
-        # cv2.imshow("Image", annotated_frame)
-        cv2.imshow(str(p), annotated_frame)
-        if cv2.waitKey(1) & 0XFF == ord('q'):
-            exit(1)
+        show_inference(inf_time, fps, im0, p, text_anchor, text_anchor1, text_anchor2,
+                       text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2,
+                       text_overlay4, text_color, text_scale, text_thickness, background_color)
 
     def run_callbacks(self, event: str):
         """Runs all registered callbacks for a specific event."""
@@ -440,16 +410,4 @@ class BasePredictor:
         """Add callback."""
         self.callbacks[event].append(func)
 
-
-class CalcFPS:
-    def __init__(self, nsamples: int = 25):
-        self.framerate = deque(maxlen=nsamples)
-
-    def update(self, duration: float):
-        self.framerate.append(duration)
-
-    def accumulate(self):
-        if len(self.framerate) > 1:
-            return np.average(self.framerate)
-        else:
-            return 0.0
+0

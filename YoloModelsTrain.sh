@@ -1,18 +1,25 @@
 #!/bin/bash
 
-datasetPath="/home/constantin/Doctorat/FireDataset/RoboflowDS/yolov6/data.yaml"
+source UtilFunctions.sh
+
+datasetPath=$(yq e '.datasetPath' parameters.yaml)
 epochs=2
 batchSize=64
+
+#Delete cache labels
+delete_cache
+
 
 # Function to display usage information
 usage() {
     echo "Usage: $0 <required param> [optional_param1] [optional_param2]"
     echo "Parameters:"
-    echo "  required_param: YoloModel that want to train: egg. yolov5s, yolov5m, yolov6s, yolov7, yolov8s, yolov8m, yolov9, yolonas"
+    echo "  required_param: YoloModel that want to use for training: egg. yolov5s, yolov5m, yolov6s, yolov7, yolov8s, yolov8m, yolov9-c, gelan-c, yolonas"
     echo "  optional_param1 (datasetPath): default: = $datasetPath"
     echo "  optional_param2 (epochs): default: = $epochs"
     echo "  optional_param3 (batchSize): default: = $batchSize"
 }
+
 
 # Check if the required parameter is provided
 if [ "$#" -eq 0 ]; then

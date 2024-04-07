@@ -18,13 +18,10 @@ from yolov6.layers.common import DetectBackend
 from yolov6.data.data_augment import letterbox
 from yolov6.data.datasets import LoadData
 from yolov6.utils.nms import non_max_suppression
-from yolov6.utils.torch_utils import get_model_info
+import torch, time,sys
 
-import supervision as sv
-from supervision.geometry.core import Point
-from supervision.draw.utils import draw_text
-import torch, time
-
+sys.path.append('../../InferenceScripts')
+from UtilFunctions import show_inference, CalcFPS, set_parameters
 
 class Inferer:
     def __init__(self, source, webcam, webcam_addr, weights, device, yaml, img_size, half):
@@ -78,6 +75,7 @@ class Inferer:
         ''' Model Inference and results visualization '''
         vid_path, vid_writer, windows = None, None, []
         fps_calculator = CalcFPS()
+        text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color = set_parameters()
         windows = []
         for img_src, img_path, vid_cap in tqdm(self.files):
             img, img_src = self.process_image(img_src, self.img_size, self.stride, self.half)
@@ -89,6 +87,9 @@ class Inferer:
             pred_results = self.model(img)
             det = non_max_suppression(pred_results, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)[0]
             t2 = time.time()
+            inference_time = t2 - t1
+            fps_calculator.update(1.0 / (t2 - t1))
+            avg_fps = fps_calculator.accumulate()
 
             if self.webcam:
                 save_path = osp.join(save_dir, self.webcam_addr)
@@ -147,44 +148,9 @@ class Inferer:
                     cv2.namedWindow(str(img_path),
                                     cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
                     cv2.resizeWindow(str(img_path), img_src.shape[1], img_src.shape[0])
-                inference_time = t2 - t1
-                inference_time_ms = inference_time * 1000
-                fps_calculator.update(1.0 / (t2 - t1))
-                avg_fps = fps_calculator.accumulate()
-                text_anchor = Point(x=100, y=50)
-                text_anchor1 = Point(x=240, y=50)
-                text_anchor2 = Point(x=110, y=95)
-                text_anchor3 = Point(x=190, y=95)
-                text_anchor4 = Point(x=150, y=140)
-
-                text_overlay = f'Inference Time:'
-                text_overlay1 = f'{inference_time_ms:.2f}'
-                text_overlay2 = f'FPS:'
-                text_overlay3 = f'{avg_fps:.2f}'
-
-                text_overlay4 = f'Model: {yolo_model}'
-                text_thickness = 2
-                text_color = sv.Color.ROBOFLOW
-                background_color = sv.Color.WHITE
-                annotated_frame = draw_text(scene=img_src, text=text_overlay, text_anchor=text_anchor,
-                                            text_color=text_color, background_color=background_color,
-                                            text_thickness=text_thickness, text_scale=0.8)
-                annotated_frame = draw_text(scene=annotated_frame, text=text_overlay1, text_anchor=text_anchor1,
-                                            text_color=text_color, background_color=background_color,
-                                            text_thickness=text_thickness, text_scale=0.8)
-                annotated_frame = draw_text(scene=annotated_frame, text=text_overlay2, text_anchor=text_anchor2,
-                                            text_color=text_color, background_color=background_color,
-                                            text_thickness=text_thickness, text_scale=0.8)
-                annotated_frame = draw_text(scene=annotated_frame, text=text_overlay3, text_anchor=text_anchor3,
-                                            text_color=text_color, background_color=background_color,
-                                            text_thickness=text_thickness, text_scale=0.8)
-                annotated_frame = draw_text(scene=annotated_frame, text=text_overlay4, text_anchor=text_anchor4,
-                                            text_color=text_color, background_color=background_color,
-                                            text_thickness=text_thickness, text_scale=0.8)
-                # cv2.imshow("Image", annotated_frame)
-                cv2.imshow(str(img_path), annotated_frame)
-                if cv2.waitKey(1) & 0XFF == ord('q'):
-                    exit(1)
+                show_inference(inference_time, avg_fps,img_src , img_path, text_anchor, text_anchor1, text_anchor2,
+                                   text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2,
+                                   text_overlay4, text_color, text_scale, text_thickness, background_color)
 
             # Save results (image with detections)
             if save_img:
@@ -328,17 +294,3 @@ class Inferer:
         num = len(palette)
         color = palette[int(i) % num]
         return (color[2], color[1], color[0]) if bgr else color
-
-
-class CalcFPS:
-    def __init__(self, nsamples: int = 25):
-        self.framerate = deque(maxlen=nsamples)
-
-    def update(self, duration: float):
-        self.framerate.append(duration)
-
-    def accumulate(self):
-        if len(self.framerate) > 1:
-            return np.average(self.framerate)
-        else:
-            return 0.0

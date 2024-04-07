@@ -1,33 +1,27 @@
 #!/bin/bash
 
-datasetPath="/home/constantin/Doctorat/YoloModels/YoloLib/Utils/YAMLconfigs/coco.yaml"
-conf_thr="0.4"
+source UtilFunctions.sh
+
+datasetPath=$(yq e '.datasetPath' parameters.yaml)
+conf_thr=0.4
 batchSize=16
 imgSize=640
 testSplit="valid"
+
+#Delete cache labels
+delete_cache
 
 # Function to display usage information
 usage() {
     echo "Usage: $0 <required param> [optional_param1] [optional_param2]"
     echo "Parameters:"
-    echo "  required_param: YoloModel that want to train: egg. yolov5s, yolov5m, yolov6s, yolov7, yolov8s, yolov8m, yolov9, yolonas"
+    echo "  required_param: YoloModel that want to use for eval: egg. yolov5s, yolov5m, yolov6s, yolov7, yolov8s, yolov8m, yolov9-c, gelan-c, yolonas"
     echo "  optional_param1 (datasetPath): default: = $datasetPath"
     echo "  optional_param2 (weights): default: = /ExperimentalResults/YoloV.../weights/model.pt"
     echo "  optional_param3 (batchSize): default: = $batchSize"
     echo "  optional_param4 (conf_thr): default: = $conf_thr"
     echo "  optional_param5 (img_size): default: = $imgSize"
     echo "  optional_param5 (testSplit): default: = $testSplit"
-
-}
-
-evalSelect() {
-        temp_file="temp.yaml"
-        val=$(awk '/val:/ {print $2}' "$datasetPath")
-        test=$(awk '/test:/ {print $2}' "$datasetPath")
-        awk -v val="$val" -v test="$test" '{sub("val: " val, "val: " test); sub("test: " test, "test: " val)}1' "$datasetPath" > "$temp_file"
-        mv "$temp_file" "$datasetPath"
-        echo "  optional_param5 (testSplit): default: = $testSplit"
-
 }
 
 # Check if the required parameter is provided
@@ -39,7 +33,6 @@ fi
 # Assign required parameter to a variable
 select_model="$1"
 shift
-
 
 # Parse optional parameters
 while [[ "$#" -gt 0 ]]; do
@@ -125,7 +118,7 @@ elif [[ "$select_model" == *"yolov6"* ]]; then
         --weights $weights \
         --task val \
         --conf-thres $conf_thr \
-        --save_dir  $experimetsPath/YoloV6/eval \
+        --save_dir  $experimetsPath/YoloV6/eval/eval \
         --name exp \
         --verbose --do_coco_metric True --do_pr_metric True --plot_curve True --plot_confusion_matrix
 
@@ -260,6 +253,6 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
     fi
 
 else
-    echo "Invalid model. Please provide either 'yolov5', 'yolov6', 'yolov7', 'yolov8', 'yolov9', 'yolov9-gelan' or 'yolonas'."
+    echo "Invalid model. Please provide either 'yolov5', 'yolov6', 'yolov7', 'yolov8', 'yolov9', 'gelan' or 'yolonas'."
 fi
 

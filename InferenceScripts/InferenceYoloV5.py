@@ -34,12 +34,9 @@ import os
 import platform
 import sys
 from pathlib import Path
-import supervision as sv
-from supervision.geometry.core import Point
-from supervision.draw.utils import draw_text
 import torch, time
-from collections import deque
-import numpy as np
+sys.path.append('../../InferenceScripts')
+from UtilFunctions import show_inference, CalcFPS, set_parameters
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -134,6 +131,8 @@ def run(
 
     # Run inference
     fps_calculator = CalcFPS()
+    text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color =set_parameters()
+
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(device=device), Profile(device=device), Profile(device=device))
     for path, im, im0s, vid_cap, s in dataset:
@@ -165,6 +164,9 @@ def run(
         with dt[2]:
             pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
         t2 = time.time()
+        inference_time = t2 - t1
+        fps_calculator.update(1.0 / (t2 - t1))
+        avg_fps = fps_calculator.accumulate()
 
         # Second-stage classifier (optional)
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
@@ -231,50 +233,14 @@ def run(
 
             # Stream results
             im0 = annotator.result()
-            yolo_model = os.environ.get('PARAMETER')
             if view_img:
                 if platform.system() == "Linux" and p not in windows:
                     windows.append(p)
                     cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
                     cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
-                inference_time = t2 - t1
-                inference_time_ms = inference_time * 1000
-                fps_calculator.update(1.0 / (t2 - t1))
-                avg_fps = fps_calculator.accumulate()
-                text_anchor = Point(x=100, y=50)
-                text_anchor1 = Point(x=240, y=50)
-                text_anchor2 = Point(x=110, y=95)
-                text_anchor3 = Point(x=190, y=95)
-                text_anchor4 = Point(x=150, y=140)
-
-                text_overlay = f'Inference Time:'
-                text_overlay1 = f'{inference_time_ms:.2f}'
-                text_overlay2 = f'FPS:'
-                text_overlay3= f'{avg_fps:.2f}'
-
-                text_overlay4 = f'Model: {yolo_model}'
-                text_thickness = 2
-                text_color = sv.Color.ROBOFLOW
-                background_color = sv.Color.WHITE
-                annotated_frame = draw_text(scene=im0, text=text_overlay, text_anchor=text_anchor,
-                                            text_color=text_color, background_color=background_color,
-                                            text_thickness=text_thickness, text_scale=0.8)
-                annotated_frame = draw_text(scene=annotated_frame, text=text_overlay1, text_anchor=text_anchor1,
-                                            text_color=text_color, background_color=background_color,
-                                            text_thickness=text_thickness, text_scale=0.8)
-                annotated_frame = draw_text(scene=annotated_frame, text=text_overlay2, text_anchor=text_anchor2,
-                                            text_color=text_color, background_color=background_color,
-                                            text_thickness=text_thickness, text_scale=0.8)
-                annotated_frame = draw_text(scene=annotated_frame, text=text_overlay3, text_anchor=text_anchor3,
-                                            text_color=text_color, background_color=background_color,
-                                            text_thickness=text_thickness, text_scale=0.8)
-                annotated_frame = draw_text(scene=annotated_frame, text=text_overlay4, text_anchor=text_anchor4,
-                                            text_color=text_color, background_color=background_color,
-                                            text_thickness=text_thickness, text_scale=0.8)
-                # cv2.imshow("Image", annotated_frame)
-                cv2.imshow(str(p), annotated_frame)
-                if cv2.waitKey(1) & 0XFF == ord('q'):
-                    exit(1)
+                show_inference(inference_time, avg_fps, im0, p, text_anchor, text_anchor1, text_anchor2,
+                                   text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2,
+                                   text_overlay4, text_color, text_scale, text_thickness, background_color)
 
             # Save results (image with detections)
 
@@ -350,18 +316,6 @@ def main(opt):
 
     run(**vars(opt))
 
-class CalcFPS:
-    def __init__(self, nsamples: int = 25):
-        self.framerate = deque(maxlen=nsamples)
-
-    def update(self, duration: float):
-        self.framerate.append(duration)
-
-    def accumulate(self):
-        if len(self.framerate) > 1:
-            return np.average(self.framerate)
-        else:
-            return 0.0
 
 if __name__ == "__main__":
     opt = parse_opt()
