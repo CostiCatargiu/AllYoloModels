@@ -9,8 +9,8 @@ My name is Catargiu Constantin and i am studying PhD at Gheorghe Asachi Universi
   - 🏋️‍♂️ Training on custom dataset.
   
   - 🧠 Inference on videos files and images.
-  
-  
+
+During my experiments 
 In this repository i colected six YOLO models (YoloV5,YoloV6.YoloV7.YoloV8 and YoloV9).
 Welcome to my awesome project! 😊
 
