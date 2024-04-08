@@ -14,7 +14,7 @@ During my experiments, I gained experience with the scripts provided in the orig
 
 ## Features
 
-- 🚀 Clone and prepare the setup for want model you want in just a line of code using **<span style="color:red">DownloadModel.sh</span>** **<span style="color:red">Hello</span>**
+- 🚀 Clone and prepare the setup for want model you want in just a line of code using **DownloadModel.sh** 
 - 🔒 Secure encryption
 - 🎨 Beautiful user interface
 
