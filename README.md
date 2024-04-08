@@ -24,4 +24,6 @@ After this repository is cloned the structure of the project will look like in t
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/76f8e45a-f182-48ff-860e-bf4094b66c2b) ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/4aab8c84-1748-40bc-a399-fdecd570a6eb)
 
 
-#Download a specific model
+##Download a specific model
+
+To clone/download a specific model **DownloadModel.sh** shall be used. This script takes one parameter:
