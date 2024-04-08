@@ -14,7 +14,7 @@ During my experiments, I gained experience with the scripts provided in the orig
 
 ## Features
 
-- ⬇️ Clone/Reclone and prepare the setup for which model you want in just a line of code using **DownloadModel.sh** 
+- ⬇️ Clone/Reclone and prepare the setup for which model you want in just a line of code using **DownloadModel.sh**.
 - 🔧 **YoloModelsEval.sh**, **YoloModelsInference.sh** and **YoloModelsTrain.sh** offer the possibility to perform training, inference, or evaluation tasks in just a line of code using a selected model.
 - 📈  Experimental results that were obtained during my experiments using all the models mentioned here.
 ## Project overview
@@ -27,10 +27,11 @@ After this repository is cloned the structure of the project will look like in t
 
 <details>
   <summary>Clone specific YOLO model</summary>
-  To clone a specifi yolo model  **DownloadModel.sh** is used that requires on parameter from the list (yolov5, yolov6, yolov7, yolov8, yolov9).
+  To clone a specifi yolo model **DownloadModel.sh** is used that requires on parameter from the list (yolov5, yolov6, yolov7, yolov8, yolov9).
   
   ```bash
   ./DownloadModel.sh yolov5
   ```
+After the model is cloned it will appear in **YoloModels** directory. If the model is already there and the script is executed and message will appear and ask if we want to reclone or no.
   
 </details>
