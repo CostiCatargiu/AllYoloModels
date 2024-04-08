@@ -14,10 +14,9 @@ During my experiments, I gained experience with the scripts provided in the orig
 
 ## Features
 
-- 🚀 Clone and prepare the setup for want model you want in just a line of code using **DownloadModel.sh** 
-- 🔒 Secure encryption
-- 🎨 Beautiful user interface
-
+- ⬇️ Clone/Reclone and prepare the setup for which model you want in just a line of code using **DownloadModel.sh** 
+- 🔧 **YoloModelsEval.sh**, **YoloModelsInference.sh** and **YoloModelsTrain.sh** offer the possibility to select which model you want to use for performing training, inference, or evaluation tasks.
+- 📈  Experimental results are stored in an ergonomic way, allowing for easy comparison between different models.
 ## Usage
 
 
