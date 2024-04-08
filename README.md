@@ -28,9 +28,9 @@ After this repository is cloned the structure of the project will look like in t
 <details>
   <summary>Clone specific YOLO model</summary>
   To clone a specifi yolo model **DownloadModel.sh** is used that requires on parameter from the list (yolov5, yolov6, yolov7, yolov8, yolov9).
-  ```bash
-./DownloadModel.sh yolov5
-```
   
-  Content goes here...
+  ```bash
+  ./DownloadModel.sh yolov5
+  ```
+  
 </details>
