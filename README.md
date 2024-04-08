@@ -10,11 +10,7 @@ My name is Catargiu Constantin and i am studying PhD at Gheorghe Asachi Universi
   
   - 🧠 Inference on videos files and images.
 
-During my experiments i gained experience with the scripts provided in the orignal repositorys by the authors of the models and i want to share this with you. And also because the models are developed by different scientists the usage of the scrips differ and in this repo mahe same .sh file in which i facilitate the usage of train, evaluation and inference scrips in just one line of code for every model that you want to use.
-
-
-In this repository i colected six YOLO models (YoloV5,YoloV6.YoloV7.YoloV8 and YoloV9).
-Welcome to my awesome project! 😊
+During my experiments i gained experience with the scripts provided in the orignal repositorys by the authors of the models and i want to share this with you. And also because the models are developed by different scientists the usage of the scrips differ and in this repo mahe same .sh file in which i facilitate the usage of train, evaluation and inference scrips in just one line of code for every model that you want to use 😊
 
 ## Features
 
