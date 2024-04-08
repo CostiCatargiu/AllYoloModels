@@ -17,8 +17,9 @@ During my experiments, I gained experience with the scripts provided in the orig
 - ⬇️ Clone/Reclone and prepare the setup for which model you want in just a line of code using **DownloadModel.sh** 
 - 🔧 **YoloModelsEval.sh**, **YoloModelsInference.sh** and **YoloModelsTrain.sh** offer the possibility to perform training, inference, or evaluation tasks in just a line of code using a selected model.
 - 📈  Experimental results that were obtained during my experiments using all the models mentioned here.
-## Usage
-
+## Project overview
+After this repository is cloned we structure of the project will look like in the images bellow with the mention that the **YoloModels** directory is empty because no model is cloned there.
+ 
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/76f8e45a-f182-48ff-860e-bf4094b66c2b) ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/4aab8c84-1748-40bc-a399-fdecd570a6eb)
 
