@@ -26,6 +26,19 @@ After this repository is cloned the structure of the project will look like in t
 ## Quick start
 
 <details>
+    <summary>Give permission for .sh scripts on Linux</summary>
+
+  ```bash
+  chmod +X DownloadModel.sh
+  chmod +X YoloModelsEval.sh
+  chmod +X YoloModelsInference.sh
+  chmod +X YoloModelsTrain.sh
+
+  ```
+
+</details>
+
+<details>
   <summary>Clone specific YOLO model</summary>
   
   To clone a specifi yolo model **DownloadModel.sh** is used that requires on parameter from the list (yolov5, yolov6, yolov7, yolov8, yolov9).
@@ -33,6 +46,8 @@ After this repository is cloned the structure of the project will look like in t
   ```bash
   ./DownloadModel.sh yolov5
   ```
+
+Notice that first you clone the model the requirements.txt for it will be also installed.
 After the model is cloned it will appear in **YoloModels** directory. If the model is already there and the script is executed and message will appear and ask if we want to reclone or no.
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ac73a342-45ef-4668-a298-0d481387bc18)
