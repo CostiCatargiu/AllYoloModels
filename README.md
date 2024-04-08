@@ -1,5 +1,5 @@
 # AllYoloModels
-Hello everyone! :D
+Hello everyone! 😊
 # My Awesome Project
 
 Welcome to my awesome project! 😊
