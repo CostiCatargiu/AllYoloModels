@@ -16,7 +16,7 @@ During my experiments, I gained experience with the scripts provided in the orig
 
 - ⬇️ Clone/Reclone and prepare the setup for which model you want in just a line of code using **DownloadModel.sh** 
 - 🔧 **YoloModelsEval.sh**, **YoloModelsInference.sh** and **YoloModelsTrain.sh** offer the possibility to perform training, inference, or evaluation tasks in just a line of code using a selected model.
-- 📈  Experimental results are stored in an ergonomic way, allowing for easy comparison between different models.
+- 📈  Experimental results that were obtained during my experiments using all the models mentioned here.
 ## Usage
 
 
