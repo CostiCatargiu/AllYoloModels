@@ -26,3 +26,8 @@ After this repository is cloned the structure of the project will look like in t
 ## Quick start
 
 To clone/download a specific model **DownloadModel.sh** shall be used. This script takes one parameter:
+<details>
+  <summary>Click to expand</summary>
+  
+  Content goes here...
+</details>
