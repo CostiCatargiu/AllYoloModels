@@ -1,6 +1,3 @@
-color red is red $\color{red}{\textsf{get_coco.sh}}$  and it is working 
-
-
 
 $\color{#f00}{\textsf{lorem ipsum}}$ 	
 $\color{rgb(255,0,0)}{\textsf{lorem ipsum}}$ 	
