@@ -56,3 +56,11 @@ After the model is cloned it will appear in **YoloModels** directory. If the mod
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ac73a342-45ef-4668-a298-0d481387bc18)
 
 </details>
+
+<details>
+  <summary>Dowmload COCO dataset</summary>
+
+To download COCO dataset you can use **Utility-->DatasetDownloadScripts-->get_coco.sh**.
+The dataset will be downloaded in **Utility-->COCOdatasets**.
+</details>
+
