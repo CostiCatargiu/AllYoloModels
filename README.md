@@ -95,25 +95,25 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 <table border="1">
   <tr>
     <th></th>
-    <th align="center">$\color{red}{\textsf{YoloModelsEval.sh}}$</th>
-    <th align="center">YoloV6l</th>
-    <th align="center">YoloV7</th>
-    <th align="center">YoloV8l</th>
-    <th align="center">YoloV9-e</th>
-    <th align="center">YoloV9_gelan-e</th>
+    <th align="center">$\color{red}{\textsf{YoloV5l}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV6l}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV7}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV8l}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV9-e}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV9_gelan-e}}$</th>
 
   </tr>
   <tr>
-    <td>maP@0.50</td>
+    <td>$\color{orange}{\textsf{maP@0.50}}$</td>
     <td>Row 2, Cell 2</td>
   </tr>
     <tr>
-    <td>maP@0.50:95</td>
+    <td>\color{orange}{\textsf{maP@0.50:95}}$</td>
     <td>Row 2, Cell 2</td>
   </tr>
   
   <tr>
-    <td>conf_thr</td>
+    <td>$\color{orange}{\textsf{conf_thr}}$</td>
     <td align="center">0.001</td>
     <td align="center">0.001</td>
     <td align="center">0.001</td>
@@ -123,7 +123,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 
   </tr>
   <tr>
-    <td>iou_thr</td>
+    <td>$\color{orange}{\textsf{iou_thr}}$</td>
     <td align="center">65</td>
     <td align="center">65</td>
     <td align="center">65</td>
@@ -132,7 +132,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
     <td align="center">65</td>
   </tr>
     <tr>
-    <td>batch_size</td>
+    <td>$\color{orange}{\textsf{bath_size}}$</td>
     <td align="center">32</td>
     <td align="center">32</td>
     <td align="center">32</td>
@@ -141,12 +141,12 @@ If you want to add more parameters to evaluation task please edit the .sh for th
     <td align="center">32</td>
   </tr>
     <tr>
-    <td>speed</td>
+    <td>$\color{orange}{\textsf{speed}}$</td>
     <td>Row 2, Cell 2</td>
   </tr>
   <tr>
-    <td>GPU </td>
-    <td colspan="7" align="center" >NVIDIA GeForce RTX 4090, 24209MiB</td>
+    <td>$\color{orange}{\textsf{GPU}}$</td>
+    <td colspan="7" align="center" >$\color{green}{\textsf{VIDIA GeForce RTX 4090, 24209MiB}}$N</td>
   </tr>
   
 </table>
