@@ -78,7 +78,7 @@ The YAML file for COCO dataset is located at path $\color{red}{\textsf{Utility/Y
 
 Syntax:
 
-./YoloModelsEval.sh  <<select_model>> --[datasetPath] value --[weights] value --[batchSize] value --[conf_thr] value --[img_size] value --[testSplit] "value"
+./YoloModelsEval.sh  <<select_model>> --[datasetPath] val --[weights] val --[batchSize] val --[conf_thr] val --[img_size] val --[testSplit] "val"
 
 Usage example:
   ```bash
@@ -88,6 +88,7 @@ Parameters:
  <<para>> = required parameter; [param}=optional parameter
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8e21d24a-c73b-4d63-ad9f-265fa56b8686)
 
+--test split parameter allows us to select between train and valid dataset for evalutae the mode.
 <details>
   <summary>Evaluation on COCO dataset </summary>
 
