@@ -91,6 +91,46 @@ Parameters:
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8e21d24a-c73b-4d63-ad9f-265fa56b8686)
 
 If you want to add more parameters to evaluation task please edit the .sh for the desired model.
+
+<table border="1">
+  <tr>
+    <th>YoloV5l</th>
+    <th>YoloV6l</th>
+    <th>YoloV7</th>
+    <th>YoloV8l</th>
+    <th>YoloV9-e</th>
+    <th>YoloV9_gelan-e</th>
+
+  </tr>
+  <tr>
+    <td>maP@0.50</td>
+    <td>Row 2, Cell 2</td>
+  </tr>
+    <tr>
+    <td>maP@0.50:95</td>
+    <td>Row 2, Cell 2</td>
+  </tr>
+  
+  <tr>
+    <td>conf_thr</td>
+    <td>Row 2, Cell 2</td>
+  </tr>
+  <tr>
+    <td>iou_thr</td>
+    <td>Row 2, Cell 2</td>
+  </tr>
+    <tr>
+    <td>batch_size</td>
+    <td>Row 2, Cell 2</td>
+  </tr>
+    <tr>
+    <td>speed</td>
+    <td>Row 2, Cell 2</td>
+  </tr>
+  
+</table>
+
+
 <details>
   <summary>Evaluation on COCO dataset using yolov5l </summary>
 
@@ -106,11 +146,8 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/46c44ab4-03b2-4313-bbc9-44ec6ba20c53)
 
-
 </details>
 
-
-</details>
 
 <details>
   <summary>Evaluation on COCO dataset using yolov7 </summary>
