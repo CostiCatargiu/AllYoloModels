@@ -50,8 +50,8 @@ After this repository is cloned the structure of the project will look like in t
   ./DownloadModel.sh yolov5
   ```
 
-Notice that first you clone the model, requirements.txt for it will be also installed.
-After the model is cloned it will appear in **YoloModels** directory. If the model is already there and the script is executed and message will appear and ask if we want to reclone or no.
+Notice that first you clone the model, $\color{lime}{\textsf{requirements.txt}}$ for it will be also installed.
+After the model is cloned it will appear in $\color{lime}{\textsf{YoloModels}}$ directory. If the model is already there and the script is executed and message will appear and ask if we want to reclone or no.
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ac73a342-45ef-4668-a298-0d481387bc18)
 
