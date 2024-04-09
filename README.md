@@ -68,7 +68,7 @@ Please note that the labels for the testing set are not available, or at least I
 
 In the **get_coco.sh** script, we can select between downloading the train, test, valid, and segment data. By default, all datasets will be downloaded.
 
-The YAML file for COCO dataset is located at path $\color{red}{\textsf{Utility/YANKfiles/coco.yaml}}$
+The YAML file for COCO dataset is located at path $\color{red}{\textsf{Utility/YAMLconfigs/coco.yaml}}$
 
 </details>
 
