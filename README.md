@@ -136,7 +136,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 </details>
 
 <details>
-  <summary>Evaluation on COCO dataset using gelan-e </summary>
+  <summary>Evaluation on COCO dataset using yolov9_gelan-e </summary>
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/451f47b8-ca6a-40b8-ac9b-5e5ef451738f)
 
