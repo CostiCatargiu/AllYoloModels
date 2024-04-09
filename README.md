@@ -105,11 +105,23 @@ If you want to add more parameters to evaluation task please edit the .sh for th
   </tr>
   <tr>
     <td>$\color{orange}{\textsf{maP@0.50}}$</td>
-    <td>Row 2, Cell 2</td>
+    <td align="center">0.69</td>
+    <td align="center">0.52</td>
+    <td align="center">0.52</td>
+    <td align="center">0.52</td>
+    <td align="center">0.52</td>
+    <td align="center">0.52</td>
+
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{maP@0.50-95}}$</td>
-    <td>Row 2, Cell 2</td>
+    <td align="center">0.52</td>
+    <td align="center">0.52</td>
+    <td align="center">0.52</td>
+    <td align="center">0.52</td>
+    <td align="center">0.52</td>
+    <td align="center">0.52</td>
+    
   </tr>
   
   <tr>
@@ -141,8 +153,14 @@ If you want to add more parameters to evaluation task please edit the .sh for th
     <td align="center">32</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{speed}}$</td>
-    <td>Row 2, Cell 2</td>
+    <td>$\color{orange}{\textsf{speed(ms/img)}}$</td>
+    <td align="center">3.5</td>
+    <td align="center">3.5</td>
+    <td align="center">3.5</td>
+    <td align="center">3.5</td>
+    <td align="center">3.5</td>
+    <td align="center">3.5</td>
+
   </tr>
   <tr>
     <td>$\color{orange}{\textsf{GPU}}$</td>
