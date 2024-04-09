@@ -70,6 +70,7 @@ In the **get_coco.sh** script, we can select between downloading the train, test
 
 The YAML file for COCO dataset is located at path $\color{red}{\textsf{Utility/YAMLconfigs/coco.yaml}}$
 
+Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 train images)
 </details>
 
 ## Evaluation task
@@ -82,13 +83,13 @@ Syntax:
 
 Usage example:
   ```bash
- ./YoloModelsEval.sh yolov5 #use default parameters
+ ./YoloModelsEval.sh yolov5m #use default parameters
 ```
 Parameters: 
  <<para>> = required parameter; [param}=optional parameter
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8e21d24a-c73b-4d63-ad9f-265fa56b8686)
 
---test split parameter allows us to select between train and valid dataset for evalutae the mode.
+--testSplit parameter allows us to select between "train" and "valid" dataset for evaluate the model.
 <details>
   <summary>Evaluation on COCO dataset </summary>
 
