@@ -60,9 +60,9 @@ After the model is cloned it will appear in **YoloModels** directory. If the mod
 <details>
   <summary>Dowmload COCO dataset</summary>
 
-To download COCO dataset you can use $\color{red}{\textsf{**Utility/DatasetDownloadScripts/getcoco.sh**}}$ .
+To download COCO dataset you can use $\color{red}{\textsf{Utility/DatasetDownloadScripts/getcoco.sh}}$ .
 
-The dataset will be downloaded in **Utility-->COCOdatasets**.
+The dataset will be downloaded in $\color{red}{\textsf{Utility/COCOdatasets}}$.
 
 Please note that the labels for the testing set are not available, or at least I didn't find them. Another observation is that for YoloV6, we need to use bounding box format labels instead of polygon format labels for the evaluation task.
 
