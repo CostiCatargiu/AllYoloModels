@@ -1,5 +1,5 @@
 
-$\color{#f00}{\textsf{lorem ipsum}}$ 	
+$\color{#f00}{\textsf{get_sh}}$ 	
 $\color{rgb(255,0,0)}{\textsf{lorem ipsum}}$ 	
 $\color{rgba(255,0,0, 0.4)}{\textsf{lorem ipsum}}$ 	
 $\color{hsl(0,100%,50%)}{\textsf{lorem ipsum}}$ 	
