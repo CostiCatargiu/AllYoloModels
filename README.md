@@ -95,7 +95,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 <table border="1">
   <tr>
     <th></th>
-    <th align="center" style="color:blue;">YoloV5l</th>
+    <th align="center">$\color{red}{\textsf{YoloModelsEval.sh}}$</th>
     <th align="center">YoloV6l</th>
     <th align="center">YoloV7</th>
     <th align="center">YoloV8l</th>
