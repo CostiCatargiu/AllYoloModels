@@ -32,6 +32,18 @@ $\textcolor{red}{\textsf{lorem ipsum}}$
     <td rowspan="2" align="center" style="color:red;">Row 1, Cell 1<br>(Centered, Red)</td>
     <td align="center" style="color:green;">Row 1, Cell 2 (Centered, Green)</td>
   </tr>
+
+  <table border="1">
+  <tr>
+    <th colspan="2" align="center"><font color="blue">Header 1 and Header 2 merged and centered (Blue)</font></th>
+  </tr>
+  <tr>
+    <td rowspan="2" align="center"><font color="red">Row 1, Cell 1<br>(Centered, Red)</font></td>
+    <td align="center"><font color="green">Row 1, Cell 2 (Centered, Green)</font></td>
+  </tr>
+  <tr>
+    <td align="
+
   <tr>
     <td align="center" style="color:purple;">Row 2, Cell 2 (Centered, Purple)</td>
   </tr>
