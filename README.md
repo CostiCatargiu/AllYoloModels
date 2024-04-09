@@ -92,7 +92,8 @@ Parameters:
 --testSplit parameter allows us to select between "train" and "valid" dataset for evaluate the model.
 <details>
   <summary>Evaluation on COCO dataset using yolov5l </summary>
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ca7b2a06-52a1-4779-95b6-ccb238c62135)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ca46b6c6-42a9-4545-ba78-c2fbcf33e559)
 
 </details>
 
