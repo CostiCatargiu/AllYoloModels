@@ -94,7 +94,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 <details>
   <summary>Evaluation on COCO dataset using yolov5l </summary>
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/cbaa74b9-e760-4d66-9330-761d93a58fe6)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/3993b392-1120-480a-ade3-823087e5e1e1)
 
 
 </details>
