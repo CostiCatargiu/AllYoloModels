@@ -1,4 +1,4 @@
-
+To download COCO dataset you can use $\color{red}{\textsf{**Utility/DatasetDownloadScripts/getcoco.sh**}}$ .
 $\color{#f00}{\text{get-->sh}}$ 	
 $\color{rgb(255,0,0)}{\textsf{lorem ipsum}}$ 	
 $\color{rgba(255,0,0, 0.4)}{\textsf{lorem ipsum}}$ 	
