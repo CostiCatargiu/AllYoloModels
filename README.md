@@ -100,3 +100,27 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 
 </details>
 
+<details>
+  <summary>Evaluation on COCO dataset using yolov6l </summary>
+Class                 Images      Labels     P@.5iou     R@.5iou    F1@.5iou      mAP@.5  mAP@.5:.95
+all                     5000       36335       0.729       0.657       0.685       0.611       0.471
+
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ab034824-bcf1-4467-8cc7-4f14f58d0e6d)
+
+</details>
+
+
+</details>
+
+<details>
+  <summary>Evaluation on COCO dataset using yolov7 </summary>
+Class                 Images      Labels     P@.5iou     R@.5iou    F1@.5iou      mAP@.5  mAP@.5:.95
+all                     5000       36335       0.729       0.657       0.685       0.611       0.471
+
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ab034824-bcf1-4467-8cc7-4f14f58d0e6d)
+
+</details>
+
+
