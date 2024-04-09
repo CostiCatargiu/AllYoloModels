@@ -95,12 +95,12 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 <table border="1">
   <tr>
     <th></th>
-    <th>YoloV5l</th>
-    <th>YoloV6l</th>
-    <th>YoloV7</th>
-    <th>YoloV8l</th>
-    <th>YoloV9-e</th>
-    <th>YoloV9_gelan-e</th>
+    <th align="center">YoloV5l</th>
+    <th align="center">YoloV6l</th>
+    <th align="center">YoloV7</th>
+    <th align="center">YoloV8l</th>
+    <th align="center">YoloV9-e</th>
+    <th align="center">YoloV9_gelan-e</th>
 
   </tr>
   <tr>
@@ -114,31 +114,32 @@ If you want to add more parameters to evaluation task please edit the .sh for th
   
   <tr>
     <td>conf_thr</td>
-    <td>0.001</td>
-    <td>0.001</td>
-    <td>0.001</td>
-    <td>0.001</td>
-    <td>0.001</td>
-    <td>0.001</td>
+    <td>iou_thr</td>
+    <td align="center">0.001</td>
+    <td align="center">0.001</td>
+    <td align="center">0.001</td>
+    <td align="center">0.001</td>
+    <td align="center">0.001</td>
+    <td align="center">0.001</td>
 
   </tr>
   <tr>
     <td>iou_thr</td>
-    <td>0.65</td>
-    <td>0.65</td>
-    <td>0.65</td>
-    <td>0.65</td>
-    <td>0.65</td>
-    <td>0.65</td>
+    <td align="center">65</td>
+    <td align="center">65</td>
+    <td align="center">65</td>
+    <td align="center">65</td>
+    <td align="center">65</td>
+    <td align="center">65</td>
   </tr>
     <tr>
     <td>batch_size</td>
-    <td>32</td>
-    <td>32</td>
-    <td>32</td>
-    <td>32</td>
-    <td>32</td>
-    <td>32</td>
+    <td align="center">32</td>
+    <td align="center">32</td>
+    <td align="center">32</td>
+    <td align="center">32</td>
+    <td align="center">32</td>
+    <td align="center">32</td>
   </tr>
     <tr>
     <td>speed</td>
@@ -146,7 +147,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
   </tr>
   <tr>
     <td>GPU </td>
-    <td colspan="7">NVIDIA GeForce RTX 4090, 24209MiB</td>
+    <td colspan="7" align="center" >NVIDIA GeForce RTX 4090, 24209MiB</td>
   </tr>
   
 </table>
