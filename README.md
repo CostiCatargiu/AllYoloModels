@@ -100,7 +100,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
     <th align="center">$\color{red}{\textsf{YoloV7}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV8l}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV9-e}}$</th>
-    <th align="center">$\color{red}{\textsf{YoloV9_gelan-e}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV9-gelan-e}}$</th>
 
   </tr>
   <tr>
@@ -113,7 +113,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
   </tr>
   
   <tr>
-    <td>$\color{orange}{\textsf{conf_thr}}$</td>
+    <td>$\color{orange}{\textsf{confThr}}$</td>
     <td align="center">0.001</td>
     <td align="center">0.001</td>
     <td align="center">0.001</td>
@@ -123,7 +123,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 
   </tr>
   <tr>
-    <td>$\color{orange}{\textsf{iou_thr}}$</td>
+    <td>$\color{orange}{\textsf{iouThr}}$</td>
     <td align="center">65</td>
     <td align="center">65</td>
     <td align="center">65</td>
@@ -132,7 +132,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
     <td align="center">65</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{bath_size}}$</td>
+    <td>$\color{orange}{\textsf{bathSize}}$</td>
     <td align="center">32</td>
     <td align="center">32</td>
     <td align="center">32</td>
