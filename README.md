@@ -93,8 +93,6 @@ Parameters:
 If you want to add more parameters to evaluation task please edit the .sh for the desired model.
 <details>
   <summary>Evaluation on COCO dataset using yolov5l </summary>
-                 Class     Images  Instances          P          R      mAP50   mAP50-95:
-                   all       5000      36335      0.769      0.598      0.707       0.56
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ca46b6c6-42a9-4545-ba78-c2fbcf33e559)
 
@@ -102,9 +100,6 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 
 <details>
   <summary>Evaluation on COCO dataset using yolov6l </summary>
-Class                 Images      Labels     P@.5iou     R@.5iou    F1@.5iou      mAP@.5  mAP@.5:.95
-all                     5000       36335       0.729       0.657       0.685       0.611       0.471
-
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ab034824-bcf1-4467-8cc7-4f14f58d0e6d)
 
@@ -115,15 +110,15 @@ all                     5000       36335       0.729       0.657       0.685    
 
 <details>
   <summary>Evaluation on COCO dataset using yolov7 </summary>
-|    Class    | Images | Labels |    P    |    R    | mAP@.5  | mAP@.5:.95: |
-  
-|-------------|--------|--------|---------|---------|---------|-------------|
 
-|     all     |  5000  | 36335  |  0.756  |  0.613  |  0.575  |    0.437    |
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/6bb8fad1-93e3-4947-9d28-c86f3bfeced8)
 
+</details>
 
+<details>
+  <summary>Evaluation on COCO dataset using yolov8l </summary>
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ab034824-bcf1-4467-8cc7-4f14f58d0e6d)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/1e9c314c-135e-4683-b412-2985e26cfd0f)
 
 </details>
 
