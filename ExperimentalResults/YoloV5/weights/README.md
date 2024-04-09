@@ -1,6 +1,6 @@
 color red is red $\color{red}{\textsf{lorem ipsum}}$  and it is working 
 
-To download COCO dataset you can use $\color{red}{\textsf{**Utility-->DatasetDownloadScripts-->get_coco.sh**}}$ .
+To download COCO dataset you can use $\color{red}{\textsf{Utility-->DatasetDownloadScripts-->get_coco.sh}}$ .
 
 
 $\color{#f00}{\textsf{lorem ipsum}}$ 	
