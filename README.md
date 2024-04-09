@@ -203,6 +203,9 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/069538f6-fa61-462f-bcb9-f95a871dca38)
 
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/df790ffa-62d5-4ccf-a07d-6943d733b5f7)
+
+
 </details>
 
 <details>
