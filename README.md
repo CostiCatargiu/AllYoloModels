@@ -87,11 +87,14 @@ Usage example:
 ```
 Parameters: 
  << >> = required parameter; [ ]=optional parameter
+ --testSplit parameter allows us to select between "train" and "valid" dataset for evaluate the model.
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8e21d24a-c73b-4d63-ad9f-265fa56b8686)
 
---testSplit parameter allows us to select between "train" and "valid" dataset for evaluate the model.
+If you want to add more parameters to evaluation task please edit the .sh for the desired model.
 <details>
   <summary>Evaluation on COCO dataset using yolov5l </summary>
+                 Class     Images  Instances          P          R      mAP50   mAP50-95:
+                   all       5000      36335      0.769      0.598      0.707       0.56
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ca46b6c6-42a9-4545-ba78-c2fbcf33e559)
 
