@@ -23,3 +23,16 @@ $\textcolor{red}{\textsf{lorem ipsum}}$
   </tr>
 </table>
 
+
+<table border="1">
+  <tr>
+    <th colspan="2" align="center" style="color:blue;">Header 1 and Header 2 merged and centered (Blue)</th>
+  </tr>
+  <tr>
+    <td rowspan="2" align="center" style="color:red;">Row 1, Cell 1<br>(Centered, Red)</td>
+    <td align="center" style="color:green;">Row 1, Cell 2 (Centered, Green)</td>
+  </tr>
+  <tr>
+    <td align="center" style="color:purple;">Row 2, Cell 2 (Centered, Purple)</td>
+  </tr>
+</table>
