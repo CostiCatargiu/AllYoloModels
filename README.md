@@ -78,11 +78,12 @@ The YAML file for COCO dataset is located at path $\color{red}{\textsf{Utility/Y
 
 Usage example:
   ```bash
-  ./YoloModelsEval.sh yolov5 
-  ```
+ # syntax ./YoloModelsEval.sh  <<select_model>> --[datasetPath] value --[weights] value --[batchSize] value --[conf_thr] value --[img_size] value --[testSplit] "value"
+ ./YoloModelsEval.sh yolov5 #use default parameters
+```
 Parameters: 
-
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d2387b9d-ee8c-43a9-b887-6ec143c17f9b)
+ <<para>> = required parameter; [param}=optional
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8e21d24a-c73b-4d63-ad9f-265fa56b8686)
 
 <details>
   <summary>Evaluation on COCO dataset </summary>
