@@ -107,20 +107,20 @@ If you want to add more parameters to evaluation task please edit the .sh for th
     <td>$\color{orange}{\textsf{maP@0.50}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
-    <td align="center">0.52</td>
-    <td align="center">0.52</td>
-    <td align="center">0.52</td>
-    <td align="center">0.52</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
 
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{maP@0.50-95}}$</td>
     <td align="center">0.52</td>
     <td align="center">0.52</td>
-    <td align="center">0.52</td>
-    <td align="center">0.52</td>
-    <td align="center">0.52</td>
-    <td align="center">0.52</td>
+    <td align="center">0.50</td>
+    <td align="center">0.57</td>
+    <td align="center">0.56</td>
+    <td align="center">0.55</td>
     
   </tr>
   
@@ -158,8 +158,8 @@ If you want to add more parameters to evaluation task please edit the .sh for th
     <td align="center">4</td>
     <td align="center">4.2</td>
     <td align="center">3.5</td>
-    <td align="center">3.5</td>
-    <td align="center">3.5</td>
+    <td align="center">9.2</td>
+    <td align="center">8</td>
 
   </tr>
   <tr>
