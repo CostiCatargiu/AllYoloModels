@@ -1,4 +1,7 @@
-$\color{red}{\textsf{lorem ipsum}}$ 	
+color red is red $\color{red}{\textsf{lorem ipsum}}$  and it is working 
+
+
+
 $\color{#f00}{\textsf{lorem ipsum}}$ 	
 $\color{rgb(255,0,0)}{\textsf{lorem ipsum}}$ 	
 $\color{rgba(255,0,0, 0.4)}{\textsf{lorem ipsum}}$ 	
