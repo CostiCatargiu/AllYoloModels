@@ -106,7 +106,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
   <tr>
     <td>$\color{orange}{\textsf{maP@0.50}}$</td>
     <td align="center">0.69</td>
-    <td align="center">0.52</td>
+    <td align="center">0.69</td>
     <td align="center">0.52</td>
     <td align="center">0.52</td>
     <td align="center">0.52</td>
@@ -155,8 +155,8 @@ If you want to add more parameters to evaluation task please edit the .sh for th
     <tr>
     <td>$\color{orange}{\textsf{speed(ms/img)}}$</td>
     <td align="center">3.5</td>
-    <td align="center">3.5</td>
-    <td align="center">3.5</td>
+    <td align="center">4</td>
+    <td align="center">4.2</td>
     <td align="center">3.5</td>
     <td align="center">3.5</td>
     <td align="center">3.5</td>
