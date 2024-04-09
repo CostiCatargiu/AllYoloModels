@@ -72,8 +72,17 @@ The YAML file for COCO dataset is located at path $\color{red}{\textsf{Utility/Y
 
 </details>
 
+# Evaluation task
+
+ $\color{red}{\textsf{YoloModelsEval.sh}}$ file shall be used for this task. This file will trigger the inference script for the selected model.
+
+Usage example:
+  ```bash
+  ./YoloModelsEval.sh yolov5 
+  ```
+
 <details>
-  <summary>Evaluation task</summary>
+  <summary>Evaluation on COCO dataset </summary>
 
   
 </details>
