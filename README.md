@@ -61,9 +61,12 @@ After the model is cloned it will appear in **YoloModels** directory. If the mod
   <summary>Dowmload COCO dataset</summary>
 
 To download COCO dataset you can use **Utility-->DatasetDownloadScripts-->get_coco.sh**.
+
 The dataset will be downloaded in **Utility-->COCOdatasets**.
 
-Notice that the labels for testing set are not available, or at least I didn't found them. another observation will be that for YoloV6 we need to use boundig box format labels no polygon format labels for the evaluation task.
+Please note that the labels for the testing set are not available, or at least I didn't find them. Another observation is that for YoloV6, we need to use bounding box format labels instead of polygon format labels for the evaluation task.
+
+In the **get_coco.sh** script, we can select between downloading the train, test, valid, and segment data. By default, all datasets will be downloaded.
 
 </details>
 
