@@ -124,7 +124,21 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 <details>
   <summary>Evaluation on COCO dataset using yolov8l </summary>
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/1e9c314c-135e-4683-b412-2985e26cfd0f)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/069538f6-fa61-462f-bcb9-f95a871dca38)
+
+</details>
+
+<details>
+  <summary>Evaluation on COCO dataset using yolov9-e </summary>
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/cb58d821-0462-4c93-93f6-e110cdf0582e)
+
+</details>
+
+<details>
+  <summary>Evaluation on COCO dataset using gelan-e </summary>
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/451f47b8-ca6a-40b8-ac9b-5e5ef451738f)
 
 </details>
 
