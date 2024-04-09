@@ -72,3 +72,9 @@ The YAML file for COCO dataset is located at path $\color{red}{\textsf{Utility/Y
 
 </details>
 
+<details>
+  <summary>Evaluation task</summary>
+
+  
+</details>
+
