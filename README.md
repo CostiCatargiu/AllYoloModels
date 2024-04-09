@@ -108,7 +108,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
     <td>Row 2, Cell 2</td>
   </tr>
     <tr>
-    <td>\color{orange}{\textsf{maP@0.50-95}}$</td>
+    <td>$\color{orange}{\textsf{maP@0.50-95}}$</td>
     <td>Row 2, Cell 2</td>
   </tr>
   
