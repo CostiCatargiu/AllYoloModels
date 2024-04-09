@@ -94,6 +94,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 
 <table border="1">
   <tr>
+    <th></th>
     <th>YoloV5l</th>
     <th>YoloV6l</th>
     <th>YoloV7</th>
@@ -113,15 +114,32 @@ If you want to add more parameters to evaluation task please edit the .sh for th
   
   <tr>
     <td>conf_thr</td>
-    <td>Row 2, Cell 2</td>
+    <td>0.001</td>
+    <td>0.001</td>
+    <td>0.001</td>
+    <td>0.001</td>
+    <td>0.001</td>
+    <td>0.001</td>
+
   </tr>
   <tr>
     <td>iou_thr</td>
-    <td>Row 2, Cell 2</td>
+    <td>0.65</td>
+    <td>0.65</td>
+    <td>0.65</td>
+    <td>0.65</td>
+    <td>0.65</td>
+    <td>0.65</td>
   </tr>
     <tr>
     <td>batch_size</td>
-    <td>Row 2, Cell 2</td>
+    <td>32</td>
+    <td>32</td>
+    <td>32</td>
+    <td>32</td>
+    <td>32</td>
+    <td>32</td>
+
   </tr>
     <tr>
     <td>speed</td>
