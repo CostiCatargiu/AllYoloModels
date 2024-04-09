@@ -116,7 +116,9 @@ all                     5000       36335       0.729       0.657       0.685    
 <details>
   <summary>Evaluation on COCO dataset using yolov7 </summary>
 |    Class    | Images | Labels |    P    |    R    | mAP@.5  | mAP@.5:.95: |
+  
 |-------------|--------|--------|---------|---------|---------|-------------|
+
 |     all     |  5000  | 36335  |  0.756  |  0.613  |  0.575  |    0.437    |
 
 
