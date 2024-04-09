@@ -86,13 +86,13 @@ Usage example:
  ./YoloModelsEval.sh yolov5m #use default parameters
 ```
 Parameters: 
- <<>> = required parameter; [param}=optional parameter
+ << >> = required parameter; [ ]=optional parameter
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8e21d24a-c73b-4d63-ad9f-265fa56b8686)
 
 --testSplit parameter allows us to select between "train" and "valid" dataset for evaluate the model.
 <details>
-  <summary>Evaluation on COCO dataset </summary>
+  <summary>Evaluation on COCO dataset using yolov5l </summary>
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ca7b2a06-52a1-4779-95b6-ccb238c62135)
 
-  
 </details>
 
