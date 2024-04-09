@@ -139,11 +139,14 @@ If you want to add more parameters to evaluation task please edit the .sh for th
     <td>32</td>
     <td>32</td>
     <td>32</td>
-
   </tr>
     <tr>
     <td>speed</td>
     <td>Row 2, Cell 2</td>
+  </tr>
+  <tr>
+    <td>GPU </td>
+    <td colspam="6">NVIDIA GeForce RTX 4090, 24209MiB</td>
   </tr>
   
 </table>
