@@ -156,8 +156,8 @@ If you want to add more parameters to evaluation task please edit the .sh for th
     <td>$\color{orange}{\textsf{speed(ms/img)}}$</td>
     <td align="center">3.5</td>
     <td align="center">4</td>
-    <td align="center">4.2</td>
-    <td align="center">3.5</td>
+    <td align="center">4.4</td>
+    <td align="center">4</td>
     <td align="center">9.2</td>
     <td align="center">8</td>
 
@@ -193,7 +193,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/5eb42bbf-2647-4fa3-b9b6-e17b928d34ea)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/6bb8fad1-93e3-4947-9d28-c86f3bfeced8)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b73ccf56-b06d-484b-ab70-ec0ea560dfaf)
 
 </details>
 
