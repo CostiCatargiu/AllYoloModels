@@ -241,3 +241,14 @@ Parameters:
 
 If you want to add more parameters to evaluation task please edit the .sh for the desired model.
 
+
+<details>
+  <summary> Inference on video using yolov5l </summary>
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/963853d6-a826-4145-917e-0a54883ce09e)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/942cbf33-4e35-4ca1-9c5e-7fd332e3f106)
+
+
+</details>
+
