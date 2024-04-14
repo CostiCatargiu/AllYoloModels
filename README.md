@@ -249,6 +249,51 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/942cbf33-4e35-4ca1-9c5e-7fd332e3f106)
 
+</details>
+
+<details>
+  <summary> Inference on video using yolov6l </summary>
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/2dda3de1-2be0-43b8-95da-6004057f386d)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/035a045f-728c-4d3f-a0be-061adc991827)
 
 </details>
 
+
+<details>
+  <summary> Inference on video using yolov7 </summary>
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/cd102081-ad64-4608-b655-a3c1f4cd5cde)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/a2e2b3bc-b89d-4812-9940-0f7d678b53c4)
+
+</details>
+
+<details>
+  <summary> Inference on video using yolov8l </summary>
+
+![i![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/0d282fc9-4016-4095-b2d1-32d112d50bd1)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/160786cf-0691-4df6-9671-eef6fa7c5660)
+
+</details>
+
+
+<details>
+  <summary> Inference on video using yolov9-c </summary>
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b9e8fd1d-921c-40d5-979a-432354876c71)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/68f7d9f3-ee75-4527-b868-7d9f8bb0b53e)
+
+</details>
+
+<details>
+  <summary> Inference on video using yolov9-gelan-c </summary>
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/c50e215a-7992-4825-b39d-f7960fc25dcf)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ee5cf2ca-2089-4af4-9fa9-17906b65a8aa)
+
+</details>
