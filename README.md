@@ -240,7 +240,101 @@ Parameters:
 
 If you want to add more parameters to inference task please edit the .sh for the desired model.
 
+<table border="1">
+  <tr>
+    <th></th>
+    <th></th>
+    <th align="center">$\color{red}{\textsf{YoloV5l}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV6l}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV7}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV8l}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV9-e}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV9-gelan-e}}$</th>
 
+  </tr>
+  
+  <tr>
+    <td>$\color{orange}{\textsf{classes}}$</td>
+    <td>$\color{orange}{\textsf{person}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+  </tr>
+    <tr>
+    <td>/td>
+    <td>$\color{orange}{\textsf{bycicle}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+  </tr>
+    <tr>
+    <td>/td>
+    <td>$\color{orange}{\textsf{car}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{maP@0.50-95}}$</td>
+    <td align="center">0.52</td>
+    <td align="center">0.52</td>
+    <td align="center">0.50</td>
+    <td align="center">0.57</td>
+    <td align="center">0.56</td>
+    <td align="center">0.55</td>
+    
+  </tr>
+  
+  <tr>
+    <td>$\color{orange}{\textsf{confThr}}$</td>
+    <td align="center">0.001</td>
+    <td align="center">0.001</td>
+    <td align="center">0.001</td>
+    <td align="center">0.001</td>
+    <td align="center">0.001</td>
+    <td align="center">0.001</td>
+
+  </tr>
+  <tr>
+    <td>$\color{orange}{\textsf{iouThr}}$</td>
+    <td align="center">65</td>
+    <td align="center">65</td>
+    <td align="center">65</td>
+    <td align="center">65</td>
+    <td align="center">65</td>
+    <td align="center">65</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{bathSize}}$</td>
+    <td align="center">32</td>
+    <td align="center">32</td>
+    <td align="center">32</td>
+    <td align="center">32</td>
+    <td align="center">32</td>
+    <td align="center">32</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{speed(ms/img)}}$</td>
+    <td align="center">3.5</td>
+    <td align="center">4</td>
+    <td align="center">4.4</td>
+    <td align="center">4</td>
+    <td align="center">9.2</td>
+    <td align="center">8</td>
+
+  </tr>
+  <tr>
+    <td>$\color{orange}{\textsf{GPU}}$</td>
+    <td colspan="7" align="center" >$\color{green}{\textsf{NVIDIA GeForce RTX 4090, 24209MiB}}$</td>
+  </tr>
+  
+</table>
 <details>
   <summary> Inference on video using yolov5l </summary>
 
