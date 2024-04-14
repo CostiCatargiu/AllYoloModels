@@ -254,7 +254,7 @@ If you want to add more parameters to inference task please edit the .sh for the
   </tr>
   
   <tr>
-    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{person}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -264,7 +264,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{person}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -274,7 +274,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
   <tr>
-    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{bicycle}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -284,7 +284,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{bicycle}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -294,7 +294,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
   <tr>
-    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{car}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -304,7 +304,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{car}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -314,7 +314,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{truck}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -324,7 +324,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{truck}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -334,7 +334,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{bus}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -344,7 +344,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{bus}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -354,8 +354,8 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
       <tr>
-    <td>$\color{orange}{\textsf{nr_detects}}$</td>
-    <td>$\color{orange}{\textsf{traffic_light}}$</td>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
+    <td>$\color{orange}{\textsf{traffic light}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
     <td align="center">0.71</td>
@@ -364,8 +364,8 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{avg_conf}}$</td>
-    <td>$\color{orange}{\textsf{traffic_light}}$</td>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
+    <td>$\color{orange}{\textsf{traffic light}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
     <td align="center">0.71</td>
@@ -374,7 +374,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
       <tr>
-    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{motorcycle}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -384,7 +384,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{motorcycle}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -394,7 +394,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
       <tr>
-    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{backpack}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
@@ -404,7 +404,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{backpack}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
