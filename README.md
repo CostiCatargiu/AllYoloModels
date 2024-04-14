@@ -75,7 +75,7 @@ Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 
 
 ## Evaluation task
 
- $\color{red}{\textsf{YoloModelsEval.sh}}$ file shall be used for this task. This file will trigger the inference script for the selected model.
+ $\color{red}{\textsf{YoloModelsEval.sh}}$ file shall be used for this task. This file will trigger the evaluation script for the selected model.
 
 Syntax:
 
@@ -228,7 +228,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 
 Syntax:
 
-./YoloModelsInference.sh  <<select_model>> --[datasetPath] val --[weights] val --[batchSize] val --[conf_thr] val --[img_size] val --[testSplit] "val"
+./YoloModelsInference.sh  <<select_model>> --[weights] val --[source_video] val --[conf_thr] val --[device] "val" --[count] val --[count] "class1,class2..." -[filter] "class1,class2..."
 
 Usage example:
   ```bash
@@ -236,10 +236,9 @@ Usage example:
 ```
 Parameters: 
  << >> = required parameter; [ ]=optional parameter
- --testSplit parameter allows us to select between "train" and "valid" dataset for evaluate the model.
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8e21d24a-c73b-4d63-ad9f-265fa56b8686)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ae41d194-6172-4cbe-ba14-d486dc399fd3)
 
-If you want to add more parameters to evaluation task please edit the .sh for the desired model.
+If you want to add more parameters to inference task please edit the .sh for the desired model.
 
 
 <details>
