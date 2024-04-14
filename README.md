@@ -263,8 +263,11 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>/td>
+    <td> /td>
     <td>$\color{orange}{\textsf{bycicle}}$</td>
+    <tr>
+        <td>$\color{orange}{\textsf{classes}}$</td>
+    </tr>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
     <td align="center">0.71</td>
@@ -272,7 +275,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>/td>
+    <td> /td>
     <td>$\color{orange}{\textsf{car}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
