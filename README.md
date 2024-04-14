@@ -243,7 +243,7 @@ If you want to add more parameters to inference task please edit the .sh for the
 <table border="1">
   <tr>
     <th></th>
-    <th></th>
+    <th align="center">$\color{red}{\textsf{classes}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV5l}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV6l}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV7}}$</th>
@@ -254,80 +254,164 @@ If you want to add more parameters to inference task please edit the .sh for the
   </tr>
   
   <tr>
-    <td>$\color{orange}{\textsf{classes}}$</td>
+    <td>$\color{orange}{\textsf{nr_detects}}$</td>
     <td>$\color{orange}{\textsf{person}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
     <td align="center">0.71</td>
     <td align="center">0.73</td>
     <td align="center">0.72</td>
+    <td align="center">0.72</td>
   </tr>
     <tr>
-    <td> /td>
-    <td>$\color{orange}{\textsf{bycicle}}$</td>
+    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{person}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
     <td align="center">0.71</td>
     <td align="center">0.73</td>
     <td align="center">0.72</td>
+    <td align="center">0.72</td>
+  </tr>
+  <tr>
+    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{bicycle}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
   </tr>
     <tr>
-    <td> /td>
+    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{bicycle}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
+  </tr>
+  <tr>
+    <td>$\color{orange}{\textsf{nr_detects}}$</td>
     <td>$\color{orange}{\textsf{car}}$</td>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
     <td align="center">0.71</td>
     <td align="center">0.73</td>
     <td align="center">0.72</td>
+    <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{maP@0.50-95}}$</td>
-    <td align="center">0.52</td>
-    <td align="center">0.52</td>
-    <td align="center">0.50</td>
-    <td align="center">0.57</td>
-    <td align="center">0.56</td>
-    <td align="center">0.55</td>
-    
-  </tr>
-  
-  <tr>
-    <td>$\color{orange}{\textsf{confThr}}$</td>
-    <td align="center">0.001</td>
-    <td align="center">0.001</td>
-    <td align="center">0.001</td>
-    <td align="center">0.001</td>
-    <td align="center">0.001</td>
-    <td align="center">0.001</td>
-
-  </tr>
-  <tr>
-    <td>$\color{orange}{\textsf{iouThr}}$</td>
-    <td align="center">65</td>
-    <td align="center">65</td>
-    <td align="center">65</td>
-    <td align="center">65</td>
-    <td align="center">65</td>
-    <td align="center">65</td>
+    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{car}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{bathSize}}$</td>
-    <td align="center">32</td>
-    <td align="center">32</td>
-    <td align="center">32</td>
-    <td align="center">32</td>
-    <td align="center">32</td>
-    <td align="center">32</td>
+    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{truck}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{speed(ms/img)}}$</td>
-    <td align="center">3.5</td>
-    <td align="center">4</td>
-    <td align="center">4.4</td>
-    <td align="center">4</td>
-    <td align="center">9.2</td>
-    <td align="center">8</td>
-
+    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{truck}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{bus}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{bus}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
+  </tr>
+      <tr>
+    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{traffic_light}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{traffic_light}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
+  </tr>
+      <tr>
+    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{motorcycle}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{motorcycle}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
+  </tr>
+      <tr>
+    <td>$\color{orange}{\textsf{nr_detects}}$</td>
+    <td>$\color{orange}{\textsf{backpack}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{avg_conf}}$</td>
+    <td>$\color{orange}{\textsf{backpack}}$</td>
+    <td align="center">0.69</td>
+    <td align="center">0.69</td>
+    <td align="center">0.71</td>
+    <td align="center">0.73</td>
+    <td align="center">0.72</td>
+    <td align="center">0.72</td>
   </tr>
   <tr>
     <td>$\color{orange}{\textsf{GPU}}$</td>
