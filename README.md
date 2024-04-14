@@ -265,9 +265,6 @@ If you want to add more parameters to inference task please edit the .sh for the
     <tr>
     <td> /td>
     <td>$\color{orange}{\textsf{bycicle}}$</td>
-    <tr>
-        <td>$\color{orange}{\textsf{classes}}$</td>
-    </tr>
     <td align="center">0.69</td>
     <td align="center">0.69</td>
     <td align="center">0.71</td>
