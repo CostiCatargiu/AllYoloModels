@@ -228,7 +228,7 @@ If you want to add more parameters to evaluation task please edit the .sh for th
 
 Syntax:
 
-./YoloModelsInference.sh  <<select_model>> --[weights] val --[source_video] val --[conf_thr] val --[device] "val" --[count] val --[count] "class1,class2..." -[filter] "class1,class2..."
+./YoloModelsInference.sh  <<select_model>> --[weights] val --[source_video] val --[conf_thr] val --[device] "val" --[count] "class1,class2..." -[filter] "class1,class2..."
 
 Usage example:
   ```bash
