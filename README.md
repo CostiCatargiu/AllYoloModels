@@ -252,18 +252,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <th align="center">$\color{red}{\textsf{YoloV9-c}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV9-gelan-c}}$</th>
   </tr>
-    <tr>
-    <td>$\color{orange}{\textsf{GPU}}$</td>
-    <td colspan="7" align="center" >$\color{green}{\textsf{NVIDIA GeForce RTX 4090, 24209MiB}}$</td>
-  </tr>
-    <tr>
-    <td colspan="2" align="center" >$\color{ORANGE}{\textsf{Aaverage FPS}}$</td>
-    <td align="center">216</td>
-    <td align="center">136</td>
-    <td align="center">285</td>
-    <td align="center">150</td>
-    <td align="center">107</td>
-    <td align="center">75</td>  </tr>
+
   <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{person}}$</td>
@@ -544,6 +533,15 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.00</td>
     <td align="center">0.00</td>
   </tr>
+      <tr>
+    <td colspan="2" align="center" >$\color{ORANGE}{\textsf{Aaverage FPS}}$</td>
+    <td align="center">216</td>
+    <td align="center">136</td>
+    <td align="center">285</td>
+    <td align="center">150</td>
+    <td align="center">107</td>
+    <td align="center">75</td>  
+    </tr>
   <tr>
     <td>$\color{orange}{\textsf{GPU}}$</td>
     <td colspan="7" align="center" >$\color{green}{\textsf{NVIDIA GeForce RTX 4090, 24209MiB}}$</td>
