@@ -47,8 +47,8 @@ from ultralytics.utils.checks import check_imgsz, check_imshow
 from ultralytics.utils.files import increment_path
 from ultralytics.utils.torch_utils import select_device, smart_inference_mode
 sys.path.append('../../InferenceScripts')
-from UtilFunctions import show_inference, CalcFPS, set_parameters
-
+from UtilFunctions import show_inference, CalcFPS, set_parameters, class_counts, average_conf
+from ultralytics.engine.results import Results
 STREAM_WARNING = """
 WARNING ⚠️ inference results will accumulate in RAM unless `stream=True` is passed, causing potential out-of-memory
 errors for large sources or long-running streams and videos. See https://docs.ultralytics.com/modes/predict/ for help.
@@ -61,7 +61,9 @@ Example:
         probs = r.probs  # Class probabilities for classification outputs
 """
 
-text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color = set_parameters()
+text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10, text_anchor6, text_anchor7, text_overlay7, anchor_list1, anchor_list, classesCount, text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color = set_parameters()
+classesFilter = os.environ.get('FILTER_LIST', '').split(',')
+dets_list=[]
 
 class BasePredictor:
     """
@@ -239,6 +241,9 @@ class BasePredictor:
                 ops.Profile(device=self.device),
             )
             self.run_callbacks("on_predict_start")
+
+            fps_list = []
+            inf_list = []
             for self.batch in self.dataset:
                 self.run_callbacks("on_predict_batch_start")
                 paths, im0s, s = self.batch
@@ -261,8 +266,12 @@ class BasePredictor:
                 self.run_callbacks("on_predict_postprocess_end")
                 t2 = time.time()
                 inference_time = t2 - t1
+                inf_time = inference_time * 1000
+                rounded_inf = "{:.2f}".format(inf_time)
+                inf_list.append(float(rounded_inf))
                 fps_calculator.update(1.0 / (t2 - t1))
                 avg_fps = fps_calculator.accumulate()
+                fps_list.append(avg_fps)
 
                 # Visualize, save, write results
                 n = len(im0s)
@@ -274,9 +283,8 @@ class BasePredictor:
                         "postprocess": profilers[2].dt * 1e3 / n,
                     }
                     if self.args.verbose or self.args.save or self.args.save_txt or self.args.show:
-                        s[i] += self.write_results(i, Path(paths[i]), im, s, inference_time
-, avg_fps)
-
+                        string, dets_l= self.write_results(i, Path(paths[i]), im, s, inference_time, avg_fps)
+                        s[i] += string
                 # Print batch results
                 if self.args.verbose:
                     LOGGER.info("\n".join(s))
@@ -302,6 +310,14 @@ class BasePredictor:
             LOGGER.info(f"Results saved to {colorstr('bold', self.save_dir)}{s}")
         self.run_callbacks("on_predict_end")
 
+        Results.print_metrics()
+        total_sum = sum(fps_list)
+        average = total_sum / len(fps_list)
+        print("Average FPS: {}.".format(int(round(average))))
+        inf_sum = sum(inf_list)
+        average_inf = inf_sum / len(inf_list)
+        print("Average InfTime: {}ms per frame.".format(round(average_inf)))
+
 
     def setup_model(self, model, verbose=True):
         """Initialize YOLO model with given parameters and set it to evaluation mode."""
@@ -320,8 +336,7 @@ class BasePredictor:
         self.args.half = self.model.fp16  # update half
         self.model.eval()
 
-    def write_results(self, i, p, im, s, inference_time
-, avg_fps):
+    def write_results(self, i, p, im, s, inference_time, avg_fps):
         """Write inference results to a file or directory."""
         string = ""  # print string
         if len(im.shape) == 3:
@@ -338,32 +353,44 @@ class BasePredictor:
         result = self.results[i]
         result.save_dir = self.save_dir.__str__()  # used in other locations
         string += result.verbose() + f"{result.speed['inference']:.1f}ms"
-
+        global dets_list
         # Add predictions to image
         if self.args.save or self.args.show:
-            self.plotted_img = result.plot(
-                line_width=self.args.line_width,
+            self.plotted_img= result.plot(
+                line_width=3,
                 boxes=self.args.show_boxes,
                 conf=self.args.show_conf,
                 labels=self.args.show_labels,
                 im_gpu=None if self.args.retina_masks else im[i],
             )
+        # print(string)
+        matches = re.findall(r'(\d+(\.\d+)?)\s*([a-zA-Z\s]+)', string)
+        dets = []
+        # Iterate over the matches, skipping the first two items
+        for match in matches[2:]:  # Skip the first two matches as they correspond to image dimensions
+            value, _, unit = match
+            # Append value and unit as a single string list element
+            dets.append(value)
+            dets.append(unit.strip())  # Remove leading/trailing whitespace
+        dets = dets[:-2]
+        # print(dets)
+        dets_list.append(dets)
+
 
         # Save results
         if self.args.save_txt:
             result.save_txt(f"{self.txt_path}.txt", save_conf=self.args.save_conf)
         if self.args.save_crop:
             result.save_crop(save_dir=self.save_dir / "crops", file_name=self.txt_path.stem)
-        if self.args.save:
-            self.save_predicted_images(str(self.save_dir / p.name), frame)
         if self.args.show:
-            self.show(p, inference_time
-, avg_fps)
-        return string
+            annotframe= self.show(p, inference_time, avg_fps, dets)
+            self.save_predicted_images(annotframe, str(self.save_dir / p.name), frame)
 
-    def save_predicted_images(self, save_path="", frame=0):
+        return string, dets_list
+
+    def save_predicted_images(self, annotFrame, save_path="", frame=0, ):
         """Save video predictions as mp4 at specified path."""
-        im = self.plotted_img
+        im = annotFrame
 
         # Save videos and streams
         if self.dataset.mode in {"stream", "video"}:
@@ -389,7 +416,7 @@ class BasePredictor:
         else:
             cv2.imwrite(save_path, im)
 
-    def show(self, p, inf_time, fps):
+    def show(self, p, inf_time, fps, dets):
         """Display an image in a window using OpenCV imshow()."""
         im0 = self.plotted_img
         if platform.system() == 'Linux' and p not in self.windows:
@@ -397,9 +424,13 @@ class BasePredictor:
             cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
             cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
 
-        show_inference(inf_time, fps, im0, p, text_anchor, text_anchor1, text_anchor2,
-                       text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2,
-                       text_overlay4, text_color, text_scale, text_thickness, background_color)
+        annot_frame = show_inference(text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10,text_anchor6, text_anchor7, text_overlay7, anchor_list1, anchor_list, classesCount,
+                       inf_time, fps, im0, p, text_anchor, text_anchor1,
+                       text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5,
+                       text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale,
+                       text_thickness, background_color, dets)
+
+        return annot_frame
 
     def run_callbacks(self, event: str):
         """Runs all registered callbacks for a specific event."""

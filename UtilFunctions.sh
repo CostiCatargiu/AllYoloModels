@@ -16,3 +16,12 @@ evalSelect() {
         echo "  optional_param5 (testSplit): default: = $testSplit"
 
 }
+
+downloadCCOCOannotations() {
+      folder_path="coco"
+      mkdir -p "$folder_path"
+      wget -O "$folder_path/data.zip" "images.cocodataset.org/annotations/annotations_trainval2017.zip"
+      unzip -q "$folder_path/data.zip" -d "$folder_path"
+      rm "$folder_path/data.zip"
+      echo "Download and extraction completed."
+}

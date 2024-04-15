@@ -13,6 +13,8 @@ if str(ROOT) not in sys.path:
 
 from yolov6.utils.events import LOGGER
 from yolov6.core.inferer import Inferer
+from yolov6.utils.general import increment_name
+
 
 def get_args_parser(add_help=True):
     parser = argparse.ArgumentParser(description='YOLOv6 PyTorch Inference.', add_help=add_help)
@@ -89,7 +91,7 @@ def run(weights=osp.join(ROOT, 'yolov6s.pt'),
     """
     # create save dir
     if save_dir is None:
-        save_dir = osp.join(project, name)
+        save_dir = increment_name(osp.join(project, name))
         save_txt_path = osp.join(save_dir, 'labels')
     else:
         save_txt_path = save_dir

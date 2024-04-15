@@ -11,7 +11,6 @@ import os.path as osp
 from tqdm import tqdm
 from pathlib import Path
 from PIL import ImageFont
-from collections import deque
 
 from yolov6.utils.events import LOGGER, load_yaml
 from yolov6.layers.common import DetectBackend
@@ -21,8 +20,8 @@ from yolov6.utils.nms import non_max_suppression
 import torch, time,sys
 
 sys.path.append('../../InferenceScripts')
-from UtilFunctions import show_inference, CalcFPS, set_parameters
-
+from UtilFunctions import show_inference, CalcFPS, set_parameters, average_conf, class_counts
+conf_list = []
 class Inferer:
     def __init__(self, source, webcam, webcam_addr, weights, device, yaml, img_size, half):
 
@@ -75,8 +74,12 @@ class Inferer:
         ''' Model Inference and results visualization '''
         vid_path, vid_writer, windows = None, None, []
         fps_calculator = CalcFPS()
-        text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color = set_parameters()
+        text_anchor8, text_anchor9, text_anchor10, text_overlay8, text_overlay10, text_anchor6, text_anchor7, text_overlay7, anchor_list1, anchor_list, classesCount, text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color = set_parameters()
+        classesFilter = os.environ.get('FILTER_LIST', '').split(',')
         windows = []
+        dets_list = []
+        fps_list = []
+        inf_list = []
         for img_src, img_path, vid_cap in tqdm(self.files):
             img, img_src = self.process_image(img_src, self.img_size, self.stride, self.half)
             img = img.to(self.device)
@@ -88,8 +91,12 @@ class Inferer:
             det = non_max_suppression(pred_results, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)[0]
             t2 = time.time()
             inference_time = t2 - t1
+            inf_time = inference_time * 1000
+            rounded_inf = "{:.2f}".format(inf_time)
+            inf_list.append(float(rounded_inf))
             fps_calculator.update(1.0 / (t2 - t1))
             avg_fps = fps_calculator.accumulate()
+            fps_list.append(avg_fps)
 
             if self.webcam:
                 save_path = osp.join(save_dir, self.webcam_addr)
@@ -108,6 +115,8 @@ class Inferer:
             assert img_ori.data.contiguous, 'Image needs to be contiguous. Please apply to input images with np.ascontiguousarray(im).'
             self.font_check()
 
+            dets = []
+            confidence_list = []
             if len(det):
                 det[:, :4] = self.rescale(img.shape[2:], det[:, :4], img_src.shape).round()
                 for *xyxy, conf, cls in reversed(det):
@@ -117,15 +126,23 @@ class Inferer:
                         line = (cls, *xywh, conf)
                         with open(txt_path + '.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
-
+                    dets.append(self.class_names[int(cls)])
+                    confidence_list.append(conf)
                     if save_img:
                         class_num = int(cls)  # integer class
                         label = None if hide_labels else (
                             self.class_names[class_num] if hide_conf else f'{self.class_names[class_num]} {conf:.2f}')
-
-                        self.plot_box_and_label(img_ori, max(round(sum(img_ori.shape) / 2 * 0.003), 2), xyxy, label,
+                        for i in range(0, len(classesFilter)):
+                            if classesFilter[i] != self.class_names[class_num]:
+                                self.plot_box_and_label(img_ori, max(round(sum(img_ori.shape) / 2 * 0.002), 2), xyxy, label,
                                                 color=self.generate_colors(class_num, True))
 
+                my_dict = {i: dets.count(i) for i in dets}
+                dets = []
+                keys = list(my_dict.keys())
+                values = list(my_dict.values())
+                for key, value in zip(keys, values):
+                    dets.extend([str(value), str(key)])
                 img_src = np.asarray(img_ori)
 
             # FPS counter
@@ -148,9 +165,13 @@ class Inferer:
                     cv2.namedWindow(str(img_path),
                                     cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
                     cv2.resizeWindow(str(img_path), img_src.shape[1], img_src.shape[0])
-                show_inference(inference_time, avg_fps,img_src , img_path, text_anchor, text_anchor1, text_anchor2,
-                                   text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2,
-                                   text_overlay4, text_color, text_scale, text_thickness, background_color)
+
+                show_inference(text_anchor8, text_anchor9, text_anchor10, text_overlay8, text_overlay10,text_anchor6, text_anchor7,text_overlay7, anchor_list1, anchor_list, classesCount,inference_time, avg_fps, img_src, img_path, text_anchor, text_anchor1,
+                                   text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5,
+                                   text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale,
+                                   text_thickness, background_color, dets)
+                dets_list.append(dets)
+                conf_list.append(confidence_list)
 
             # Save results (image with detections)
             if save_img:
@@ -170,6 +191,15 @@ class Inferer:
                         save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
                         vid_writer = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
                     vid_writer.write(img_src)
+
+        class_counts(dets_list)
+        average_conf(dets_list, conf_list)
+        total_sum = sum(fps_list)
+        average = total_sum / len(fps_list)
+        print("Average FPS: {}.".format(int(round(average))))
+        inf_sum = sum(inf_list)
+        average_inf = inf_sum / len(inf_list)
+        print("Average InfTime: {}ms per frame.".format(round(average_inf)))
 
     @staticmethod
     def process_image(img_src, img_size, stride, half):

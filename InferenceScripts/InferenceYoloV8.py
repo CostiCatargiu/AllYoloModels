@@ -5,9 +5,9 @@ def infer():
     source, weights, view_img, save_txt, imgsz, trace, conf_thr, project, name,device = opt.source, opt.weights, opt.view_img, opt.save_txt, opt.img_size, not opt.no_trace, opt.conf_thres, opt.project, opt.name, opt.device
     video_path = source
     model = YOLO(weights[0])
-    print(project)
-    print(name)
-    model.predict(source =video_path, show = True, conf = conf_thr, save =True, save_frames=False, device = device, project=project, name=name)
+    # print(project)
+    # print(name)
+    model.predict(source=video_path, show=True, conf=conf_thr, save=True, save_frames=False, device=device, project=project, name=name)
 
 
 if __name__ == '__main__':

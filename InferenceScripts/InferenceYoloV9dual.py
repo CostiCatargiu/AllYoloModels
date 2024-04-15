@@ -19,10 +19,9 @@ from utils.general import (LOGGER, Profile, check_file, check_img_size, check_im
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, smart_inference_mode
 sys.path.append('../../InferenceScripts')
-from UtilFunctions import show_inference, CalcFPS, set_parameters
+from UtilFunctions import show_inference, CalcFPS, set_parameters, class_counts, average_conf
 
-
-
+conf_list = []
 @smart_inference_mode()
 def run(
         weights=ROOT / 'yolo.pt',  # model path or triton URL
@@ -86,8 +85,13 @@ def run(
 
     # Run inference
     fps_calculator = CalcFPS()
-    text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color =set_parameters()
-
+    text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10, text_anchor6, text_anchor7,text_overlay7, anchor_list1, anchor_list, classesCount, text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color=set_parameters()
+    classesFilter = os.environ.get('FILTER_LIST', '').split(',')
+    dets_list = []
+    fps_list = []
+    inf_list = []
+    confidence_list = []
+    global conf_list
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(), Profile(), Profile())
     for path, im, im0s, vid_cap, s in dataset:
@@ -110,8 +114,12 @@ def run(
             pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
         t2 = time.time()
         inference_time = t2 - t1
+        inf_time = inference_time * 1000
+        rounded_inf = "{:.2f}".format(inf_time)
+        inf_list.append(float(rounded_inf))
         fps_calculator.update(1.0 / (t2 - t1))
         avg_fps = fps_calculator.accumulate()
+        fps_list.append(avg_fps)
 
         # Second-stage classifier (optional)
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
@@ -136,10 +144,13 @@ def run(
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
 
+                dets = []
                 # Print results
                 for c in det[:, 5].unique():
                     n = (det[:, 5] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
+                    dets.append(n.item())
+                    dets.append(names[int(c)])
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
@@ -152,10 +163,15 @@ def run(
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
-                        annotator.box_label(xyxy, label, color=colors(c, True))
+                        for i in range(0, len(classesFilter)):
+                            if classesFilter[i] != names[c]:
+                                annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
-
+                    confidence = float(conf)
+                    confidence_str = f"{confidence:.2f}"
+                    confidence_list.append(confidence_str)
+                conf_list.append(confidence_list)
             # Stream results
             im0 = annotator.result()
             yolo_model = os.environ.get('PARAMETER')
@@ -164,10 +180,11 @@ def run(
                     windows.append(p)
                     cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
                     cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
-                show_inference(inference_time, avg_fps, im0, p, text_anchor, text_anchor1, text_anchor2,
-                                   text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2,
-                                   text_overlay4, text_color, text_scale, text_thickness, background_color)
-
+                show_inference(text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10, text_anchor6, text_anchor7,text_overlay7, anchor_list1, anchor_list, classesCount,inference_time, avg_fps, im0, p, text_anchor, text_anchor1,
+                                   text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5,
+                                   text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale,
+                                   text_thickness, background_color, dets)
+                dets_list.append(dets)
 
             # Save results (image with detections)
             if save_img:
@@ -200,6 +217,15 @@ def run(
     if update:
         strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning)
 
+
+    class_counts(dets_list)
+    average_conf(dets_list, conf_list)
+    fps_sum = sum(fps_list)
+    average_fps = fps_sum / len(fps_list)
+    print("Average FPS: {}.".format(int(round(average_fps))))
+    inf_sum = sum(inf_list)
+    average_inf = inf_sum / len(inf_list)
+    print("Average InfTime: {}ms per frame.".format(round(average_inf)))
 
 def parse_opt():
     parser = argparse.ArgumentParser()

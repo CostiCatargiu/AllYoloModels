@@ -3,8 +3,9 @@
 source UtilFunctions.sh
 
 datasetPath=$(yq e '.datasetPath' parameters.yaml)
-conf_thr=0.4
-batchSize=16
+confThr=0.001
+iouThr=0.6
+batchSize=32
 imgSize=640
 testSplit="valid"
 
@@ -15,11 +16,12 @@ delete_cache
 usage() {
     echo "Usage: $0 <required param> [optional_param1] [optional_param2]"
     echo "Parameters:"
-    echo "  required_param: YoloModel that want to use for eval: egg. yolov5s, yolov5m, yolov6s, yolov7, yolov8s, yolov8m, yolov9-c, gelan-c, yolonas"
+    echo "  required_param: (select_model)-YoloModel that want to use for eval: egg. yolov5s, yolov5m, yolov6s, yolov7, yolov8s, yolov8m, yolov9-c, gelan-c"
     echo "  optional_param1 (datasetPath): default: = $datasetPath"
     echo "  optional_param2 (weights): default: = /ExperimentalResults/YoloV.../weights/model.pt"
     echo "  optional_param3 (batchSize): default: = $batchSize"
-    echo "  optional_param4 (conf_thr): default: = $conf_thr"
+    echo "  optional_param4 (confThr): default: = $confThr"
+    echo "  optional_param4 (iouThr): default: = $iouThr"
     echo "  optional_param5 (img_size): default: = $imgSize"
     echo "  optional_param5 (testSplit): default: = $testSplit"
 }
@@ -45,8 +47,8 @@ while [[ "$#" -gt 0 ]]; do
             batchSize="$2"
             shift 2
             ;;
-       -p3|--conf_thr)
-            conf_thr="$2"
+       -p3|--confThr)
+            confThr="$2"
             shift 2
             ;;
        -p4|--imgSize)
@@ -59,6 +61,10 @@ while [[ "$#" -gt 0 ]]; do
             ;;
       -p6|--testSplit)
             testSplit="$2"
+            shift 2
+            ;;
+      -p6|--iouThr)
+            iouThr="$2"
             shift 2
             ;;
         *)  # Unknown option
@@ -85,10 +91,11 @@ if [[ "$select_model" == *"yolov5"* ]]; then
     python3 val.py \
         --data $datasetPath \
         --weights $weights \
-        --conf-thres $conf_thr \
+        --conf-thres $confThr \
+        --iou-thres $iouThr\
+        --batch-size $batchSize \
         --project $experimetsPath/YoloV5/eval \
         --name exp \
-        --verbose
 
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
@@ -117,10 +124,11 @@ elif [[ "$select_model" == *"yolov6"* ]]; then
         --batch-size $batchSize \
         --weights $weights \
         --task val \
-        --conf-thres $conf_thr \
+        --conf-thres $confThr \
+        --iou-thres $iouThr\
         --save_dir  $experimetsPath/YoloV6/eval/eval \
         --name exp \
-        --verbose --do_coco_metric True --do_pr_metric True --plot_curve True --plot_confusion_matrix
+        --do_coco_metric True --do_pr_metric True --plot_curve True --plot_confusion_matrix
 
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
@@ -151,10 +159,13 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
         --batch-size $batchSize \
         --img $imgSize \
         --weights $weights \
-        --conf-thres $conf_thr \
+        --conf-thres $confThr \
+        --iou-thres $iouThr \
         --project $experimetsPath/YoloV7/eval \
         --name exp \
-        --verbose
+        --iou $iouThr
+#python test.py --data data/coco.yaml --img 640
+#--batch 32 --conf 0.001 --iou 0.65 --device 0 --weights yolov7.pt --name yolov7_640_val
 
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
@@ -179,7 +190,8 @@ elif [[ "$select_model" == *"yolov8"* ]]; then
         name=exp \
         data=$datasetPath \
         imgsz=$imgSize \
-        conf=$conf_thr
+        conf=$confThr \
+        iou=$iouThr
 
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
@@ -208,11 +220,12 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
         --data $datasetPath \
         --batch-size $batchSize \
         --weights $experimetsPath/YoloV9/weights/$select_model.pt \
-        --conf-thres $conf_thr \
+        --conf-thres $confThr \
+        --iou-thres $iouThr \
         --project $experimetsPath/YoloV9/eval \
         --name exp \
         --img $imgSize \
-        --verbose
+
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
         echo "Evaluation performed on <<$testSplit>> images from $datasetPath dataset."
@@ -221,7 +234,7 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
     fi
 
 elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; then
-    cd "$experimetsPath/YoloV9/weights/"
+    cd "$experimetsPath/YoloV9/weightsGelan/"
     weights_url="https://github.com/WongKinYiu/yolov9/releases/download/v0.1/$select_model.pt"
     if [ -f "$select_model.pt" ]; then
         echo "Weights $select_model.pt exists..."
@@ -240,11 +253,12 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
         --data $datasetPath \
         --batch-size $batchSize \
         --weights $experimetsPath/YoloV9/weights/$select_model.pt \
-        --conf-thres $conf_thr \
-        --project $experimetsPath/YoloV9/eval \
+        --conf-thres $confThr \
+        --iou-thr $iouThr\
+        --project $experimetsPath/YoloV9/evalGelan \
         --name exp \
         --img $imgSize \
-        --verbose
+
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
         echo "Evaluation performed on <<$testSplit>> images from $datasetPath dataset."

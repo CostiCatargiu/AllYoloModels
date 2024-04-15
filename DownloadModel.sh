@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source UtilFunctions.sh
+
 # Function to display usage information
 usage() {
     echo "Usage: $0 <required param> [optional_param1] [optional_param2]"
@@ -31,8 +33,6 @@ if [[ "$select_model" == *"yolov5"* ]]; then
             name="$current_location/YoloModels/yolov5"
             rename="$current_location/YoloModels/YoloV5"
             mv "$name" "$rename"
-            cd "$current_location/YoloModels/YoloV5"
-            pip install -r requirements.txt
         else
             echo "Exiting without cloning."
         fi
@@ -90,7 +90,7 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
             rename="$current_location/YoloModels/YoloV7"
             mv "$name" "$rename"
             cd "$current_location/YoloModels/YoloV7"
-            pip install -r requirements.txt
+            downloadCCOCOannotations
         else
             echo "Exiting without cloning."
         fi
@@ -101,6 +101,7 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
       mv "$name" "$rename"
       cd "$current_location/YoloModels/YoloV7"
       pip install -r requirements.txt
+      downloadCCOCOannotations
     fi
 
 elif [[ "$select_model" == *"yolov8"* ]]; then
@@ -153,12 +154,12 @@ elif [[ "$select_model" == *"yolov9"* ]]; then
       pip install -r requirements.txt
     fi
 
-elif [[ "$select_model" == *"yolovnas"* ]]; then
+elif [[ "$select_model" == *"yolonas"* ]]; then
     git clone https://github.com/Deci-AI/super-gradients.git
-    name="$current_location/YoloModels/yolov5"
-    rename="$current_location/YoloModels/YoloV5"
+    name="$current_location/YoloModels/super-gradients"
+    rename="$current_location/YoloModels/YoloNAS"
     mv "$name" "$rename"
-    cd "YoloV5"
+    cd "YoloNAS"
     pip install -r requirements.txt
 
 else

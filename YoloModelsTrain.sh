@@ -143,7 +143,7 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
         --name exp
 
 elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; then    # Source file path
-    cd "$experimetsPath/YoloV9/weights/"
+    cd "$experimetsPath/YoloV9/weightsGelan/"
     weights_url="https://github.com/WongKinYiu/yolov9/releases/download/v0.1/$select_model.pt"
     if [ -f "$select_model.pt" ]; then
         echo "Weights $select_model.pt exists..."
@@ -162,7 +162,7 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
         --cfg $current_location/YoloModels/YoloV9/models/detect/$select_model.yaml \
         --hyp hyp.scratch-high.yaml  \
         --weights $weights \
-        --project $experimetsPath/YoloV9/train\
+        --project $experimetsPath/YoloV9/trainGelan \
         --name exp
 
 else

@@ -15,7 +15,7 @@ from utils.plots import plot_one_box
 from utils.torch_utils import select_device, load_classifier, time_synchronized, TracedModel
 import sys
 sys.path.append('../../InferenceScripts')
-from UtilFunctions import show_inference, CalcFPS, set_parameters
+from UtilFunctions import show_inference, CalcFPS, set_parameters, average_conf, class_counts
 
 def detect(save_img=False):
     source, weights, view_img, save_txt, imgsz, trace = opt.source, opt.weights, opt.view_img, opt.save_txt, opt.img_size, not opt.no_trace
@@ -70,8 +70,13 @@ def detect(save_img=False):
 
     t0 = time.time()
     fps_calculator = CalcFPS()
-    text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color =set_parameters()
-
+    text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10, text_anchor6, text_anchor7,text_overlay7, anchor_list1, anchor_list, classesCount, text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color=set_parameters()
+    classesFilter = os.environ.get('FILTER_LIST', '').split(',')
+    dets_list = []
+    confidence_list = []
+    conf_list = []
+    fps_list = []
+    inf_list = []
     for path, img, im0s, vid_cap in dataset:
         img = torch.from_numpy(img).to(device)
         img = img.half() if half else img.float()  # uint8 to fp16/32
@@ -97,8 +102,12 @@ def detect(save_img=False):
         pred = non_max_suppression(pred, opt.conf_thres, opt.iou_thres, classes=opt.classes, agnostic=opt.agnostic_nms)
         t3 = time_synchronized()
         inference_time = t3 - t1
+        inf_time = inference_time * 1000
+        rounded_inf = "{:.2f}".format(inf_time)
+        inf_list.append(float(rounded_inf))
         fps_calculator.update(1.0 / (t3 - t1))
         avg_fps = fps_calculator.accumulate()
+        fps_list.append(avg_fps)
 
         # Apply Classifier
         if classify:
@@ -119,10 +128,13 @@ def detect(save_img=False):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_coords(img.shape[2:], det[:, :4], im0.shape).round()
 
+                dets = []
                 # Print results
                 for c in det[:, -1].unique():
                     n = (det[:, -1] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
+                    dets.append(n.item())
+                    dets.append(names[int(c)])
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
@@ -131,24 +143,27 @@ def detect(save_img=False):
                         line = (cls, *xywh, conf) if opt.save_conf else (cls, *xywh)  # label format
                         with open(txt_path + '.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
-
+                    confidence_list.append(conf)
                     if save_img or view_img:  # Add bbox to image
                         label = f'{names[int(cls)]} {conf:.2f}'
-                        plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
-
+                        for i in range(0, len(classesFilter)):
+                            if classesFilter[i] != names[int(cls)]:
+                                plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
+            #
             # Print time (inference + NMS)
             print(f'{s}Done. ({(1E3 * (t2 - t1)):.1f}ms) Inference, ({(1E3 * (t3 - t2)):.1f}ms) NMS')
-            yolo_model = os.environ.get('PARAMETER')
             # Stream results
             if view_img:
                 if platform.system() == "Linux" and p not in windows:
                     windows.append(p)
                     cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
                     cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
-                show_inference(inference_time, avg_fps, im0, p, text_anchor, text_anchor1, text_anchor2,
-                                   text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay, text_overlay2,
-                                   text_overlay4, text_color, text_scale, text_thickness, background_color)
-
+                show_inference(text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10, text_anchor6, text_anchor7,text_overlay7, anchor_list1, anchor_list, classesCount,inference_time, avg_fps, im0, p, text_anchor, text_anchor1,
+                                   text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5,
+                                   text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale,
+                                   text_thickness, background_color, dets)
+                dets_list.append(dets)
+                conf_list.append(confidence_list)
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':
@@ -173,8 +188,14 @@ def detect(save_img=False):
         s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
         #print(f"Results saved to {save_dir}{s}")
 
-    print(f'Done. ({time.time() - t0:.3f}s)')
-
+    class_counts(dets_list)
+    average_conf(dets_list, conf_list)
+    total_sum = sum(fps_list)
+    average = total_sum / len(fps_list)
+    print("Average FPS: {}.".format(int(round(average))))
+    inf_sum = sum(inf_list)
+    average_inf = inf_sum / len(inf_list)
+    print("Average InfTime: {}ms per frame.".format(round(average_inf)))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
