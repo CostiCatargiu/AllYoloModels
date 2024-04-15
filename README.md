@@ -422,18 +422,18 @@ If you want to add more parameters to inference task please edit the .sh for the
 <details>
   <summary> Inference on video using yolov5l </summary>
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/963853d6-a826-4145-917e-0a54883ce09e)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f54e0662-2e1b-4dfa-b0af-e1857c752838)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/942cbf33-4e35-4ca1-9c5e-7fd332e3f106)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/6c292903-44f4-4c30-8c39-084614a4f84d)
 
 </details>
 
 <details>
   <summary> Inference on video using yolov6l </summary>
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/2dda3de1-2be0-43b8-95da-6004057f386d)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/cfae5500-eb5e-4006-99cc-2d3187ad0b62)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/035a045f-728c-4d3f-a0be-061adc991827)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/4d5b2a1e-23c7-4640-99f7-47ee4432ff03)
 
 </details>
 
@@ -441,9 +441,9 @@ If you want to add more parameters to inference task please edit the .sh for the
 <details>
   <summary> Inference on video using yolov7 </summary>
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/cd102081-ad64-4608-b655-a3c1f4cd5cde)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/3cb56454-d93a-4188-926a-b50be3919708)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/a2e2b3bc-b89d-4812-9940-0f7d678b53c4)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/468e023b-34d0-4544-ac47-9703f3111fb6)
 
 </details>
 
@@ -452,7 +452,7 @@ If you want to add more parameters to inference task please edit the .sh for the
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/079c2685-8089-4ad4-8a1b-39047a52ac6c)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8efc33d7-8bb1-420e-ba2a-74c41b28facb)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/cbe0c65a-0299-4eda-83f1-d10af1b5c34f)
 
 </details>
 
