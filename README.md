@@ -232,7 +232,11 @@ Syntax:
 
 Usage example:
   ```bash
- ./YoloModelsInference.sh yolov5l --count "car,person,bicycle,truck"  --conf_thr 0.5 
+ #count the number of detection for classes in " "
+ ./YoloModelsInference.sh yolov5l --count "car,person,bicycle,truck"  --conf_thr 0.5
+
+#filter car class from predicitions
+ ./YoloModelsInference.sh yolov9-c --count "person,bicycle,truck" --filter "car"  --conf_thr 0.5 
 ```
 Parameters: 
  << >> = required parameter; [ ]=optional parameter
