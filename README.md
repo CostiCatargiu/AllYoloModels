@@ -248,9 +248,15 @@ Advantages of this implementation:
   ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/c8a32c40-6681-49d3-9d1b-bec396050ada)
 
 </details>
+
+  <details>
+  <summary> - 🚫 We can filter the detection of a certain class if it is not of interest to us.
+ </summary>
   
-  - 🚫 We can filter the detection of a certain class if it is not of interest to us.
-  - 
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/56587703-b4a9-40b7-b0b3-7372348f9acc)
+
+</details>
+
   - 📈 After the inference ends, some useful metrics will be outputted indicating the performance of the model. These metrics include:
     
     a. The total number of detections for each class over the frames.
@@ -260,6 +266,14 @@ Advantages of this implementation:
     c. The average Frames Per Second (FPS).
     
     d. The total number of objects detected in the video.
+
+
+  <details>
+  <summary> Metrics</summary>
+  
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b795eaf5-42e8-4905-8c2a-734ff1ac6f44)
+
+</details>
     
 
 <details>
