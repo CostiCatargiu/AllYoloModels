@@ -249,11 +249,21 @@ If you want to add more parameters to inference task please edit the .sh for the
     <th align="center">$\color{red}{\textsf{YoloV6l}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV7}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV8l}}$</th>
-    <th align="center">$\color{red}{\textsf{YoloV9-e}}$</th>
-    <th align="center">$\color{red}{\textsf{YoloV9-gelan-e}}$</th>
-
+    <th align="center">$\color{red}{\textsf{YoloV9-c}}$</th>
+    <th align="center">$\color{red}{\textsf{YoloV9-gelan-c}}$</th>
   </tr>
-  
+    <tr>
+    <td>$\color{orange}{\textsf{GPU}}$</td>
+    <td colspan="7" align="center" >$\color{green}{\textsf{NVIDIA GeForce RTX 4090, 24209MiB}}$</td>
+  </tr>
+    <tr>
+    <td colspan="2" align="center" >$\color{ORANGE}{\textsf{Aaverage FPS}}$</td>
+    <td align="center">216</td>
+    <td align="center">136</td>
+    <td align="center">285</td>
+    <td align="center">150</td>
+    <td align="center">107</td>
+    <td align="center">75</td>  </tr>
   <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{person}}$</td>
@@ -261,7 +271,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">10385</td>
     <td align="center">10962</td>
     <td align="center">9924</td>
-    <td align="center">0.72</td>
+    <td align="center">10009</td>
     <td align="center">13342</td>
   </tr>
     <tr>
@@ -271,7 +281,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.67</td>
     <td align="center">0.57</td>
     <td align="center">0.68</td>
-    <td align="center">0.72</td>
+    <td align="center">0.58</td>
     <td align="center">0.59</td>
   </tr>
   <tr>
@@ -281,7 +291,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">1656</td>
     <td align="center">1984</td>
     <td align="center">1567</td>
-    <td align="center">0.72</td>
+    <td align="center">1361</td>
     <td align="center">2644</td>
   </tr>
     <tr>
@@ -291,7 +301,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.83</td>
     <td align="center">0.65</td>
     <td align="center">0.54</td>
-    <td align="center">0.72</td>
+    <td align="center">0.65</td>
     <td align="center">0.68</td>
   </tr>
   <tr>
@@ -301,7 +311,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">14124</td>
     <td align="center">13396</td>
     <td align="center">13482</td>
-    <td align="center">0.72</td>
+    <td align="center">13514</td>
     <td align="center">15156</td>
   </tr>
     <tr>
@@ -311,7 +321,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.70</td>
     <td align="center">0.76</td>
     <td align="center">0.75</td>
-    <td align="center">0.72</td>
+    <td align="center">0.74</td>
     <td align="center">0.76</td>
   </tr>
     <tr>
@@ -321,7 +331,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">4664</td>
     <td align="center">5880</td>
     <td align="center">4167</td>
-    <td align="center">0.72</td>
+    <td align="center">4710</td>
     <td align="center">6391</td>
   </tr>
     <tr>
@@ -331,7 +341,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.75</td>
     <td align="center">0.89</td>
     <td align="center">0.73</td>
-    <td align="center">0.72</td>
+    <td align="center">0.86</td>
     <td align="center">0.86</td>
   </tr>
     <tr>
@@ -341,7 +351,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">2175</td>
     <td align="center">1534</td>
     <td align="center">1919</td>
-    <td align="center">0.72</td>
+    <td align="center">1712</td>
     <td align="center">1660</td>
   </tr>
     <tr>
@@ -351,7 +361,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.83</td>
     <td align="center">0.86</td>
     <td align="center">0.79</td>
-    <td align="center">0.72</td>
+    <td align="center">0.83</td>
     <td align="center">0.83</td>
   </tr>
       <tr>
@@ -361,7 +371,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">861</td>
     <td align="center">1456</td>
     <td align="center">918</td>
-    <td align="center">0.72</td>
+    <td align="center">1007</td>
     <td align="center">3278</td>
   </tr>
     <tr>
@@ -371,8 +381,8 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.78</td>
     <td align="center">0.92</td>
     <td align="center">0.61</td>
-    <td align="center">0.72</td>
-    <td align="center">0.9</td>
+    <td align="center">0.89</td>
+    <td align="center">0.90</td>
   </tr>
       <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
@@ -381,7 +391,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">194</td>
     <td align="center">334</td>
     <td align="center">349</td>
-    <td align="center">0.72</td>
+    <td align="center">84</td>
     <td align="center">1640</td>
   </tr>
     <tr>
@@ -391,7 +401,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.7</td>
     <td align="center">0.86</td>
     <td align="center">0.56</td>
-    <td align="center">0.72</td>
+    <td align="center">0.79</td>
     <td align="center">0.82</td>
   </tr>
       <tr>
@@ -401,7 +411,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0</td>
     <td align="center">8</td>
     <td align="center">7</td>
-    <td align="center">0.72</td>
+    <td align="center">1</td>
     <td align="center">139</td>
   </tr>
     <tr>
@@ -411,7 +421,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.00</td>
     <td align="center">0.93</td>
     <td align="center">0.54</td>
-    <td align="center">0.72</td>
+    <td align="center">0.91</td>
     <td align="center">0.91</td>
   </tr>
         <tr>
@@ -441,7 +451,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0</td>
     <td align="center">0</td>
     <td align="center">0</td>
-    <td align="center">0.72</td>
+    <td align="center">0</td>
     <td align="center">41</td>
   </tr>
     <tr>
@@ -451,7 +461,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.00</td>
     <td align="center">0.00</td>
     <td align="center">0.00</td>
-    <td align="center">0.72</td>
+    <td align="center">0.00</td>
     <td align="center">0.92</td>
   </tr>
       <tr>
@@ -471,7 +481,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.00</td>
     <td align="center">0.00</td>
     <td align="center">0.54</td>
-    <td align="center">0.72</td>
+    <td align="center">0.00</td>
     <td align="center">0.92</td>
   </tr>
         <tr>
@@ -481,7 +491,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0</td>
     <td align="center">0</td>
     <td align="center">0</td>
-    <td align="center">0.72</td>
+    <td align="center">0</td>
     <td align="center">11</td>
   </tr>
     <tr>
@@ -491,7 +501,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.00</td>
     <td align="center">0.00</td>
     <td align="center">0.00</td>
-    <td align="center">0.72</td>
+    <td align="center">0.00</td>
     <td align="center">0.92</td>
   </tr>
         <tr>
@@ -501,7 +511,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">39</td>
     <td align="center">127</td>
     <td align="center">4</td>
-    <td align="center">0.72</td>
+    <td align="center">40</td>
     <td align="center">143</td>
   </tr>
     <tr>
@@ -511,10 +521,10 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.63</td>
     <td align="center">0.92</td>
     <td align="center">0.53</td>
-    <td align="center">0.72</td>
+    <td align="center">0.89</td>
     <td align="center">0.91</td>
   </tr>
-          <tr>
+      <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{train}}$</td>
     <td align="center">4</td>
@@ -584,6 +594,7 @@ If you want to add more parameters to inference task please edit the .sh for the
   <summary> Inference on video using yolov9-c </summary>
   
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d526fe75-dc57-4f45-af5e-05ac709c047a)
+![Uploading image.png…]()
 
 
 </details>
