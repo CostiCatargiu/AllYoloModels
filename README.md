@@ -241,12 +241,24 @@ Parameters:
 If you want to add more parameters to inference task please edit the .sh for the desired model.
 
 Advantages of this implementation:
-  👁️‍🗨️ We can monitor the number of appearances of a certain object class across the frames.
-  🚫 We can filter the detection of a certain class if it is not of interest to us.
-  📈 After the inference ends, some useful metrics will be outputted indicating the performance of the model. These metrics include:
+
+<details>
+  <summary> - 👁️‍🗨️ We can monitor the number of appearances of a certain object class across the frames. </summary>
+  
+  ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/c8a32c40-6681-49d3-9d1b-bec396050ada)
+
+</details>
+  
+  - 🚫 We can filter the detection of a certain class if it is not of interest to us.
+  - 
+  - 📈 After the inference ends, some useful metrics will be outputted indicating the performance of the model. These metrics include:
+    
     a. The total number of detections for each class over the frames.
+    
     b. The average precision for each class over the frames.
+    
     c. The average Frames Per Second (FPS).
+    
     d. The total number of objects detected in the video.
     
 
