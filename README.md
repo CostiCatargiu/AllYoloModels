@@ -260,14 +260,22 @@ Advantages of this implementation:
   <details>
   <summary>  - 📈 After the inference ends, some useful metrics will be outputted indicating the performance of the model. These metrics include: </summary>
     a. The total number of detections for each class over the frames.
+    
     b. The average precision for each class over the frames.
+    
     c. The average Frames Per Second (FPS).
+    
     d. The total number of objects detected in the video.
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b795eaf5-42e8-4905-8c2a-734ff1ac6f44)
 
 </details>
-    
+
+
+</details>
+
+  <details>
+  <summary> Please check also the detailed inference results that are presented bellow 🔍</summary>
 
 <details>
   <summary> Compariston between results obtained after inference on video using all 6 models </summary>
@@ -570,7 +578,7 @@ Advantages of this implementation:
     <td align="center">34622</td>
     <td align="center">34897</td>
     <td align="center">32363</td>
-    <td align="center">107</td>
+    <td align="center">32439</td>
     <td align="center">44549</td>  
     </tr>
       <tr>
@@ -633,7 +641,7 @@ Advantages of this implementation:
   <summary> Inference on video using yolov9-c </summary>
   
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d526fe75-dc57-4f45-af5e-05ac709c047a)
-![Uploading image.png…]()
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/fa12797c-a2e5-4c24-b13c-2304479031c2)
 
 
 </details>
@@ -645,4 +653,5 @@ Advantages of this implementation:
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/88f164f1-9f9d-48b5-8470-e7a419bd9134)
 
+</details>
 </details>
