@@ -460,9 +460,8 @@ If you want to add more parameters to inference task please edit the .sh for the
 <details>
   <summary> Inference on video using yolov9-c </summary>
   
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f4333e63-7f2a-4392-a6bb-7424010ac35f)
-
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d526fe75-dc57-4f45-af5e-05ac709c047a)
+
 
 </details>
 
