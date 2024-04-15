@@ -240,6 +240,8 @@ Parameters:
 
 If you want to add more parameters to inference task please edit the .sh for the desired model.
 
+<details>
+  <summary> Compariston between results obtained after inference on video using all 6 models </summary>
 
 <table border="1">
   <tr>
@@ -548,8 +550,8 @@ If you want to add more parameters to inference task please edit the .sh for the
   </tr>
   
 </table>
-  
-</table>
+  </table>details>
+
 <details>
   <summary> Inference on video using yolov5l </summary>
 
