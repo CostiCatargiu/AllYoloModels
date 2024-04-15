@@ -275,7 +275,7 @@ Advantages of this implementation:
 </details>
 
   <details>
-  <summary> Please check also the detailed inference results that are presented bellow 🔍</summary>
+  <summary> ## Please check also the detailed inference results that are presented bellow 🔍</summary>
 
 <details>
   <summary> Compariston between results obtained after inference on video using all 6 models </summary>
