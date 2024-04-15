@@ -250,11 +250,8 @@ Advantages of this implementation:
 </details>
 
   <details>
-  <summary> - 🚫 We can filter the detection of a certain class if it is not of interest to us.
- </summary>
-    ```bash
- ./YoloModelsInference.sh yolov9-c --count "person,bicycle,truck" --filter "car" --conf_thr 0.5 
-```
+  <summary> - 🚫 We can filter the detection of a certain class if it is not of interest to us. </summary>
+    
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/56587703-b4a9-40b7-b0b3-7372348f9acc)
 
 </details>
