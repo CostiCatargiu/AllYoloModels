@@ -534,7 +534,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">0.00</td>
   </tr>
       <tr>
-    <td colspan="2" align="center" >$\color{ORANGE}{\textsf{Aaverage FPS}}$</td>
+    <td colspan="2" align="center" >$\color{ORANGE}{\textsf{Average FPS}}$</td>
     <td align="center">216</td>
     <td align="center">136</td>
     <td align="center">285</td>
