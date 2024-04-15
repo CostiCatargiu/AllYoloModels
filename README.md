@@ -543,7 +543,7 @@ If you want to add more parameters to inference task please edit the .sh for the
     <td align="center">75</td>  
     </tr>
   <tr>
-    <td>$\color{orange}{\textsf{GPU}}$</td>
+    <td colspan="2" align="center" >$\color{orange}{\textsf{GPU}}$</td>
     <td colspan="7" align="center" >$\color{green}{\textsf{NVIDIA GeForce RTX 4090, 24209MiB}}$</td>
   </tr>
   
