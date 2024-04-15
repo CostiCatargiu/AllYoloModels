@@ -550,7 +550,7 @@ If you want to add more parameters to inference task please edit the .sh for the
   </tr>
   
 </table>
-  </table>details>
+</table>details>
 
 <details>
   <summary> Inference on video using yolov5l </summary>
