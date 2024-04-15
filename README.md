@@ -240,6 +240,7 @@ Parameters:
 
 If you want to add more parameters to inference task please edit the .sh for the desired model.
 
+
 <table border="1">
   <tr>
     <th></th>
@@ -256,167 +257,289 @@ If you want to add more parameters to inference task please edit the .sh for the
   <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{person}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">9779</td>
+    <td align="center">10385</td>
+    <td align="center">10962</td>
+    <td align="center">9924</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">13342</td>
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{person}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">0.55</td>
+    <td align="center">0.67</td>
+    <td align="center">0.57</td>
+    <td align="center">0.68</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">0.59</td>
   </tr>
   <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{bicycle}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">1909</td>
+    <td align="center">1656</td>
+    <td align="center">1984</td>
+    <td align="center">1567</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">2644</td>
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{bicycle}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">0.60</td>
+    <td align="center">0.83</td>
+    <td align="center">0.65</td>
+    <td align="center">0.54</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">0.68</td>
   </tr>
   <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{car}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">16668</td>
+    <td align="center">14124</td>
+    <td align="center">13396</td>
+    <td align="center">13482</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">15156</td>
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{car}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
     <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">0.70</td>
+    <td align="center">0.76</td>
+    <td align="center">0.75</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">0.76</td>
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{truck}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">2586</td>
+    <td align="center">4664</td>
+    <td align="center">5880</td>
+    <td align="center">4167</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">6391</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{nrDetects}}$</td>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{truck}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
+    <td align="center">0.88</td>
+    <td align="center">0.75</td>
+    <td align="center">0.89</td>
     <td align="center">0.73</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">0.86</td>
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{bus}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">2008</td>
+    <td align="center">2175</td>
+    <td align="center">1534</td>
+    <td align="center">1919</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">1660</td>
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{bus}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">0.85</td>
+    <td align="center">0.83</td>
+    <td align="center">0.86</td>
+    <td align="center">0.79</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">0.83</td>
   </tr>
       <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{traffic light}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">1272</td>
+    <td align="center">861</td>
+    <td align="center">1456</td>
+    <td align="center">918</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">3278</td>
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{traffic light}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">0.90</td>
+    <td align="center">0.78</td>
+    <td align="center">0.92</td>
+    <td align="center">0.61</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">0.9</td>
   </tr>
       <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{motorcycle}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">703</td>
+    <td align="center">194</td>
+    <td align="center">334</td>
+    <td align="center">349</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">1640</td>
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{motorcycle}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">0.83</td>
+    <td align="center">0.7</td>
+    <td align="center">0.86</td>
+    <td align="center">0.56</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">0.82</td>
   </tr>
       <tr>
     <td>$\color{orange}{\textsf{nrDetects}}$</td>
     <td>$\color{orange}{\textsf{backpack}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">134</td>
+    <td align="center">0</td>
+    <td align="center">8</td>
+    <td align="center">7</td>
     <td align="center">0.72</td>
-    <td align="center">0.72</td>
+    <td align="center">139</td>
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{avgConf}}$</td>
     <td>$\color{orange}{\textsf{backpack}}$</td>
-    <td align="center">0.69</td>
-    <td align="center">0.69</td>
-    <td align="center">0.71</td>
-    <td align="center">0.73</td>
+    <td align="center">0.90</td>
+    <td align="center">0.00</td>
+    <td align="center">0.93</td>
+    <td align="center">0.54</td>
     <td align="center">0.72</td>
+    <td align="center">0.91</td>
+  </tr>
+        <tr>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
+    <td>$\color{orange}{\textsf{stop sign}}$</td>
+    <td align="center">274</td>
+    <td align="center">74</td>
+    <td align="center">16</td>
+    <td align="center">0</td>
     <td align="center">0.72</td>
+    <td align="center">112</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
+    <td>$\color{orange}{\textsf{stops sign}}$</td>
+    <td align="center">0.89</td>
+    <td align="center">0.7</td>
+    <td align="center">0.91</td>
+    <td align="center">0.00</td>
+    <td align="center">0.72</td>
+    <td align="center">0.91</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
+    <td>$\color{orange}{\textsf{suitcase}}$</td>
+    <td align="center">0</td>
+    <td align="center">0</td>
+    <td align="center">0</td>
+    <td align="center">0</td>
+    <td align="center">0.72</td>
+    <td align="center">41</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
+    <td>$\color{orange}{\textsf{suitcase}}$</td>
+    <td align="center">0.00</td>
+    <td align="center">0.00</td>
+    <td align="center">0.00</td>
+    <td align="center">0.00</td>
+    <td align="center">0.72</td>
+    <td align="center">0.92</td>
+  </tr>
+      <tr>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
+    <td>$\color{orange}{\textsf{potted plant}}$</td>
+    <td align="center">14</td>
+    <td align="center">0</td>
+    <td align="center">0</td>
+    <td align="center">6</td>
+    <td align="center">0.72</td>
+    <td align="center">1</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
+    <td>$\color{orange}{\textsf{potted plant}}$</td>
+    <td align="center">0.89</td>
+    <td align="center">0.00</td>
+    <td align="center">0.00</td>
+    <td align="center">0.54</td>
+    <td align="center">0.72</td>
+    <td align="center">0.92</td>
+  </tr>
+        <tr>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
+    <td>$\color{orange}{\textsf{bird}}$</td>
+    <td align="center">3</td>
+    <td align="center">0</td>
+    <td align="center">0</td>
+    <td align="center">0</td>
+    <td align="center">0.72</td>
+    <td align="center">11</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
+    <td>$\color{orange}{\textsf{bird}}$</td>
+    <td align="center">0.89</td>
+    <td align="center">0.00</td>
+    <td align="center">0.00</td>
+    <td align="center">0.00</td>
+    <td align="center">0.72</td>
+    <td align="center">0.92</td>
+  </tr>
+        <tr>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
+    <td>$\color{orange}{\textsf{handbag}}$</td>
+    <td align="center">2</td>
+    <td align="center">39</td>
+    <td align="center">127</td>
+    <td align="center">4</td>
+    <td align="center">0.72</td>
+    <td align="center">143</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
+    <td>$\color{orange}{\textsf{handbag}}$</td>
+    <td align="center">0.89</td>
+    <td align="center">0.63</td>
+    <td align="center">0.92</td>
+    <td align="center">0.53</td>
+    <td align="center">0.72</td>
+    <td align="center">0.91</td>
+  </tr>
+          <tr>
+    <td>$\color{orange}{\textsf{nrDetects}}$</td>
+    <td>$\color{orange}{\textsf{train}}$</td>
+    <td align="center">4</td>
+    <td align="center">0</td>
+    <td align="center">0</td>
+    <td align="center">0</td>
+    <td align="center">0.72</td>
+    <td align="center">0</td>
+  </tr>
+    <tr>
+    <td>$\color{orange}{\textsf{avgConf}}$</td>
+    <td>$\color{orange}{\textsf{train}}$</td>
+    <td align="center">0.86</td>
+    <td align="center">0.00</td>
+    <td align="center">0.00</td>
+    <td align="center">0.00</td>
+    <td align="center">0.00</td>
+    <td align="center">0.00</td>
   </tr>
   <tr>
     <td>$\color{orange}{\textsf{GPU}}$</td>
     <td colspan="7" align="center" >$\color{green}{\textsf{NVIDIA GeForce RTX 4090, 24209MiB}}$</td>
   </tr>
+  
+</table>
   
 </table>
 <details>
