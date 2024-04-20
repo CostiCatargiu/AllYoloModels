@@ -238,17 +238,43 @@ Syntax:
 
 Usage example:
   ```bash
- #count the number of detection for classes in " "
+#infer with the default parameters defined in .sh file
+ ./YoloModelsInference.sh yolov8s
+
+ #count the number of detections for classes in " " which a confidence threshold of 0.5
  ./YoloModelsInference.sh yolov5l --count "car,person,bicycle,truck"  --conf_thr 0.5
 
-#filter car class from predicitions
- ./YoloModelsInference.sh yolov9-c --count "person,bicycle,truck" --filter "car"  --conf_thr 0.5 
+#filter one class to not be displayed the detections for it egg. "car" class
+ ./YoloModelsInference.sh yolov9-c --count "person,bicycle,truck" --filter "car"  --conf_thr 0.5
+
+#in this command line the fontSize, fontThickness and the position on y_axes are configured for a better appearence in the image of the
+#additional data which is diplayed 
+./YoloModelsInference.sh yolov9-c --conf_thr 0.6 --count "person,car" --filter "bus" --fontSize 1 --fontThickness 3 --ypos 50
+or
+./YoloModelsInference.sh yolov9-c -p3 0.6 -p5 "person,car" -p6 "bus" -p7 1 -p8 3 -p9 50
+
+#modify the labelTextColor, labelTextSize and video_index(choose another video for inference from the list)
+./YoloModelsInference.sh gelan-c --conf_thr 0.2 --labelTextColor "blue" --labelTextSize 3 --video_index 4
+or
+./YoloModelsInference.sh gelan-c --conf_thr 0.2 -p11 "blue" -p12 3 -p13 4
+
 ```
 Parameters: 
  << >> = required parameter; [ ]=optional parameter
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ae41d194-6172-4cbe-ba14-d486dc399fd3)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/41e10cde-22f0-4c31-abe4-b61e21fda299)
 
-If you want to add more parameters to inference task please edit the .sh for the desired model.
+If you want to add more parameters to inference task please edit the $\color{red}{\textsf{YoloModelsInference.sh}}$ for the desired model.
+
+$\color{magenta}{\textsf{Short explanation of parameters usage}}$
+
+
+The image above shows a variety of parameters available for selection, depending on what we aim to achieve in the inference task.
+1. $\color{blue}{\textsf{<select_model>}}$: the only mandatory parameter required to initiate the inference process. It specifies the version of the YOLO model to be used for the inference task. The available options for this parameter are shown in the image above. All subsequent parameters are optional, and default values will be used if they are not provided.
+   
+2. $\color{blue}{\textsf{-p1 || --weights}}$: the path to the weights that wiil be used for the inference. Default value for this:  $\color{blue}{\textsf{/ExperimentalResults/YoloV.../weights/<select_model>.pt}}$.
+
+   
+
 
 Advantages of this implementation:
 
