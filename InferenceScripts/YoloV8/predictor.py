@@ -47,7 +47,7 @@ from ultralytics.utils.checks import check_imgsz, check_imshow
 from ultralytics.utils.files import increment_path
 from ultralytics.utils.torch_utils import select_device, smart_inference_mode
 sys.path.append('../../InferenceScripts')
-from UtilFunctions import show_inference, CalcFPS, set_parameters, class_counts, average_conf
+from UtilFunctions import CalcFPS, avg_time, show_details
 from ultralytics.engine.results import Results
 STREAM_WARNING = """
 WARNING ⚠️ inference results will accumulate in RAM unless `stream=True` is passed, causing potential out-of-memory
@@ -61,9 +61,9 @@ Example:
         probs = r.probs  # Class probabilities for classification outputs
 """
 
-text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10, text_anchor6, text_anchor7, text_overlay7, anchor_list1, anchor_list, classesCount, text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color = set_parameters()
 classesFilter = os.environ.get('FILTER_LIST', '').split(',')
 dets_list=[]
+labelSize = int(os.environ.get('LABEL_SIZE'))
 
 class BasePredictor:
     """
@@ -266,9 +266,6 @@ class BasePredictor:
                 self.run_callbacks("on_predict_postprocess_end")
                 t2 = time.time()
                 inference_time = t2 - t1
-                inf_time = inference_time * 1000
-                rounded_inf = "{:.2f}".format(inf_time)
-                inf_list.append(float(rounded_inf))
                 fps_calculator.update(1.0 / (t2 - t1))
                 avg_fps = fps_calculator.accumulate()
                 fps_list.append(avg_fps)
@@ -283,7 +280,7 @@ class BasePredictor:
                         "postprocess": profilers[2].dt * 1e3 / n,
                     }
                     if self.args.verbose or self.args.save or self.args.save_txt or self.args.show:
-                        string, dets_l= self.write_results(i, Path(paths[i]), im, s, inference_time, avg_fps)
+                        string = self.write_results(i, Path(paths[i]), im, s, inference_time, avg_fps)
                         s[i] += string
                 # Print batch results
                 if self.args.verbose:
@@ -310,13 +307,9 @@ class BasePredictor:
             LOGGER.info(f"Results saved to {colorstr('bold', self.save_dir)}{s}")
         self.run_callbacks("on_predict_end")
 
-        Results.print_metrics()
-        total_sum = sum(fps_list)
-        average = total_sum / len(fps_list)
-        print("Average FPS: {}.".format(int(round(average))))
-        inf_sum = sum(inf_list)
-        average_inf = inf_sum / len(inf_list)
-        print("Average InfTime: {}ms per frame.".format(round(average_inf)))
+        Results.print_metrics(self, self.save_dir)
+        avg_time(self.save_dir)
+
 
 
     def setup_model(self, model, verbose=True):
@@ -353,17 +346,16 @@ class BasePredictor:
         result = self.results[i]
         result.save_dir = self.save_dir.__str__()  # used in other locations
         string += result.verbose() + f"{result.speed['inference']:.1f}ms"
-        global dets_list
         # Add predictions to image
         if self.args.save or self.args.show:
             self.plotted_img= result.plot(
-                line_width=3,
+                line_width=labelSize,
                 boxes=self.args.show_boxes,
                 conf=self.args.show_conf,
                 labels=self.args.show_labels,
                 im_gpu=None if self.args.retina_masks else im[i],
             )
-        # print(string)
+
         matches = re.findall(r'(\d+(\.\d+)?)\s*([a-zA-Z\s]+)', string)
         dets = []
         # Iterate over the matches, skipping the first two items
@@ -373,9 +365,10 @@ class BasePredictor:
             dets.append(value)
             dets.append(unit.strip())  # Remove leading/trailing whitespace
         dets = dets[:-2]
-        # print(dets)
-        dets_list.append(dets)
 
+        # inference_time = result.speed['inference'] + result.speed['postprocess'] + result.speed['preprocess']
+        # inference_time = f"{inference_time:.2f}"
+        # inference_time = float(inference_time)
 
         # Save results
         if self.args.save_txt:
@@ -386,7 +379,7 @@ class BasePredictor:
             annotframe= self.show(p, inference_time, avg_fps, dets)
             self.save_predicted_images(annotframe, str(self.save_dir / p.name), frame)
 
-        return string, dets_list
+        return string
 
     def save_predicted_images(self, annotFrame, save_path="", frame=0, ):
         """Save video predictions as mp4 at specified path."""
@@ -424,11 +417,7 @@ class BasePredictor:
             cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
             cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
 
-        annot_frame = show_inference(text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10,text_anchor6, text_anchor7, text_overlay7, anchor_list1, anchor_list, classesCount,
-                       inf_time, fps, im0, p, text_anchor, text_anchor1,
-                       text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5,
-                       text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale,
-                       text_thickness, background_color, dets)
+        annot_frame = show_details(p, im0, dets, inf_time, fps)
 
         return annot_frame
 

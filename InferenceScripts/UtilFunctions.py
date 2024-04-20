@@ -1,102 +1,78 @@
-import supervision as sv
-from supervision.geometry.core import Point
 from supervision.draw.utils import draw_text
 import os, cv2
 from collections import deque
 import numpy as np
 from collections import defaultdict
+import json
+from ultralytics.utils.plotting import colors
 
+fps_list=[]
+inf_list = []
 frames = 0
-def set_parameters():
-    yolo_model = os.environ.get('PARAMETER')
-    device_name = os.environ.get('DEVICE_PARAMETER')
-    nrFrames = os.environ.get('NR_FRAMES')
-    classesCount = os.environ.get('COUNT_LIST', '').split(',')
-    if 'NVIDIA' in device_name:
-        text_anchor5 = Point(x=90, y=20)
-    else:
-        text_anchor5 = Point(x=135, y=20)
-    text_anchor4 = Point(x=65, y=50)
-    text_anchor = Point(x=40, y=80)
-    text_anchor1 = Point(x=115, y=80)
-    text_anchor2 = Point(x=30, y=110)
-    text_anchor3 = Point(x=80, y=110)
+yolo_model = os.environ.get('PARAMETER')
+conf_thr = os.environ.get('CONF_THR')
+metric_thr = float(os.environ.get('METRIC_THR'))
+device_name = os.environ.get('DEVICE_PARAMETER')
+classesCount = os.environ.get('COUNT_LIST', '').split(',')
+countFlag = os.environ.get('COUNT_FLAG')
+fontScale = float(os.environ.get('FONT_SCALE'))
+font_thickness = int(os.environ.get('FONT_THICKNESS'))
+posScale = int(os.environ.get('POS_SCALE'))
 
-    text_overlay = f'InfTime:'
-    text_overlay2 = f'FPS:'
-    text_overlay4 = f'Model: {yolo_model}'
-    text_overlay5 = f'{device_name}'
-    text_overlay6 = f'{device_name}'
+def get_nr_frames():
+    video_path = os.environ.get('VIDEO_PATH')
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        print("Error: Unable to open the video file.")
+        exit()
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    cap.release()
+    return total_frames
 
-    text_anchor8 = Point(x=40, y=140)
-    text_anchor9 = Point(x=95, y=140)
-    text_overlay8 = f'frames:'
-    text_anchor10 = Point(x=150, y=140)
-    text_overlay10 = f':{nrFrames}'
+def draw_text(
+        img,
+        text,
+        font=cv2.FONT_HERSHEY_SIMPLEX,
+        pos=(0, 0),
+        font_scale=2,
+        font_thickness=2,
+        text_color=(0, 255, 0),
+        text_color_bg=(0, 0, 0)
+):
+    offset = (5, 5)
+    x, y = pos
+    text_size, _ = cv2.getTextSize(text, font, font_scale, font_thickness)
+    text_w, text_h = text_size
+    rec_start = tuple(x - y for x, y in zip(pos, offset))
+    rec_end = tuple(x + y for x, y in zip((x + text_w, y + text_h), offset))
+    cv2.rectangle(img, rec_start, rec_end, text_color_bg, -1)
+    cv2.putText(
+        img,
+        text,
+        (x, int(y + text_h + font_scale - 1)),
+        font,
+        font_scale,
+        text_color,
+        font_thickness,
+        cv2.LINE_AA,
+    )
+    return text_size
 
-    text_scale = 0.6
-    text_thickness = 2
-    text_color = sv.Color.ROBOFLOW
-    background_color = sv.Color.WHITE
-
-    anchor_list =[]
-    anchor_list1 =[]
-    for i in range(0, len(classesCount)):
-        if len(classesCount[i]) > 4:
-            anchor_list.append(Point(x=40+len(classesCount[i])*2, y=(175+(i*37))))
-            anchor_list1.append(Point(x=90+len(classesCount[i])*4, y=(175 + (i * 37))))
-            yPos=175 + (i * 37)
-        else:
-            anchor_list.append(Point(x=40 + len(classesCount[i]), y=(175 + (i * 37))))
-            anchor_list1.append(Point(x=85 + len(classesCount[i]), y=(175 + (i * 37))))
-            yPos=175 + (i * 37)
-
-    text_anchor6 = Point(x=50, y=yPos+38)
-    text_anchor7 = Point(x=95, y=yPos+38)
-    text_overlay7 = f'total:'
-
-
-
-    return text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10, text_anchor6, text_anchor7, text_overlay7, anchor_list1, anchor_list, classesCount, text_anchor, text_anchor1, text_anchor2, text_anchor3,text_anchor5, text_anchor4, text_overlay5, text_overlay6, text_overlay, text_overlay2,text_overlay4,text_color,text_scale,text_thickness,background_color
-
-
-def show_inference(text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10, text_anchor6, text_anchor7,text_overlay7, anchor_list1, anchor_list, classesCount, inference_time, avg_fps, im0, p, text_anchor, text_anchor1, text_anchor2, text_anchor3,text_anchor5, text_anchor4, text_overlay5,text_overlay6, text_overlay, text_overlay2,text_overlay4,text_color,text_scale,text_thickness,background_color, dets):
-    global frames
+def show_details(p, im0, dets, inference_time, avg_fps):
+    global nrFrames, frames, yolo_model, conf_thr, metric_thr, device_name, classesCount, countFlag, font_thickness, fontScale, posScale, fps_list, inf_list
+    nrFrames = get_nr_frames()
     frames +=1
     avg_fps = int(round(avg_fps))
-    inference_time_ms = inference_time * 1000
-    text_overlay3 = f'{avg_fps}'
-    text_overlay1 = f'{inference_time_ms:.2f}'
-    annotated_frame = draw_text(scene=im0, text=text_overlay, text_anchor=text_anchor,
-                                text_color=text_color, background_color=background_color,
-                                text_thickness=text_thickness, text_scale=text_scale)
-    annotated_frame = draw_text(scene=annotated_frame, text=text_overlay1, text_anchor=text_anchor1,
-                                text_color=text_color, background_color=background_color,
-                                text_thickness=text_thickness, text_scale=text_scale)
-    annotated_frame = draw_text(scene=annotated_frame, text=text_overlay2, text_anchor=text_anchor2,
-                                text_color=text_color, background_color=background_color,
-                                text_thickness=text_thickness, text_scale=text_scale)
-    annotated_frame = draw_text(scene=annotated_frame, text=text_overlay3, text_anchor=text_anchor3,
-                                text_color=text_color, background_color=background_color,
-                                text_thickness=text_thickness, text_scale=text_scale)
-    annotated_frame = draw_text(scene=annotated_frame, text=text_overlay4, text_anchor=text_anchor4,
-                                text_color=sv.Color.RED, background_color=background_color,
-                                text_thickness=1, text_scale=0.5)
-    annotated_frame = draw_text(scene=annotated_frame, text=text_overlay5, text_anchor=text_anchor5,
-                                text_color=sv.Color.RED, background_color=background_color,
-                                text_thickness=1, text_scale=0.4)
+    fps_list.append(avg_fps)
+    inference_time_ms = inference_time *1000
+    inf_list.append(inference_time_ms)
 
-    annotated_frame = draw_text(scene=annotated_frame, text=text_overlay8, text_anchor=text_anchor8,
-                                text_color=sv.Color.BLACK, background_color=background_color,
-                                text_thickness=1, text_scale=0.5)
-    annotated_frame = draw_text(scene=annotated_frame, text=f"{frames}", text_anchor=text_anchor9,
-                                text_color=sv.Color.BLACK, background_color=background_color,
-                                text_thickness=1, text_scale=0.5)
-    annotated_frame = draw_text(scene=annotated_frame, text=text_overlay10, text_anchor=text_anchor10,
-                                text_color=sv.Color.BLACK, background_color=background_color,
-                                text_thickness=1, text_scale=0.5)
+    draw_text(im0, f"{device_name} Model: {yolo_model}", pos=(20, 20), font_scale=fontScale,
+              text_color=colors(15,True), text_color_bg=(255, 255, 255), font_thickness=font_thickness,)
 
-    countFlag = os.environ.get('COOUNT_FLAG')
+    draw_text(im0, f"Frames: {frames}/{nrFrames} FPS: {avg_fps:0.1f}  Time: {inference_time_ms:0.1f}ms", pos=(20, 20+posScale), font_scale=fontScale,
+              text_color=(204, 85, 17), text_color_bg=(255, 255, 255), font_thickness=font_thickness,)
+
     if countFlag =='ok':
         nr_dets = []
         for i in range(0, len(classesCount)):
@@ -108,73 +84,175 @@ def show_inference(text_anchor8, text_anchor9, text_anchor10, text_overlay8,text
             if ok == 0:
                 nr_dets.append('0')
 
-        # print(nr_dets)
-        # res = [eval(i) for i in nr_dets]
-
         # total_det=sum(nr_dets)
         total_det = sum([int(i) for i in nr_dets if type(i)== int or i.isdigit()])
-        total_det = str(total_det)
         for i in range(0, len(classesCount)):
-            annotated_frame = draw_text(scene=annotated_frame, text=classesCount[i]+':', text_anchor=anchor_list[i],
-                                    text_color=sv.Color.RED, background_color=background_color,
-                                    text_thickness=2, text_scale=0.6)
+            draw_text(im0, f"{classesCount[i]}:{nr_dets[i]}",
+                      pos=(20, 20+posScale*(i+2)), font_scale=fontScale,
+                      text_color=colors(i,True), text_color_bg=(255, 255, 255), font_thickness=font_thickness, )
 
-        for i in range(0, len(classesCount)):
-            annotated_frame = draw_text(scene=annotated_frame, text=nr_dets[i], text_anchor=anchor_list1[i],
-                                    text_color=sv.Color.RED, background_color=background_color,
-                                    text_thickness=2, text_scale=0.6)
+        draw_text(im0, f"total: {total_det}",
+                  pos=(20, 20+posScale*(len(classesCount)+2)), font_scale=fontScale,
+                  text_color=colors(i,True), text_color_bg=(255, 255, 255), font_thickness=font_thickness, )
 
-        annotated_frame = draw_text(scene=annotated_frame, text=text_overlay7, text_anchor=text_anchor6,
-                                text_color=sv.Color.RED, background_color=background_color,
-                                text_thickness=2, text_scale=0.6)
-
-        annotated_frame = draw_text(scene=annotated_frame, text=total_det, text_anchor=text_anchor7,
-                                text_color=sv.Color.RED, background_color=background_color,
-                                text_thickness=2, text_scale=0.6)
-
-    # cv2.imshow("Image", annotated_frame)
-    cv2.imshow(str(p), annotated_frame)
-    if cv2.waitKey(1) & 0XFF == ord('q'):
+    cv2.imshow(str(p), im0)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         exit(1)
+    return im0
 
-    return annotated_frame
+def avg_time(path):
+    inf_time_list = []
+    avg_fps_list = []
+    for i in range(10, len(inf_list)):
+        rounded_inf = "{:.2f}".format(inf_list[i])
+        inf_time_list.append(float(rounded_inf))
 
+    for i in range(10, len(fps_list)):
+        avg_fps_list.append(fps_list[i])
 
-def average_conf(dets_list, conf_list):
-    class_precisions = {}
-    for dets_l, conf_l in zip(dets_list, conf_list):
-        i = 0
-        while i < len(dets_l):
-            class_name = dets_l[i + 1]
-            num_objects = int(dets_l[i])
-            precision_sum = 0
+    total_sum = sum(avg_fps_list)
+    average = total_sum / len(avg_fps_list)
+    print("Average FPS: {}.".format(int(round(average))))
+    inf_sum = sum(inf_time_list)
+    average_inf = inf_sum / len(inf_time_list)
+    average_inf = "{:.2f}".format(average_inf)
+    print(f"Average InfTime: {average_inf}ms per frame.")
+    total_inf_time = (float(average_inf) * int(nrFrames)) / 100
+    total_inf_time = "{:.2f}".format(total_inf_time)
+    print(f"Total Inference time:{total_inf_time}s")
+    if not os.path.exists(path):
+        os.makedirs(path)
+    file_path = os.path.join("/",path, f"{yolo_model}.txt")
+    with open(file_path, "a") as f:
+        f.write("\nAverage FPS: ")
+        f.write(str(round(average)))
+        f.write("\nAverage InfTime: ")
+        f.write(str(average_inf))
+        f.write("ms per frame.\n")
+        f.write(f"Total inference time: {str(total_inf_time)}s for {str(nrFrames)} frames.")
 
-            # Iterate through precision values for this class
-            for j in range(num_objects):
-                precision_sum += float(conf_l.pop(0))  # Pop and sum precision values
+def average_conf(dets_list, conf_list, path):
+    # Initialize an empty dictionary to collect confidences for each class
+    result_dict = {}
 
-            # Calculate average precision for this class
-            average_precision = precision_sum / num_objects
+    thr_metric = metric_thr
+    # Process each detection and confidence list
+    for dets, confs in zip(dets_list, conf_list):
+        index = 0  # This will track the current index in the confidence list
+        for i in range(1, len(dets), 2):
+            count = dets[i - 1]  # Number of confidences to take
+            class_name = dets[i]  # Class name
 
-            # Assign average precision to the class
-            if class_name in class_precisions:
-                class_precisions[class_name].append(round(average_precision, 2))
+            # Extract the confidences for this class
+            conf_for_class = confs[index:index + int(count)]
+            index += int(count)  # Move the index forward
+
+            # Append these confidences to the corresponding class in the dictionary
+            if class_name in result_dict:
+                result_dict[class_name].extend(conf_for_class)
             else:
-                class_precisions[class_name] = [round(average_precision, 2)]
+                result_dict[class_name] = conf_for_class
 
-            i += 2  # Move to the next class in the list
+    # Calculate the average and count the total number of elements for each key
+    average_dict1 = {key: (sum(map(float, values)) / len(values), len(values)) for key, values in result_dict.items()}
 
-    overall_averages = {}
+    # Calculate the average for each key for values greater than 0.6 and count these values
+    average_dict2 = {}
+    average_dict3 = {}
+    for key, values in result_dict.items():
+        # Convert and filter values greater than 0.6
+        filtered_values = list(filter(lambda x: x > thr_metric, map(float, values)))
 
-    for class_name, precisions in class_precisions.items():
-        overall_average = sum(precisions) / len(precisions)
-        overall_averages[class_name] = round(overall_average, 2)
+        # Calculate average if there are any values greater than 0.6, otherwise set to None
+        if filtered_values:
+            average = round(sum(filtered_values) / len(filtered_values), 2)
+        else:
+            average = None  # Or set to 0 or any indicator that no values are above the threshold
 
-    print("The average precision per classes is:")
-    print(overall_averages)
+        # Store the average and the count of values greater than 0.6
+        average_dict2[key] = (average, len(filtered_values))
 
 
-def class_counts(dets_list):
+    for key, values in result_dict.items():
+        # Convert and filter values greater than 0.6
+        filtered_values = list(filter(lambda x: x <= thr_metric, map(float, values)))
+
+        # Calculate average if there are any values greater than 0.6, otherwise set to None
+        if filtered_values:
+            average = round(sum(filtered_values) / len(filtered_values), 2)
+        else:
+            average = None  # Or set to 0 or any indicator that no values are above the threshold
+
+        # Store the average and the count of values lower than 0.6
+        average_dict3[key] = (average, len(filtered_values))
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+    file_path = os.path.join("/", path, f"{yolo_model}.txt")
+
+    total_values = sum(len(sublist) for sublist in conf_list)
+
+    columns = ['Class', 'AvgP', 'NrDet']
+    widths = [17, 14, 9]
+    header = ' '.join(name.ljust(width) for name, width in zip(columns, widths))
+
+    with open(file_path, "w") as f:
+        print()
+        output_string = f"Total number of detections:{int(total_values)} with a confidence threshold: {conf_thr}."
+        print(output_string)
+        f.write(output_string+'\n')
+        print()
+
+        output_string = "Total number of detections for each class and average precision per class."
+        print(output_string)
+        f.write(output_string + '\n')
+        print(header)
+        f.write(header + '\n')
+
+        # Print the average values and the total number of elements
+        for key, (average, count) in average_dict1.items():
+            row = f"{key.capitalize():<17} {average:<14.3f} {count:<9}"
+            print(row)
+            f.write(row + '\n')
+        print()
+        f.write("\n")
+
+        output_string = f"Total number of detections and average of confidence score greater than {thr_metric} for each class."
+        print(output_string)
+        f.write(output_string + '\n')
+        print(header)
+        f.write(header + '\n')
+
+        # Print the results with each label, its average, and count of values greater than 0.6
+        for key, (average, count) in average_dict2.items():
+            if average is None:
+                average_display = "0"  #  text for None
+            else:
+                average_display = f"{average:.3f}"
+            row = f"{key.capitalize():<17} {average_display:<14} {count:<9}"
+            print(row)
+            f.write(row + '\n')
+        print()
+        f.write("\n")
+
+        output_string = f"Total number of detections and average of confidence score lower than {thr_metric} for each class."
+        print(output_string)
+        f.write(output_string)
+        print(header)
+        f.write('\n' + header + '\n')
+
+        # Print the results with each label, its average, and count of values greater than 0.6
+        for key, (average, count) in average_dict3.items():
+            if average is None:
+                average_display = "0"  # text for None
+            else:
+                average_display = f"{average:.3f}"
+            row = f"{key.capitalize():<17} {average_display:<14} {count:<9} "
+            print(row)
+            f.write(row + '\n')
+        print()
+
+def class_counts(dets_list, path):
     class_counts = defaultdict(int)
     for item in dets_list:
         # Iterate over each pair of count and label
@@ -194,49 +272,62 @@ def class_counts(dets_list):
     print(class_counts_dict)
     total_sum = sum(class_counts_dict.values())
     print("Total number of detections: ", total_sum)
+    if not os.path.exists(path):
+        os.makedirs(path)
+    file_path = os.path.join("/",path, f"{yolo_model}.txt")
+    with open(file_path, "w") as f:
+        f.write("Number of detections per class: \n")
+        json.dump(class_counts_dict, f)
+        f.write("\nTotal number of detections: ")
+        f.write(str(total_sum) + "\n")
 
 def yolov8_statisctics(data_list):
-    l1_list = []  # List of lists for classes and their counts
-    l2_list = []  # List of lists for average precision scores
+    # Initialize lists to store the final results
+    l1_final = []
+    l2_final = []
 
-    for data in data_list:
-        label_count = {}  # Dictionary to count occurrences of each label
-        label_sum = {}  # Dictionary to store sum of confidence scores for each label
-        l1 = []  # List for classes and their counts
-        l2 = []  # List for average precision scores
+    # Process each sublist independently
+    for sublist in data_list:
+        class_counts = {}
+        precision_lists = {}
 
-        # Iterate over the current list
-        for item in data:
-            # Split each element into class and confidence score
-            split_item = item.rsplit(' ', 1)
-            class_name = split_item[0]
-            confidence = float(split_item[1])
+        # Process each item in the current sublist
+        for item in sublist:
+            # Split item at the last occurrence of a space to separate class label from precision
+            last_space_index = item.rfind(' ')
+            class_label = item[:last_space_index]
+            precision = float(item[last_space_index + 1:])
 
-            # Update label count
-            label_count[class_name] = label_count.get(class_name, 0) + 1
+            # Increment the count for each class
+            if class_label in class_counts:
+                class_counts[class_label] += 1
+            else:
+                class_counts[class_label] = 1
 
-            # Update sum of confidence scores
-            label_sum[class_name] = label_sum.get(class_name, 0) + confidence
+            # Append the precision to the list corresponding to the class
+            if class_label in precision_lists:
+                precision_lists[class_label].append(precision)
+            else:
+                precision_lists[class_label] = [precision]
 
-        # Iterate over the label count dictionary to populate l1 and compute averages for l2
-        for class_name, count in label_count.items():
-            # Append count and class to l1
-            l1.append(count)
-            l1.append(class_name)
+        # Creating l1 for the current sublist
+        l1 = []
+        for class_label, count in sorted(class_counts.items()):
+            l1.extend([count, class_label])
+        l1_final.append(l1)
 
-            # Compute average confidence score for the current class
-            avg_confidence = round(label_sum[class_name] / count, 2)
+        # Creating l2 for the current sublist: a single list containing all precision values for this sublist
+        l2 = []
+        for class_label in sorted(precision_lists):
+            l2.extend(precision_lists[class_label])
+        l2_final.append(l2)
 
-            # Append average confidence score to l2
-            l2.append(avg_confidence)
-            l2.append(class_name)
+    # Output the lists
+    # print("l1:", l1_final)
+    # print("l2:", l2_final)
+    return l1_final, l2_final
 
-        l1_list.append(l1)
-        l2_list.append(l2)
-    return l1_list, l2_list
-
-
-def average_precision_classes_yolov8(list):
+def average_precision_classes_yolov8(list, path):
     # Dictionary to store cumulative confidence scores and counts for each class
     class_scores = {}
 
@@ -262,6 +353,13 @@ def average_precision_classes_yolov8(list):
     result_list.sort(key=lambda x: x[0])
     print("The average precision per classes is:")
     print(result_list)
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+    file_path = os.path.join("/",path, f"{yolo_model}.txt")
+    with open(file_path, "a") as f:
+        f.write("The average precision per classes is: \n")
+        json.dump(result_list, f)
 
 
 class CalcFPS:

@@ -36,7 +36,7 @@ import sys
 from pathlib import Path
 import torch, time
 sys.path.append('../../InferenceScripts')
-from UtilFunctions import show_inference, CalcFPS, set_parameters, average_conf, class_counts
+from UtilFunctions import CalcFPS, average_conf, avg_time, show_details
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -44,7 +44,9 @@ if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))  # add ROOT to PATH
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
-from ultralytics.utils.plotting import Annotator, colors, save_one_box
+# from ultralytics.utils.plotting import Annotator, colors, save_one_box
+from utils.plots import Annotator, colors, save_one_box
+
 from collections    import defaultdict
 from models.common import DetectMultiBackend
 from utils.dataloaders import IMG_FORMATS, VID_FORMATS, LoadImages, LoadScreenshots, LoadStreams
@@ -97,6 +99,7 @@ def run(
     dnn=False,  # use OpenCV DNN for ONNX inference
     vid_stride=1,  # video frame-rate stride
 ):
+
     source = str(source)
     save_img = not nosave and not source.endswith(".txt")  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
@@ -130,13 +133,9 @@ def run(
 
     # Run inference
     fps_calculator = CalcFPS()
-    text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10,text_anchor6, text_anchor7, text_overlay7, anchor_list1, anchor_list, classesCount, text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color=set_parameters()
     classesFilter = os.environ.get('FILTER_LIST', '').split(',')
     dets_list = []
-    confidence_list = []
     conf_list = []
-    fps_list = []
-    inf_list = []
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(device=device), Profile(device=device), Profile(device=device))
     for path, im, im0s, vid_cap, s in dataset:
@@ -169,12 +168,8 @@ def run(
             pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
         t2 = time.time()
         inference_time = t2 - t1
-        inf_time = inference_time * 1000
-        rounded_inf = "{:.2f}".format(inf_time)
-        inf_list.append(float(rounded_inf))
         fps_calculator.update(1.0 / (t2 - t1))
         avg_fps = fps_calculator.accumulate()
-        fps_list.append(avg_fps)
         # Second-stage classifier (optional)
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
 
@@ -192,6 +187,7 @@ def run(
 
         # Process predictions
         for i, det in enumerate(pred):  # per image
+            index = i
             seen += 1
             if webcam:  # batch_size >= 1
                 p, im0, frame = path[i], im0s[i].copy(), dataset.count
@@ -218,6 +214,7 @@ def run(
                     dets.append(n.item())
                     dets.append(names[int(c)])
 
+                confidence_list = []
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
                     c = int(cls)  # integer class
@@ -242,7 +239,12 @@ def run(
                                 annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / "crops" / names[c] / f"{p.stem}.jpg", BGR=True)
+
+                # print("confidence_list:", confidence_list)
             print(s)
+
+            dets_list.append(dets)
+            conf_list.append(confidence_list)
             # Stream results
             im0 = annotator.result()
             if view_img:
@@ -250,16 +252,11 @@ def run(
                     windows.append(p)
                     cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
                     cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
+                # imresize = cv2.resize(im0, (500, 500))
 
-                show_inference(text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10,text_anchor6, text_anchor7, text_overlay7, anchor_list1, anchor_list, classesCount,inference_time, avg_fps, im0, p, text_anchor, text_anchor1,
-                               text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5,
-                               text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale,
-                               text_thickness, background_color, dets)
+                show_details(p, im0, dets, inference_time, avg_fps)
 
-                dets_list.append(dets)
-                conf_list.append(confidence_list)
             # Save results (image with detections)
-
             if save_img:
                 if dataset.mode == "image":
                     cv2.imwrite(save_path, im0)
@@ -291,14 +288,11 @@ def run(
     if update:
         strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning)
 
-    class_counts(dets_list)
-    average_conf(dets_list, conf_list)
-    total_sum = sum(fps_list)
-    average = total_sum / len(fps_list)
-    print("Average FPS: {}.".format(int(round(average))))
-    inf_sum = sum(inf_list)
-    average_inf = inf_sum / len(inf_list)
-    print("Average InfTime: {}ms per frame.".format(round(average_inf)))
+    path_parts = save_path.strip("/").split("/")
+    path_parts.pop()
+    new_path = "/".join(path_parts) + "/"
+    average_conf(dets_list, conf_list, new_path)
+    avg_time(new_path)
 
 def parse_opt():
     parser = argparse.ArgumentParser()

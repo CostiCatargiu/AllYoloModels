@@ -10,7 +10,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
-import torch, sys
+import torch, sys, os
 
 from ultralytics.data.augment import LetterBox
 from ultralytics.utils import LOGGER, SimpleClass, ops
@@ -18,6 +18,19 @@ from ultralytics.utils.plotting import Annotator, colors, save_one_box
 from ultralytics.utils.torch_utils import smart_inference_mode
 sys.path.append('../../../../InferenceScripts')
 from UtilFunctions import average_conf, class_counts, yolov8_statisctics, average_precision_classes_yolov8
+
+color_label = {
+    "green": (0, 255, 0),
+    "blue": (255, 0, 0),
+    "white": (255, 255, 255),
+    "black": (0, 0, 0),
+    "cyan": (255, 255, 0),
+    "magenta": (255, 0, 255),
+    "gray": (128, 128, 128),
+    "roboflow": (255, 117, 26)  # Example specific color (in BGR, not RGB)
+}
+
+labelColor = os.environ.get('LABEL_COLOR')
 
 class BaseTensor(SimpleClass):
     """Base tensor class with additional methods for easy manipulation and device handling."""
@@ -280,15 +293,14 @@ class Results(SimpleClass):
                 name = ("" if id is None else f"id:{id} ") + names[c]
                 label = (f"{name} {conf:.2f}" if conf else name) if labels else None
                 box = d.xyxyxyxy.reshape(-1, 4, 2).squeeze() if is_obb else d.xyxy.squeeze()
-                annotator.box_label(box, label, color=colors(c, True), rotated=is_obb)
+                annotator.box_label(box, label, color=colors(c, True), txt_color=color_label[labelColor], rotated=is_obb)
                 label_list.append(label)
             labels_list.append(label_list)
-
         # Plot Classify results
         if pred_probs is not None and show_probs:
             text = ",\n".join(f"{names[j] if names else j} {pred_probs.data[j]:.2f}" for j in pred_probs.top5)
             x = round(self.orig_shape[0] * 0.03)
-            annotator.text([x, x], text, txt_color=(255, 255, 255))  # TODO: allow setting colors
+            annotator.text([x, x], text, txt_color=(0, 0, 0))  # TODO: allow setting colors
 
         # Plot Pose results
         if self.keypoints is not None:
@@ -305,10 +317,9 @@ class Results(SimpleClass):
 
         return annotator.result()
 
-    def print_metrics():
+    def print_metrics(self, path):
         l1, l2 = yolov8_statisctics(labels_list)
-        class_counts(l1)
-        average_precision_classes_yolov8(l2)
+        average_conf(l1, l2, path)
 
     def show(self, *args, **kwargs):
         """Show annotated results image."""

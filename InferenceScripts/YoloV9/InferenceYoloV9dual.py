@@ -19,7 +19,7 @@ from utils.general import (LOGGER, Profile, check_file, check_img_size, check_im
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, smart_inference_mode
 sys.path.append('../../InferenceScripts')
-from UtilFunctions import show_inference, CalcFPS, set_parameters, class_counts, average_conf
+from UtilFunctions import CalcFPS, average_conf, show_details, avg_time
 
 conf_list = []
 @smart_inference_mode()
@@ -44,8 +44,9 @@ def run(
         update=False,  # update all models
         project=ROOT / 'runs/detect',  # save results to project/name
         name='exp',  # save results to project/name
-        exist_ok=False,  # existing project/name ok, do not increment
-        line_thickness=3,  # bounding box thickness (pixels)
+        exist_ok=False,
+        # existing project/name ok, do not increment
+        line_thickness=0.1,  # bounding box thickness (pixels)
         hide_labels=False,  # hide labels
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
@@ -85,7 +86,6 @@ def run(
 
     # Run inference
     fps_calculator = CalcFPS()
-    text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10, text_anchor6, text_anchor7,text_overlay7, anchor_list1, anchor_list, classesCount, text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color=set_parameters()
     classesFilter = os.environ.get('FILTER_LIST', '').split(',')
     dets_list = []
     fps_list = []
@@ -180,10 +180,7 @@ def run(
                     windows.append(p)
                     cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
                     cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
-                show_inference(text_anchor8, text_anchor9, text_anchor10, text_overlay8,text_overlay10, text_anchor6, text_anchor7,text_overlay7, anchor_list1, anchor_list, classesCount,inference_time, avg_fps, im0, p, text_anchor, text_anchor1,
-                                   text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5,
-                                   text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale,
-                                   text_thickness, background_color, dets)
+                show_details(p, im0, dets, inference_time, avg_fps)
                 dets_list.append(dets)
 
             # Save results (image with detections)
@@ -218,14 +215,11 @@ def run(
         strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning)
 
 
-    class_counts(dets_list)
-    average_conf(dets_list, conf_list)
-    fps_sum = sum(fps_list)
-    average_fps = fps_sum / len(fps_list)
-    print("Average FPS: {}.".format(int(round(average_fps))))
-    inf_sum = sum(inf_list)
-    average_inf = inf_sum / len(inf_list)
-    print("Average InfTime: {}ms per frame.".format(round(average_inf)))
+    path_parts = save_path.strip("/").split("/")
+    path_parts.pop()
+    new_path = "/".join(path_parts) + "/"
+    average_conf(dets_list, conf_list, new_path)
+    avg_time(new_path)
 
 def parse_opt():
     parser = argparse.ArgumentParser()

@@ -1,0 +1,31 @@
+Total number of detections:4750.
+Total number of detections for each class and average precision per class.
+Class             AvgP           NrDet    
+Person            0.428          450      
+Car               0.482          1757     
+Bus               0.633          2398     
+Train             0.773          104      
+Traffic light     0.747          29       
+Truck             0.713          12       
+
+Total number of detections and average of confidence score greater than 0.3 for each class.
+Class             AvgP           NrDet    
+Person            0.430          450      
+Car               0.480          1757     
+Bus               0.630          2398     
+Train             0.770          104      
+Traffic light     0.750          29       
+Truck             0.710          12       
+
+Total number of detections and average of confidence score lower than 0.3 for each class.
+Class             AvgP           NrDet
+Person            0              0         
+Car               0              0         
+Bus               0              0         
+Train             0              0         
+Traffic light     0              0         
+Truck             0              0         
+
+Average FPS: 398.
+Average InfTime: 2.51ms per frame.
+Total inference time: 12.20s.
