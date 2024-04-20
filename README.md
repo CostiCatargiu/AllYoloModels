@@ -269,11 +269,33 @@ $\color{magenta}{\textsf{Short explanation of parameters usage}}$
 
 
 The image above shows a variety of parameters available for selection, depending on what we aim to achieve in the inference task.
-1. $\color{blue}{\textsf{<model>}}$: the only mandatory parameter required to initiate the inference process. It specifies the version of the YOLO model to be used for the inference task. The available options for this parameter are shown in the image above. All subsequent parameters are optional, and default values will be used if they are not provided.
+1. $\color{orange}{\textsf{model}}$: the only mandatory parameter required to initiate the inference process. It specifies the version of the YOLO model to be used for the inference task. The available options for this parameter are shown in the image above. All subsequent parameters are optional, and default values will be used if they are not provided.
    
-2. $\color{blue}{\textsf{-p1 || --weights}}$: the path to the weights that wiil be used for the inference. Default value for this:  $\color{blue}{\textsf{/ExperimentalResults/YoloV.../weights/<model>.pt}}$.
+2. $\color{orange}{\textsf{-p1 || --weights}}$: This parameter specifies the path to the weights that wiil be used for the inference. Default value for this:  $\color{blue}{\textsf{/ExperimentalResults/YoloV.../weights/<model>.pt}}$.
 
-   
+3. $\color{orange}{\textsf{p2 || --source_video}}$: This parameter specifies the path to the video that will be used for inference. To simplify the selection of the desired video for inference, all files have been placed in a specific directory. From there, one can choose a video by indicating its index in the list (the image above displays all my test videos along with their respective indexes). The index of the video is specified using the next parameter.
+
+4. $\color{orange}{\textsf{-p3 || --video_index}}$: This parameter is used to indicate the list index of the video that will be used for inference.
+
+5. $\color{orange}{\textsf{-p4 || --conf_thr}}$: This parameter is used to set the cofindence threshold for the detection. Will be processed only the predictions with a precision greater than this threshold.
+
+6. $\color{orange}{\textsf{-p5 || --device}}$: This parameter indicates the devide which will be used for the inference. We can choose 0 for GPU or "cpu".
+
+7. $\color{orange}{\textsf{-p6 || --count}}$: This parameter is essentially a list where you can specify certain classes that the model was trained on. Using this parameter allows you to count and display the number of detections for the specified classes in each frame. By default this option is disabled.
+
+8. $\color{orange}{\textsf{-p7 || --filter}}$: This parameter is essentially a list where you can specify certain classes that the model was trained on. Using this parameter allows you to exclude the specified classes from being displayed in the inference output. By default, this option is disabled.
+
+9. $\color{orange}{\textsf{-p8 || --fontSize}}$: This parameter allows you to configure the text dimensions of the information displayed during video inference. This is useful because video resolutions can vary, and the text may be too small or too large depending on the resolution.
+
+10. $\color{orange}{\textsf{-p9 || --fontThickness}}$: Similar to the previous parameter.
+
+11.  $\color{orange}{\textsf{-p10 || --ypos}}$: This parameter is related to -p8 and -p9 and allows you to modify the distance between lines of displayed information to better fit within the image.
+
+12. $\color{orange}{\textsf{-p11 || --thr_metric}}$: This parameter sets a threshold for the metrics calculated after the inference process, based on the number of predictions per class and their confidence levels. Upon completion of the inference, a txt file with two tables will be generated: one displaying the number of predictions and their average precision for each class with a confidence greater than this threshold, and a second table with the same information for predictions with a confidence below this threshold.
+
+13. $\color{orange}{\textsf{-p12 || --labelTextColor}}$: This parameter allows you to change the label text color, which can be useful when the text color is hard to distinguish from the background.
+
+14. $\color{orange}{\textsf{-p13 || --labelTextSize}}$: This parameter allows you to adjust the label text size, which can be useful for different video resolutions where the text on certain labels may not be clearly visible.
 
 
 Advantages of this implementation:
