@@ -51,27 +51,12 @@ After this repository is cloned the structure of the project will look like in t
   ```
 
 Notice that first you clone the model, $\color{magenta}{\textsf{requirements.txt}}$ for it will be also installed.
-After the model is cloned it will appear in $\color{magenta}{\textsf{YoloModels}}$ directory. If the model is already there and the script is executed and message will appear and ask if we want to reclone or no.
+After the model is cloned it will appear in $\color{magenta}{\textsf{YoloModels}}$ directory. If the model is already there and the script is executed a message will appear and ask if we want to reclone or no.
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ac73a342-45ef-4668-a298-0d481387bc18)
 
 </details>
 
-<details>
-  <summary>Dowmload COCO dataset</summary>
-
-To download COCO dataset you can use $\color{red}{\textsf{Utility/DatasetDownloadScripts/getcoco.sh}}$ .
-
-The dataset will be downloaded in $\color{red}{\textsf{Utility/COCOdatasets}}$.
-
-Please note that the labels for the testing set are not available, or at least I didn't find them. Another observation is that for YoloV6, we need to use bounding box format labels instead of polygon format labels for the evaluation task.
-
-In the **get_coco.sh** script, we can select between downloading the train, test, valid, and segment data. By default, all datasets will be downloaded.
-
-The YAML file for COCO dataset is located at path $\color{red}{\textsf{Utility/YAMLconfigs/coco.yaml}}$
-
-Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 train images)
-</details>
 
 ## Evaluation task
 
@@ -90,7 +75,7 @@ Parameters:
  --testSplit parameter allows us to select between "train" and "valid" dataset for evaluate the model.
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8e21d24a-c73b-4d63-ad9f-265fa56b8686)
 
-If you want to add more parameters to evaluation task please edit the .sh for the desired model.
+If you want to add more parameters to evaluation task please edit $\color{red}{\textsf{YoloModelsEval.sh}}$ for the desired model. In the table above are presented the results otained after evalutiong the model on COCO2017 dataset.  
 
 <table border="1">
   <tr>
@@ -168,6 +153,22 @@ If you want to add more parameters to evaluation task please edit the .sh for th
   </tr>
   
 </table>
+
+<details>
+  <summary>Dowmload COCO dataset</summary>
+
+To download COCO dataset you can use $\color{red}{\textsf{Utility/DatasetDownloadScripts/getcoco.sh}}$ .
+
+The dataset will be downloaded in $\color{red}{\textsf{Utility/COCOdatasets}}$.
+
+Please note that the labels for the testing set are not available, or at least I didn't find them. Another observation is that for YoloV6, we need to use bounding box format labels instead of polygon format labels for the evaluation task.
+
+In the **get_coco.sh** script, we can select between downloading the train, test, valid, and segment data. By default, all datasets will be downloaded.
+
+The YAML file for COCO dataset is located at path $\color{red}{\textsf{Utility/YAMLconfigs/coco.yaml}}$
+
+Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 train images)
+</details>
 
 
 <details>
