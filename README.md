@@ -269,9 +269,9 @@ $\color{magenta}{\textsf{Short explanation of parameters usage}}$
 
 
 The image above shows a variety of parameters available for selection, depending on what we aim to achieve in the inference task.
-1. $\color{blue}{\textsf{<select_model>}}$: the only mandatory parameter required to initiate the inference process. It specifies the version of the YOLO model to be used for the inference task. The available options for this parameter are shown in the image above. All subsequent parameters are optional, and default values will be used if they are not provided.
+1. $\color{blue}{\textsf{<model>}}$: the only mandatory parameter required to initiate the inference process. It specifies the version of the YOLO model to be used for the inference task. The available options for this parameter are shown in the image above. All subsequent parameters are optional, and default values will be used if they are not provided.
    
-2. $\color{blue}{\textsf{-p1 || --weights}}$: the path to the weights that wiil be used for the inference. Default value for this:  $\color{blue}{\textsf{/ExperimentalResults/YoloV.../weights/<select_model>.pt}}$.
+2. $\color{blue}{\textsf{-p1 || --weights}}$: the path to the weights that wiil be used for the inference. Default value for this:  $\color{blue}{\textsf{/ExperimentalResults/YoloV.../weights/<model>.pt}}$.
 
    
 
