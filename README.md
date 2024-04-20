@@ -75,7 +75,7 @@ Parameters:
  --testSplit parameter allows us to select between "train" and "valid" dataset for evaluate the model.
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8e21d24a-c73b-4d63-ad9f-265fa56b8686)
 
-If you want to add more parameters to evaluation task please edit $\color{red}{\textsf{YoloModelsEval.sh}}$ for the desired model. In the table above are presented the results otained after evalutiong the model on COCO2017 dataset.  
+If you want to add more parameters to evaluation task please edit $\color{red}{\textsf{YoloModelsEval.sh}}$ for the desired model. In the table above are presented the results obtained after evaluting the models on COCO2017 dataset.  
 
 <table border="1">
   <tr>
@@ -170,6 +170,9 @@ The YAML file for COCO dataset is located at path $\color{red}{\textsf{Utility/Y
 Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 train images)
 </details>
 
+<details>
+  <summary>To see more detailed results obtained on evaluation task please see above.</summary>
+
 
 <details>
   <summary>Evaluation on COCO dataset using yolov5l </summary>
@@ -220,6 +223,8 @@ Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 
   <summary>Evaluation on COCO dataset using yolov9_gelan-e </summary>
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/451f47b8-ca6a-40b8-ac9b-5e5ef451738f)
+
+</details>
 
 </details>
 
