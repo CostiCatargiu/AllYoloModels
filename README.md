@@ -261,7 +261,7 @@ or
 ```
 Parameters: 
  << >> = required parameter; [ ]=optional parameter
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/41e10cde-22f0-4c31-abe4-b61e21fda299)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d9df86a7-8ced-4f9c-acb5-3ca25d144793)
 
 If you want to add more parameters to inference task please edit the $\color{red}{\textsf{YoloModelsInference.sh}}$ for the desired model.
 
@@ -273,11 +273,11 @@ The image above shows a variety of parameters available for selection, depending
    
 2. $\color{orange}{\textsf{-p1 || --weights}}$: This parameter specifies the path to the weights that wiil be used for the inference. Default value for this:  $\color{blue}{\textsf{/ExperimentalResults/YoloV.../weights/<model>.pt}}$.
 
-3. $\color{orange}{\textsf{p2 || --source_video}}$: This parameter specifies the path to the video that will be used for inference. To simplify the selection of the desired video for inference, all files have been placed in a specific directory. From there, one can choose a video by indicating its index in the list (the image above displays all my test videos along with their respective indexes). The index of the video is specified using the next parameter.
+3. $\color{orange}{\textsf{p2 || --source video}}$: This parameter specifies the path to the video that will be used for inference. To simplify the selection of the desired video for inference, all files have been placed in a specific directory. From there, one can choose a video by indicating its index in the list (the image above displays all my test videos along with their respective indexes). The index of the video is specified using the next parameter.
 
-4. $\color{orange}{\textsf{-p3 || --video_index}}$: This parameter is used to indicate the list index of the video that will be used for inference.
+4. $\color{orange}{\textsf{-p3 || --video index}}$: This parameter is used to indicate the list index of the video that will be used for inference.
 
-5. $\color{orange}{\textsf{-p4 || --conf_thr}}$: This parameter is used to set the cofindence threshold for the detection. Will be processed only the predictions with a precision greater than this threshold.
+5. $\color{orange}{\textsf{-p4 || --conf thr}}$: This parameter is used to set the cofindence threshold for the detection. Will be processed only the predictions with a precision greater than this threshold.
 
 6. $\color{orange}{\textsf{-p5 || --device}}$: This parameter indicates the devide which will be used for the inference. We can choose 0 for GPU or "cpu".
 
@@ -291,7 +291,7 @@ The image above shows a variety of parameters available for selection, depending
 
 11.  $\color{orange}{\textsf{-p10 || --ypos}}$: This parameter is related to -p8 and -p9 and allows you to modify the distance between lines of displayed information to better fit within the image.
 
-12. $\color{orange}{\textsf{-p11 || --thr_metric}}$: This parameter sets a threshold for the metrics calculated after the inference process, based on the number of predictions per class and their confidence levels. Upon completion of the inference, a txt file with two tables will be generated: one displaying the number of predictions and their average precision for each class with a confidence greater than this threshold, and a second table with the same information for predictions with a confidence below this threshold.
+12. $\color{orange}{\textsf{-p11 || --thr metric}}$: This parameter sets a threshold for the metrics calculated after the inference process, based on the number of predictions per class and their confidence levels. Upon completion of the inference, a txt file with two tables will be generated: one displaying the number of predictions and their average precision for each class with a confidence greater than this threshold, and a second table with the same information for predictions with a confidence below this threshold.
 
 13. $\color{orange}{\textsf{-p12 || --labelTextColor}}$: This parameter allows you to change the label text color, which can be useful when the text color is hard to distinguish from the background.
 
