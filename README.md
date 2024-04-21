@@ -376,7 +376,7 @@ To generate this new metric we need to follow 2 steps:
 1. Put the .txt files that you want to compare at the following path: $\color{darkorange}{\textsf{ExperimentalResults/Metrics/}}$
 2. Execute the .py script:  $\color{darkorange}{\textsf{Utils/Scripts/generatemetric.py}}$. The script will generate a $\color{darkorange}{\textsf{Utils/Scripts/metric.txt}}$ file that contains the compared data for the models selected. 
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/24908a1b-8278-4c33-9341-1011b571afe6)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f27e1111-61e3-4857-ab3b-cb505dfcc2e5)
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/12de89ca-4d52-412c-9b1f-20a8ab48b820)
 
