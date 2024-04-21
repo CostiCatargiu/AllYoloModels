@@ -716,9 +716,12 @@ To generate this new metric we need to follow 2 steps:
 <details>
   <summary> Inference on video using yolov5l </summary>
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f54e0662-2e1b-4dfa-b0af-e1857c752838)
+  ```bash
+./YoloModelsInference.sh yolov5l --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
+ ```
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8c4fd189-b7a0-46ad-8347-f3fc6290f143)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/6c292903-44f4-4c30-8c39-084614a4f84d)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/7987c937-5777-46e4-922d-d1090858f72a)
 
 </details>
 
@@ -736,7 +739,7 @@ To generate this new metric we need to follow 2 steps:
   <summary> Inference on video using yolov7 </summary>
 
   ```bash
-./YoloModelsInference.sh yolov7-w6 --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
+./YoloModelsInference.sh yolov7 --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d2c5609b-e5ea-468b-b369-86ef17f6b40d)
 
