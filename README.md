@@ -756,8 +756,6 @@ To generate this new metric we need to follow 2 steps:
 
 </details>
 
-https://drive.google.com/drive/folders/1Owg6Gd3stiNBYRch9avVK_r4GuGfNJOk?usp=drive_link
-
 
 <details>
   <summary> Inference on video using yolov9-c </summary>
