@@ -301,7 +301,23 @@ The image above shows a variety of parameters available for selection, depending
 
 </details>
 
-Advantages of this implementation:
+$\color{darkorange}{\textsf{Advantages of this implementation:}}$
+
+<details>
+  <summary> -💻 During inference, details such as the device used, model, number of frames, FPS, and inference time are displayed on the output video. These details help monitor and assess the performance of the inference process. Additionally, there are customization options available to better fit the data on the video, such as adjusting the text size, thickness, and vertical positioning. </summary>
+
+  ```bash
+./YoloModelsInference.sh yolov8m --conf_thr 0.45 --count "car,person,bus,bicycle"  --labelTextColor "black" --fontSize 2 --fontThickness 2 --ypos 60 --video_index 15 --labelTextSize 2  --thr_metric 0.6
+  ```
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/cb0cc011-6ceb-4e74-87ee-90d2098981f1)
+
+  ```bash
+./YoloModelsInference.sh yolov8m --conf_thr 0.45 --count "car,person,bus,bicycle"  --labelTextColor "white" --fontSize 1 --fontThickness 2 --ypos 40 --video_index 15 --labelTextSize 5  --thr_metric 0.6
+  ```
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/24b5c096-174d-4c6a-ae24-a972a2ce1ba7)
+
+</details>
+
 
 <details>
   <summary> - 👁️‍🗨️ We can monitor the number of appearances of a certain object class across the frames. </summary>
@@ -329,9 +345,11 @@ Advantages of this implementation:
     d. The average FramesPerSecond (FPS).
 
     e. The time for inference process.
+These metrics are saved in TXT format and are automatically stored after each inference task at the following path: egg. $\color{darkorange}{\textsf{ExperimentalRresults/YoloV9/inferGelan/exp28/gelan-c.txt}}$
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/dc50cd32-ed13-4b76-8edc-0a818f97e0e1)
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8143cdfa-f99d-4513-8179-696f02b298b3)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b707923b-341b-4939-b639-f319b3a3257e)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/415b0bbe-608a-40a3-a900-05db8582557d)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/729bd458-94f1-405e-936e-7a3a80102631)
 
 
 </details>
