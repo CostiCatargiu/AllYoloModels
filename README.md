@@ -129,7 +129,7 @@ If you want to add more parameters to evaluation task please edit $\color{red}{\
     <td align="center">65</td>
   </tr>
     <tr>
-    <td>$\color{orange}{\textsf{bathSize}}$</td>
+    <td>$\color{orange}{\textsf{batchSize}}$</td>
     <td align="center">32</td>
     <td align="center">32</td>
     <td align="center">32</td>
@@ -265,8 +265,10 @@ Parameters:
 
 If you want to add more parameters to inference task please edit the $\color{red}{\textsf{YoloModelsInference.sh}}$ for the desired model.
 
-$\color{magenta}{\textsf{Short explanation of parameters usage}}$
 
+<details>
+  <summary>$\color{magenta}{\textsf{Short explanation of parameters usage}}$</summary>
+  
 
 The image above shows a variety of parameters available for selection, depending on what we aim to achieve in the inference task.
 1. $\color{orange}{\textsf{model}}$: the only mandatory parameter required to initiate the inference process. It specifies the version of the YOLO model to be used for the inference task. The available options for this parameter are shown in the image above. All subsequent parameters are optional, and default values will be used if they are not provided.
@@ -297,34 +299,40 @@ The image above shows a variety of parameters available for selection, depending
 
 14. $\color{orange}{\textsf{-p13 || --labelTextSize}}$: This parameter allows you to adjust the label text size, which can be useful for different video resolutions where the text on certain labels may not be clearly visible.
 
+</details>
 
 Advantages of this implementation:
 
 <details>
   <summary> - 👁️‍🗨️ We can monitor the number of appearances of a certain object class across the frames. </summary>
   
-  ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/c8a32c40-6681-49d3-9d1b-bec396050ada)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/794b4565-5737-4563-aa48-a4592150f248)
 
 </details>
 
   <details>
   <summary> - 🚫 We can filter the detection of a certain class if it is not of interest to us. </summary>
     
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/56587703-b4a9-40b7-b0b3-7372348f9acc)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/22e8d381-8147-442e-a5b2-d47521270cc2)
 
 </details>
 
   <details>
   <summary>  - 📈 After the inference ends, some useful metrics will be outputted indicating the performance of the model. These metrics include: </summary>
-    a. The total number of detections for each class over the frames.
     
-    b. The average precision for each class over the frames.
-    
-    c. The average Frames Per Second (FPS).
-    
-    d. The total number of objects detected in the video.
+    a. The total number of objects detected for all classes in the video.
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b795eaf5-42e8-4905-8c2a-734ff1ac6f44)
+    b. The total number of detections for each class over the frames.
+        
+    c. The average precision for each class over the frames.
+    
+    d. The average FramesPerSecond (FPS).
+
+    e. The time for inference process.
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/dc50cd32-ed13-4b76-8edc-0a818f97e0e1)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8143cdfa-f99d-4513-8179-696f02b298b3)
+
 
 </details>
 
