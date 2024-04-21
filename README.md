@@ -759,9 +759,9 @@ To generate this new metric we need to follow 2 steps:
 
 <details>
   <summary> Inference on video using yolov9-c </summary>
-  
-    ```bash
-./YoloModelsInference.sh gelan-c --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
+
+  ```bash
+./YoloModelsInference.sh yolov9-c --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/119a4c23-54ea-44ee-9602-dd55864649d4)
 
@@ -771,6 +771,7 @@ To generate this new metric we need to follow 2 steps:
 
 <details>
   <summary> Inference on video using yolov9-gelan-c </summary>
+  
   ```bash
 ./YoloModelsInference.sh gelan-c --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
  ```
