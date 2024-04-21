@@ -349,16 +349,19 @@ These metrics are saved in TXT format and are automatically stored after each in
 
   <details>
   <summary> gelan-c.txt </summary>
+    
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/729bd458-94f1-405e-936e-7a3a80102631)
   </details>
   
   <details>
   <summary> yolov9-c.txt </summary>
+    
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/415b0bbe-608a-40a3-a900-05db8582557d)
   </details>
 
   <details>
   <summary>yolov8l.txt </summary>
+    
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b707923b-341b-4939-b639-f319b3a3257e)
   </details>
 
