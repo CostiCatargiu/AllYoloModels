@@ -370,6 +370,19 @@ These metrics are saved in TXT format and are automatically stored after each in
   </details>
 
 
+Additionally, there's an option to create a separate TXT file that compares the results obtained from each model after inference.The key advantage of this new TXT file is that it structures the data into tables, enabling straightforward and efficient comparison of performance across different models. This tabular arrangement simplifies the analysis, allowing users to quickly assess and contrast the effectiveness of each model based on two metrics: average precision per class and total number of detection per class. This organized format is especially beneficial for identifying the most suitable model for specific tasks or environments.
+
+To generate this new metric we need to follow 2 steps:
+1. Put the .txt files that you want to compare at the following path: $\color{darkorange}{\textsf{ExperimentalResults/Metrics/}}$
+2. Execute the .py script:  $\color{darkorange}{\textsf{Utils/Scripts/generatemetric.py}}$. The script will generate a $\color{darkorange}{\textsf{Utils/Scripts/metric.txt}}$ file that contains the compared data for the models selected. 
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/24908a1b-8278-4c33-9341-1011b571afe6)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/12de89ca-4d52-412c-9b1f-20a8ab48b820)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/1d680e7a-66d8-45f3-b655-a954af175738)
+
+
 </details>
 
 
