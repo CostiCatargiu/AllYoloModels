@@ -1,6 +1,6 @@
 # AllYoloModels
 
-https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/3dd037aa-a643-48f0-984b-b0abd062b6c1
+![output_filename](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/5af53b5c-e058-4d7f-bec0-343543177769)
 
 
 ## Short Introduction
