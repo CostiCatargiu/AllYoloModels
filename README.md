@@ -728,9 +728,9 @@ To generate this new metric we need to follow 2 steps:
 <details>
   <summary> Inference on video using yolov6l </summary>
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/cfae5500-eb5e-4006-99cc-2d3187ad0b62)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/852b5c97-a75a-45c6-afe4-a7cf4332f957)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/4d5b2a1e-23c7-4640-99f7-47ee4432ff03)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/366bc296-1545-4b22-a08c-9a748a139ee7)
 
 </details>
 
@@ -743,7 +743,7 @@ To generate this new metric we need to follow 2 steps:
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d2c5609b-e5ea-468b-b369-86ef17f6b40d)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/896a1e9f-de91-4e1d-941f-b9cc048a90f8)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/659e6103-d94d-41b8-a209-1db8cdbf985e)
 
 </details>
 
