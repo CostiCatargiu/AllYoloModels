@@ -208,10 +208,10 @@ Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 
 
 <details>
   <summary>Evaluation on COCO dataset using yolov8l </summary>
+  
+  ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/df790ffa-62d5-4ccf-a07d-6943d733b5f7)
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/069538f6-fa61-462f-bcb9-f95a871dca38)
-
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/df790ffa-62d5-4ccf-a07d-6943d733b5f7)
 
 
 </details>
