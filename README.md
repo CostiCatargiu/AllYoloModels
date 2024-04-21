@@ -760,18 +760,23 @@ To generate this new metric we need to follow 2 steps:
 <details>
   <summary> Inference on video using yolov9-c </summary>
   
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d526fe75-dc57-4f45-af5e-05ac709c047a)
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/fa12797c-a2e5-4c24-b13c-2304479031c2)
+    ```bash
+./YoloModelsInference.sh gelan-c --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
+ ```
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/119a4c23-54ea-44ee-9602-dd55864649d4)
 
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f86b3693-2563-4b87-95b1-9086237869af)
 
 </details>
 
 <details>
   <summary> Inference on video using yolov9-gelan-c </summary>
+  ```bash
+./YoloModelsInference.sh gelan-c --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
+ ```
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/7a3e4200-a014-493b-8b2b-f0a22bd38142)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/26bcecde-4552-4622-978a-29d1bd587891)
-
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/88f164f1-9f9d-48b5-8470-e7a419bd9134)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f01a5ace-b914-449c-87c4-b65abf959dbc)
 
 </details>
 </details>
