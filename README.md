@@ -354,19 +354,19 @@ These metrics are saved in TXT format and are automatically stored after each in
   <details>
   <summary> gelan-c.txt </summary>
     
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/729bd458-94f1-405e-936e-7a3a80102631)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b054d0c3-ef28-47d5-a58a-ac82757db83b)
   </details>
   
   <details>
   <summary> yolov9-c.txt </summary>
     
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/415b0bbe-608a-40a3-a900-05db8582557d)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/6e551a20-267b-41a2-9514-ffd48862ae26)
   </details>
 
   <details>
   <summary>yolov8l.txt </summary>
     
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b707923b-341b-4939-b639-f319b3a3257e)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/52ba1563-b2be-457e-b34b-81ebe03b9c05)
   </details>
 
 
@@ -376,11 +376,11 @@ To generate this new metric we need to follow 2 steps:
 1. Put the .txt files that you want to compare at the following path: $\color{darkorange}{\textsf{ExperimentalResults/Metrics/}}$
 2. Execute the .py script:  $\color{darkorange}{\textsf{Utils/Scripts/generatemetric.py}}$. The script will generate a $\color{darkorange}{\textsf{Utils/Scripts/metric.txt}}$ file that contains the compared data for the models selected. 
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f27e1111-61e3-4857-ab3b-cb505dfcc2e5)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/53e29bad-6973-4a1b-b2a8-42ce2cbcec6d)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/12de89ca-4d52-412c-9b1f-20a8ab48b820)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/c2c9ef05-6995-4f2e-b367-81746292b071)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/1d680e7a-66d8-45f3-b655-a954af175738)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/e26c6719-186e-4c3f-9c54-0711828111f0)
 
 
 </details>
@@ -735,9 +735,12 @@ To generate this new metric we need to follow 2 steps:
 <details>
   <summary> Inference on video using yolov7 </summary>
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/3cb56454-d93a-4188-926a-b50be3919708)
+  ```bash
+./YoloModelsInference.sh yolov7-w6 --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
+ ```
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d2c5609b-e5ea-468b-b369-86ef17f6b40d)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/468e023b-34d0-4544-ac47-9703f3111fb6)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/896a1e9f-de91-4e1d-941f-b9cc048a90f8)
 
 </details>
 
