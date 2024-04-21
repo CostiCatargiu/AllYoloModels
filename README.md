@@ -1,6 +1,7 @@
 # AllYoloModels
 
-![objectedet](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ff32a667-c07d-4d6f-927f-dcc18fdf5a5a)
+https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/3dd037aa-a643-48f0-984b-b0abd062b6c1
+
 
 ## Short Introduction
 Hello everyone! 😊
