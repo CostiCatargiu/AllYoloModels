@@ -783,3 +783,4 @@ To generate this new metric we need to follow 2 steps:
 </details>
 
 The results are also stored in [GoodleDrive](https://drive.google.com/drive/folders/1Owg6Gd3stiNBYRch9avVK_r4GuGfNJOk?usp=sharing).
+Another inference comparison results can be found [HERE](https://drive.google.com/drive/folders/1F9LV1SrrWWoDGudmJ9vG4nEMXtpkilCo?usp=drive_link)
