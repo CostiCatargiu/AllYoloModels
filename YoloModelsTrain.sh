@@ -5,6 +5,15 @@ source UtilFunctions.sh
 datasetPath=$(yq e '.datasetPath' parameters.yaml)
 epochs=2
 batchSize=64
+labelTextColor="black"
+labelTextSize=2
+nr_classes=3
+classes_names=['fire', 'other', 'smoke']
+labelTextColor="white"
+labelTextSize=2
+
+export NC_PARAMETER="$nr_classes"
+export NAMES_PARAMETER="$classes_names"
 
 #Delete cache labels
 delete_cache
@@ -19,7 +28,8 @@ usage() {
     echo "  optional_param2 (epochs): default: = $epochs"
     echo "  optional_param3 (batchSize): default: = $batchSize"
 }
-
+export LABEL_SIZE="$labelTextSize"
+export LABEL_COLOR="$labelTextColor"
 
 # Check if the required parameter is provided
 if [ "$#" -eq 0 ]; then
@@ -30,6 +40,9 @@ fi
 # Assign required parameter to a variable
 select_model="$1"
 shift
+
+export LABEL_SIZE="$labelTextSize"
+export LABEL_COLOR="$labelTextColor"
 
 # Parse optional parameters
 while [[ "$#" -gt 0 ]]; do
@@ -59,15 +72,20 @@ experimetsPath=$current_location/ExperimentalResults
 
 if [[ "$select_model" == *"yolov5"* ]]; then
     if [ -z "$weights" ]; then
-        weights=$experimetsPath/YoloV5/weights/$select_model.pt
+        weight=$experimetsPath/YoloV5/weights/$select_model.pt
     fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV5/train/${weights}/weights/best.pt
+    fi
+
     cd "$current_location/YoloModels/YoloV5/"
     python3 train.py \
         --epochs $epochs \
         --batch-size $batchSize\
         --data $datasetPath \
         --cfg models/$select_model.yaml \
-        --weights $weights \
+        --weights $weight\
         --project $experimetsPath/YoloV5/train \
         --name exp
 
@@ -76,7 +94,7 @@ elif [[ "$select_model" == *"yolov6"* ]]; then
     python3 train.py \
         --epochs $epochs \
         --batch-size $batchSize \
-        --conf $current_location/YoloModels/YoloV6/configs/$select_model.py \
+        --conf /home/constantin/Doctorat/YoloModels/YoloLib2/YoloModels/YoloV6/configs/yolov6m.py \
         --data $datasetPath \
         --device 0 \
         --eval-interval 10 \
@@ -93,31 +111,47 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
         curl -L -o "$select_model.pt" "$weights_url"
     fi
     if [ -z "$weights" ]; then
-        weights=$experimetsPath/YoloV7/weights/$select_model.pt
+        weight=$experimetsPath/YoloV7/weights/$select_model.pt
     fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV7/train/${weights}/weights/best.pt
+    fi
+
     cd "$current_location/YoloModels/YoloV7/"
     python3 train.py \
         --epochs $epochs \
         --batch-size $batchSize \
         --cfg cfg/training/$select_model.yaml \
         --data $datasetPath \
-        --weights $weights \
+        --weights $weight \
         --project $experimetsPath/YoloV7/train \
         --name exp
 
 elif [[ "$select_model" == *"yolov8"* ]]; then
-     if [ -z "$weights" ]; then
-        weights=$experimetsPath/YoloV8/weights/$select_model.pt
+    if [ -z "$weights" ]; then
+        weight=$experimetsPath/YoloV8/weights/$select_model.pt
     fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV7/train/${weights}/weights/best.pt
+    fi
+
     yolo \
         task=detect \
         mode=train \
-        model=$weights \
+        model=$weight \
         data=$datasetPath \
         epochs=$epochs \
         batch=$batchSize\
         project=$experimetsPath/YoloV8/train \
-        name=exp
+        name=exp\
+        cos_lr=True\
+        box=1.5 \
+        mixup=0.2\
+        scale=0.6\
+        iou=0.3
+
 
 elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; then    # Source file path
     cd "$experimetsPath/YoloV9/weights/"
@@ -129,8 +163,13 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
         curl -L -o "$select_model.pt" "$weights_url"
     fi
     if [ -z "$weights" ]; then
-        weights=$experimetsPath/YoloV9/weights/$select_model.pt
+        weight=$experimetsPath/YoloV9/weights/$select_model.pt
     fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV7/train/${weights}/weights/best.pt
+    fi
+
     cd "$current_location/YoloModels/YoloV9/"
     python3 train_dual.py \
         --epochs $epochs \
@@ -138,11 +177,14 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
         --data $datasetPath \
         --cfg $current_location/YoloModels/YoloV9/models/detect/$select_model.yaml \
         --hyp hyp.scratch-high.yaml  \
-        --weights $weights \
+        --weights $weight \
         --project $experimetsPath/YoloV9/train\
-        --name exp
+        --name exp \
+        --close-mosaic 15\
+        --patience 30 \
 
-elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; then    # Source file path
+
+elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; then
     cd "$experimetsPath/YoloV9/weightsGelan/"
     weights_url="https://github.com/WongKinYiu/yolov9/releases/download/v0.1/$select_model.pt"
     if [ -f "$select_model.pt" ]; then
@@ -152,8 +194,13 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
         curl -L -o "$select_model.pt" "$weights_url"
     fi
     if [ -z "$weights" ]; then
-        weights=$experimetsPath/YoloV9/weights/$select_model.pt
+        weight=$experimetsPath/YoloV9/weights/$select_model.pt
     fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV7/train/${weights}/weights/best.pt
+    fi
+
     cd "$current_location/YoloModels/YoloV9/"
     python3 train.py \
         --epochs $epochs \
@@ -161,9 +208,11 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
         --data $datasetPath \
         --cfg $current_location/YoloModels/YoloV9/models/detect/$select_model.yaml \
         --hyp hyp.scratch-high.yaml  \
-        --weights $weights \
+        --weights $weight \
         --project $experimetsPath/YoloV9/trainGelan \
-        --name exp
+        --name exp \
+        --close-mosaic 15\
+        --patience 30
 
 else
     echo "Invalid model. Please provide either 'yolov5', 'yolov6', 'yolov7', 'yolov8', 'yolov9' or 'yolonas'."

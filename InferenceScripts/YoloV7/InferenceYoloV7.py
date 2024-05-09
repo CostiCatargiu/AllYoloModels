@@ -72,8 +72,8 @@ def detect(save_img=False):
     fps_calculator = CalcFPS()
     classesFilter = os.environ.get('FILTER_LIST', '').split(',')
     dets_list = []
-    confidence_list = []
     conf_list = []
+    cls_list = []
     for path, img, im0s, vid_cap in dataset:
         img = torch.from_numpy(img).to(device)
         img = img.half() if half else img.float()  # uint8 to fp16/32
@@ -118,17 +118,20 @@ def detect(save_img=False):
             save_path = str(save_dir / p.name)  # img.jpg
             txt_path = str(save_dir / 'labels' / p.stem) + ('' if dataset.mode == 'image' else f'_{frame}')  # img.txt
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
+            dets = []
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_coords(img.shape[2:], det[:, :4], im0.shape).round()
 
-                dets = []
                 # Print results
                 for c in det[:, -1].unique():
                     n = (det[:, -1] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
                     dets.append(n.item())
                     dets.append(names[int(c)])
+
+                confidence_list = []
+                name_list = []
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
@@ -137,13 +140,19 @@ def detect(save_img=False):
                         line = (cls, *xywh, conf) if opt.save_conf else (cls, *xywh)  # label format
                         with open(txt_path + '.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
-                    confidence_list.append(conf)
+                    confidence_str = f"{conf.item():.2f}"
+                    confidence_list.append(float(confidence_str))
+
+                    # print(confidence_list)
                     if save_img or view_img:  # Add bbox to image
                         label = f'{names[int(cls)]} {conf:.2f}'
                         for i in range(0, len(classesFilter)):
                             if classesFilter[i] != names[int(cls)]:
-                                plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
-            #
+                                plot_one_box(xyxy, im0, label=label, color=colors[int(cls)])
+                reversed_list = confidence_list[::-1]
+                conf_list.append(reversed_list)
+
+
             # Print time (inference + NMS)
             print(f'{s}Done. ({(1E3 * (t2 - t1)):.1f}ms) Inference, ({(1E3 * (t3 - t2)):.1f}ms) NMS')
             # Stream results
@@ -155,7 +164,8 @@ def detect(save_img=False):
                 show_details(p, im0, dets, inference_time, avg_fps)
 
                 dets_list.append(dets)
-                conf_list.append(confidence_list)
+                # print(conf_list)
+                # print(dets_list)
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':

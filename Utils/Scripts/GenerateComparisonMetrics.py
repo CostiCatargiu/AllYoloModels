@@ -43,25 +43,25 @@ def reformat_and_compare_tables(dict_list, headers, file):
     all_classes = sorted(all_classes)
 
     max_class_name_length = max(len(class_name) for class_name in all_classes)
-    class_width = max(12, max_class_name_length + 2)
+    class_width = max(4, max_class_name_length + 2)
 
     for table_index in range(len(dict_list[0])):
         table_name = dict_list[0][table_index]['name']
         print(f"\nComparison for: {table_name}", file=file)
-        print("{:<15} {:<8}".format("Model", "Metric"), end="", file=file)
+        print("{:<10} {:<8}".format("Model", "Metric"), end="", file=file)
         for class_name in all_classes:
             print(f"{class_name:<{class_width}}", end="", file=file)
         print("\n" + "-" * (23 + class_width * len(all_classes)), file=file)
 
         for idx, d in enumerate(dict_list):
             model_name = headers[idx]
-            print("{:<15} {:<8}".format(model_name, "AvgP"), end="", file=file)
+            print("{:<10} {:<8}".format(model_name, "AvgP"), end="", file=file)
             for class_name in all_classes:
                 avgp = d[table_index].get(class_name, {}).get('AvgP', 'N/A')
                 print(f"{avgp:<{class_width}}", end="", file=file)
             print(file=file)
 
-            print("{:<15} {:<8}".format(model_name, "NrDet"), end="", file=file)
+            print("{:<10} {:<8}".format(model_name, "NrDet"), end="", file=file)
             for class_name in all_classes:
                 nrdet = d[table_index].get(class_name, {}).get('NrDet', 'N/A')
                 print(f"{nrdet:<{class_width}}", end="", file=file)
@@ -74,6 +74,7 @@ def extract_additional_data(filename):
 
     additional_data = {}
     total_detections_pattern = re.compile(r'Total number of detections:\s*(\d+)')
+    confidence_threshold_pattern = re.compile(r'confidence threshold:\s*(\d+\.?\d*)', re.IGNORECASE)
     avg_fps_pattern = re.compile(r'Average FPS:\s*([\d\.]+)')
     avg_inf_time_pattern = re.compile(r'Average InfTime:\s*([\d\.]+)\s*ms')
     total_inf_time_pattern = re.compile(r'Total inference time:\s*([\d\.]+)\s*s')
@@ -81,13 +82,14 @@ def extract_additional_data(filename):
     for line in lines:
         if match := total_detections_pattern.search(line):
             additional_data['All Detections'] = match.group(1)
-        elif match := avg_fps_pattern.search(line):
+        if match := avg_fps_pattern.search(line):
             additional_data['Avg FPS'] = match.group(1)
-        elif match := avg_inf_time_pattern.search(line):
+        if match := avg_inf_time_pattern.search(line):
             additional_data['Avg InfTime'] = match.group(1) + ' ms'
-        elif match := total_inf_time_pattern.search(line):
+        if match := total_inf_time_pattern.search(line):
             additional_data['Total InfTime'] = match.group(1) + ' s'
-
+        if match := confidence_threshold_pattern.search(line):
+            additional_data['Conf_thr'] = match.group(1)
     return additional_data
 
 def compare_additional_metrics(all_additional_data, headers, file):
@@ -107,18 +109,34 @@ def compare_additional_metrics(all_additional_data, headers, file):
         print(file=file)
     print("-" * (15 + 12 * len(headers)), file=file)
 
+def read_last_line(filename):
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+    return lines[-1] if lines else None
+def print_last_lines_from_files(file_list,file):
+    for filename in file_list:
+        base_filename = os.path.splitext(os.path.basename(filename))[0]
+        last_line = read_last_line(filename)
+        print(f"{base_filename}: {last_line}",file=file)
+
+# Print the last line from each file
+
+
 def main():
-    directory_path = 'ExperimentalResults/Metrics/'
+    directory_path = '../../ExperimentalResults/Metrics/'
     filenames = [os.path.join(directory_path, f) for f in os.listdir(directory_path) if f.endswith('.txt')]
+    filenames.sort()
     headers = [os.path.basename(file).split('.')[0] for file in filenames]
 
-    output_file = "Utils/Scripts/metrics.txt"
+    output_file = "metrics.txt"
     with open(output_file, 'w') as file:
         all_table_data = [extract_table_data(file_name) for file_name in filenames]
         reformat_and_compare_tables(all_table_data, headers, file)
 
         all_additional_data = [extract_additional_data(file_name) for file_name in filenames]
         compare_additional_metrics(all_additional_data, headers, file)
+        print_last_lines_from_files(filenames, file)
+
 
 if __name__ == "__main__":
     main()

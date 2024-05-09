@@ -31,16 +31,16 @@ downloadCCOCOannotations() {
 
 # Function to scan a directory and get the path of a video by its index
 get_video_path() {
-    local directory="/home/constantin/Doctorat/YoloModels/testVideos/" # Modify this path as needed
+    local directory="/home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay" # Modify this path as needed
     local video_index=$1
 
-    # Create an empty array to store the paths of MP4 files
+    # Create an empty array to store the paths of video files
     declare -a video_list
 
-    # Scan the directory and add MP4 file paths to the array
+    # Scan the directory and add video file paths to the array
     while IFS= read -r -d $'\0' file; do
         video_list+=("$file")
-    done < <(find "$directory" -type f -name "*.mp4" -print0)
+    done < <(find "$directory" -type f \( -name "*.mp4" -o -name "*.mkv" \) -print0)
 
     # Check if video index is provided and valid
     if [[ -z "$video_index" || $video_index -lt 0 || $video_index -ge ${#video_list[@]} ]]; then
@@ -53,16 +53,17 @@ get_video_path() {
 }
 
 
-list_videos() {
-    local directory="/home/constantin/Doctorat/YoloModels/testVideos/" # Modify this path as needed
 
-    # Create an empty array to store the paths of MP4 files
+list_videos() {
+    local directory="/home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/" # Modify this path as needed
+
+    # Create an empty array to store the paths of video files
     declare -a video_list
 
-    # Scan the directory and add MP4 file paths to the array
+    # Scan the directory and add video file paths to the array
     while IFS= read -r -d $'\0' file; do
         video_list+=("$file")
-    done < <(find "$directory" -type f -name "*.mp4" -print0)
+    done < <(find "$directory" -type f \( -name "*.mp4" -o -name "*.mkv" \) -print0)
 
     # List videos with their index
     echo ":"
@@ -70,4 +71,5 @@ list_videos() {
         echo "[$i] $(basename "${video_list[$i]}")"
     done
 }
+
 

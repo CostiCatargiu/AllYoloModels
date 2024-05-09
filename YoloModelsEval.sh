@@ -3,12 +3,17 @@
 source UtilFunctions.sh
 
 datasetPath=$(yq e '.datasetPath' parameters.yaml)
-confThr=0.001
+confThr=0.01
 iouThr=0.6
 batchSize=32
 imgSize=640
-testSplit="valid"
+testSplit="test"
+labelTextSize=2
+labelTextColor="white"
 
+video_index=2
+export LABEL_SIZE="$labelTextSize"
+export LABEL_COLOR="$labelTextColor"
 #Delete cache labels
 delete_cache
 
@@ -78,19 +83,25 @@ done
 current_location=$(pwd)
 experimetsPath=$current_location/ExperimentalResults
 inferenceScriptsPath=$current_location/InferenceScripts/
+export LABEL_SIZE="$labelTextSize"
+export LABEL_COLOR="$labelTextColor"
 
 if [[ "$select_model" == *"yolov5"* ]]; then
     if [ -z "$weights" ]; then
-        weights=$experimetsPath/YoloV5/weights/$select_model.pt
+        weight=$experimetsPath/YoloV5/weights/$select_model.pt
     fi
-    if [[ "$testSplit" == *"test"* ]]; then
-        evalSelect
+    if [ -z "$weights" ]; then
+        weight=$experimetsPath/YoloV5/weights/$select_model.pt
+    fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV5/train/${weights}/weights/best.pt
     fi
 
     cd "$current_location/YoloModels/YoloV5/"
     python3 val.py \
         --data $datasetPath \
-        --weights $weights \
+        --weights $weight \
         --conf-thres $confThr \
         --iou-thres $iouThr\
         --batch-size $batchSize \
@@ -112,8 +123,13 @@ elif [[ "$select_model" == *"yolov6"* ]]; then
     destination_directory1="$current_location/YoloModels/YoloV6/yolov6/core/"
     cp "$source_file1" "$destination_directory1"
     if [ -z "$weights" ]; then
-        weights=$experimetsPath/YoloV6/weights/$select_model.pt
+        weight=$experimetsPath/YoloV6/weights/$select_model.pt
     fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV6/train/${weights}/weights/best_ckpt.pt
+    fi
+
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
     fi
@@ -122,12 +138,13 @@ elif [[ "$select_model" == *"yolov6"* ]]; then
     python3 eval.py \
         --data $datasetPath \
         --batch-size $batchSize \
-        --weights $weights \
+        --weights $weight \
         --task val \
         --conf-thres $confThr \
         --iou-thres $iouThr\
         --save_dir  $experimetsPath/YoloV6/eval/eval \
         --name exp \
+        --verbose \
         --do_coco_metric True --do_pr_metric True --plot_curve True --plot_confusion_matrix
 
     if [[ "$testSplit" == *"test"* ]]; then
@@ -147,8 +164,13 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
         curl -L -o "$select_model.pt" "$weights_url"
     fi
     if [ -z "$weights" ]; then
-        weights=$experimetsPath/YoloV7/weights/$select_model.pt
+        weight=$experimetsPath/YoloV7/weights/$select_model.pt
     fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV7/train/${weights}/weights/best.pt
+    fi
+
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
     fi
@@ -158,14 +180,12 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
         --data $datasetPath \
         --batch-size $batchSize \
         --img $imgSize \
-        --weights $weights \
+        --weights $weight \
         --conf-thres $confThr \
         --iou-thres $iouThr \
         --project $experimetsPath/YoloV7/eval \
         --name exp \
         --iou $iouThr
-#python test.py --data data/coco.yaml --img 640
-#--batch 32 --conf 0.001 --iou 0.65 --device 0 --weights yolov7.pt --name yolov7_640_val
 
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
@@ -176,16 +196,19 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
 
 elif [[ "$select_model" == *"yolov8"* ]]; then
     if [ -z "$weights" ]; then
-        weights=$experimetsPath/YoloV8/weights/$select_model.pt
+        weight=$experimetsPath/YoloV8/weights/$select_model.pt
     fi
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
     fi
 
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV8/train/${weights}/weights/best.pt
+    fi
     yolo \
         task=detect \
         mode=val \
-        model=$weights \
+        model=$weight \
         project=$experimetsPath/YoloV8/eval \
         name=exp \
         data=$datasetPath \
@@ -210,8 +233,13 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
         curl -L -o "$select_model.pt" "$weights_url"
     fi
     if [ -z "$weights" ]; then
-        weights=$experimetsPath/YoloV8/weights/$select_model.pt
+        weight=$experimetsPath/YoloV8/weights/$select_model.pt
     fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV9/train/${weights}/weights/best.pt
+    fi
+
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
     fi
@@ -219,7 +247,7 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
     python3 val_dual.py \
         --data $datasetPath \
         --batch-size $batchSize \
-        --weights $experimetsPath/YoloV9/weights/$select_model.pt \
+        --weights  $weight\
         --conf-thres $confThr \
         --iou-thres $iouThr \
         --project $experimetsPath/YoloV9/eval \
@@ -243,8 +271,13 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
         curl -L -o "$select_model.pt" "$weights_url"
     fi
     if [ -z "$weights" ]; then
-        weights=$experimetsPath/YoloV9/weights/$select_model.pt
+        weight=$experimetsPath/YoloV9/weights/$select_model.pt
     fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV9/trainGelan/${weights}/weights/best.pt
+    fi
+
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
     fi
@@ -252,7 +285,7 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
     python3 val.py \
         --data $datasetPath \
         --batch-size $batchSize \
-        --weights $experimetsPath/YoloV9/weights/$select_model.pt \
+        --weights  $weight\
         --conf-thres $confThr \
         --iou-thr $iouThr\
         --project $experimetsPath/YoloV9/evalGelan \

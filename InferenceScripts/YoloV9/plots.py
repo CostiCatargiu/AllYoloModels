@@ -20,11 +20,6 @@ from utils.general import (CONFIG_DIR, FONT, LOGGER, check_font, check_requireme
 from utils.metrics import fitness
 from utils.segment.general import scale_image
 
-# Settings
-RANK = int(os.getenv('RANK', -1))
-matplotlib.rc('font', **{'size': 11})
-matplotlib.use('Agg')  # for writing to files only
-
 color_label = {
     "green": (0, 255, 0),
     "blue": (255, 0, 0),
@@ -38,6 +33,12 @@ color_label = {
 
 labelSize = int(os.environ.get('LABEL_SIZE'))
 labelColor = os.environ.get('LABEL_COLOR')
+
+# Settings
+RANK = int(os.getenv('RANK', -1))
+matplotlib.rc('font', **{'size': 11})
+matplotlib.use('Agg')  # for writing to files only
+
 
 class Colors:
     # Ultralytics color palette https://ultralytics.com/
@@ -89,15 +90,13 @@ class Annotator:
                                        size=font_size or max(round(sum(self.im.size) / 2 * 0.035), 12))
         else:  # use cv2
             self.im = im
-        # self.lw = line_width or max(round(sum(im.shape) / 3 * 0.001), 2)  # line width
         self.lw = labelSize
         self.txtcolor = color_label[labelColor]
 
-    def box_label(self, box, label='', color=(0, 0, 0)):
+    def box_label(self, box, label='', color=(128, 128, 128), txt_color=(255, 255, 255)):
         # Add one xyxy box to image with label
-        txt_color = self.txtcolor
         if self.pil or not is_ascii(label):
-            self.draw.rectangle(box, width=4, outline=color)  # box
+            self.draw.rectangle(box, width=self.lw, outline=color)  # box
             if label:
                 w, h = self.font.getsize(label)  # text width, height
                 outside = box[1] - h >= 0  # label fits outside box
@@ -120,9 +119,8 @@ class Annotator:
                 cv2.putText(self.im,
                             label, (p1[0], p1[1] - 2 if outside else p1[1] + h + 2),
                             0,
-
                             self.lw / 3,
-                            txt_color,
+                            self.txtcolor,
                             thickness=tf,
                             lineType=cv2.LINE_AA)
 
@@ -176,7 +174,7 @@ class Annotator:
         # Add rectangle to image (PIL-only)
         self.draw.rectangle(xy, fill, outline, width)
 
-    def text(self, xy, text, txt_color=(0, 0, 0), anchor='top'):
+    def text(self, xy, text, txt_color=(255, 255, 255), anchor='top'):
         # Add text to image (PIL-only)
         if anchor == 'bottom':  # start y from font bottom
             w, h = self.font.getsize(text)  # text width, height
@@ -287,7 +285,7 @@ def plot_images(images, targets, paths=None, fname='images.jpg', names=None):
 
     # Annotate
     fs = int((h + w) * ns * 0.01)  # font size
-    annotator = Annotator(mosaic, line_width=round(fs / 2), font_size=fs, pil=True, example=names)
+    annotator = Annotator(mosaic, line_width=round(fs / 10), font_size=fs, pil=True, example=names)
     for i in range(i + 1):
         x, y = int(w * (i // ns)), int(h * (i % ns))  # block origin
         annotator.rectangle([x, y, x + w, y + h], None, (255, 255, 255), width=2)  # borders

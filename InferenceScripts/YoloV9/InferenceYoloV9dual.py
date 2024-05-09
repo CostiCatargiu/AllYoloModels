@@ -90,7 +90,6 @@ def run(
     dets_list = []
     fps_list = []
     inf_list = []
-    confidence_list = []
     global conf_list
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(), Profile(), Profile())
@@ -140,11 +139,13 @@ def run(
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
             imc = im0.copy() if save_crop else im0  # for save_crop
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
+            dets = []
+
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
 
-                dets = []
+                confidence_list = []
                 # Print results
                 for c in det[:, 5].unique():
                     n = (det[:, 5] == c).sum()  # detections per class
@@ -171,8 +172,8 @@ def run(
                     confidence = float(conf)
                     confidence_str = f"{confidence:.2f}"
                     confidence_list.append(confidence_str)
-                conf_list.append(confidence_list)
-            # Stream results
+                reversed_list = confidence_list[::-1]
+                conf_list.append(reversed_list)            # Stream results
             im0 = annotator.result()
             yolo_model = os.environ.get('PARAMETER')
             if view_img:

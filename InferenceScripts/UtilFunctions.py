@@ -18,8 +18,11 @@ countFlag = os.environ.get('COUNT_FLAG')
 fontScale = float(os.environ.get('FONT_SCALE'))
 font_thickness = int(os.environ.get('FONT_THICKNESS'))
 posScale = int(os.environ.get('POS_SCALE'))
+video_path = ""
+initialypos = int(os.environ.get('INITIALYPOS'))
 
 def get_nr_frames():
+    global video_path
     video_path = os.environ.get('VIDEO_PATH')
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
@@ -59,7 +62,7 @@ def draw_text(
     return text_size
 
 def show_details(p, im0, dets, inference_time, avg_fps):
-    global nrFrames, frames, yolo_model, conf_thr, metric_thr, device_name, classesCount, countFlag, font_thickness, fontScale, posScale, fps_list, inf_list
+    global nrFrames, frames, yolo_model, conf_thr, metric_thr, device_name, classesCount, countFlag, font_thickness, fontScale, posScale, fps_list, inf_list, initialypos
     nrFrames = get_nr_frames()
     frames +=1
     avg_fps = int(round(avg_fps))
@@ -67,10 +70,10 @@ def show_details(p, im0, dets, inference_time, avg_fps):
     inference_time_ms = inference_time *1000
     inf_list.append(inference_time_ms)
 
-    draw_text(im0, f"{device_name} Model: {yolo_model}", pos=(20, 20), font_scale=fontScale,
+    draw_text(im0, f"{device_name} | Model: {yolo_model}", pos=(20, initialypos), font_scale=fontScale,
               text_color=colors(15,True), text_color_bg=(255, 255, 255), font_thickness=font_thickness,)
 
-    draw_text(im0, f"Frames: {frames}/{nrFrames} FPS: {avg_fps:0.1f}  Time: {inference_time_ms:0.1f}ms", pos=(20, 20+posScale), font_scale=fontScale,
+    draw_text(im0, f"Frames: {frames}/{nrFrames} | FPS: {avg_fps:0.1f}  | Time: {inference_time_ms:0.1f}ms/frame", pos=(20, initialypos+posScale), font_scale=fontScale,
               text_color=(204, 85, 17), text_color_bg=(255, 255, 255), font_thickness=font_thickness,)
 
     if countFlag =='ok':
@@ -78,7 +81,8 @@ def show_details(p, im0, dets, inference_time, avg_fps):
         for i in range(0, len(classesCount)):
             ok = 0
             for j in range(0, (len(dets))):
-                if dets[j] == classesCount[i] or str(dets[j])[:-1] == classesCount[i]:
+                if dets[j] == classesCount[
+                    i] or str(dets[j])[:-1] == classesCount[i]:
                     nr_dets.append(str(dets[j-1]))
                     ok = 1
             if ok == 0:
@@ -88,11 +92,11 @@ def show_details(p, im0, dets, inference_time, avg_fps):
         total_det = sum([int(i) for i in nr_dets if type(i)== int or i.isdigit()])
         for i in range(0, len(classesCount)):
             draw_text(im0, f"{classesCount[i]}:{nr_dets[i]}",
-                      pos=(20, 20+posScale*(i+2)), font_scale=fontScale,
+                      pos=(20, initialypos+posScale*(i+2)), font_scale=fontScale,
                       text_color=colors(i,True), text_color_bg=(255, 255, 255), font_thickness=font_thickness, )
 
         draw_text(im0, f"total: {total_det}",
-                  pos=(20, 20+posScale*(len(classesCount)+2)), font_scale=fontScale,
+                  pos=(20, initialypos+posScale*(len(classesCount)+2)), font_scale=fontScale,
                   text_color=colors(i,True), text_color_bg=(255, 255, 255), font_thickness=font_thickness, )
 
     cv2.imshow(str(p), im0)
@@ -130,6 +134,7 @@ def avg_time(path):
         f.write(str(average_inf))
         f.write("ms per frame.\n")
         f.write(f"Total inference time: {str(total_inf_time)}s for {str(nrFrames)} frames.")
+        f.write(f"\nVideo used for inference: {video_path}")
 
 def average_conf(dets_list, conf_list, path):
     # Initialize an empty dictionary to collect confidences for each class
@@ -159,9 +164,15 @@ def average_conf(dets_list, conf_list, path):
     # Calculate the average for each key for values greater than 0.6 and count these values
     average_dict2 = {}
     average_dict3 = {}
+    average_dict4 = {}
+    average_dict5 = {}
+    average_dict6 = {}
+    average_dict7 = {}
+    average_dict8 = {}
+
     for key, values in result_dict.items():
         # Convert and filter values greater than 0.6
-        filtered_values = list(filter(lambda x: x > thr_metric, map(float, values)))
+        filtered_values = list(filter(lambda x: x >= 0.9, map(float, values)))
 
         # Calculate average if there are any values greater than 0.6, otherwise set to None
         if filtered_values:
@@ -175,7 +186,7 @@ def average_conf(dets_list, conf_list, path):
 
     for key, values in result_dict.items():
         # Convert and filter values greater than 0.6
-        filtered_values = list(filter(lambda x: x <= thr_metric, map(float, values)))
+        filtered_values = list(filter(lambda x: 0.8 <= x < 0.9, map(float, values)))
 
         # Calculate average if there are any values greater than 0.6, otherwise set to None
         if filtered_values:
@@ -185,6 +196,59 @@ def average_conf(dets_list, conf_list, path):
 
         # Store the average and the count of values lower than 0.6
         average_dict3[key] = (average, len(filtered_values))
+
+    for key, values in result_dict.items():
+        # Convert and filter values greater than 0.6
+        filtered_values = list(filter(lambda x: 0.7 <= x < 0.8, map(float, values)))
+
+        # Calculate average if there are any values greater than 0.6, otherwise set to None
+        if filtered_values:
+            average = round(sum(filtered_values) / len(filtered_values), 2)
+        else:
+            average = None  # Or set to 0 or any indicator that no values are above the threshold
+
+        # Store the average and the count of values lower than 0.6
+        average_dict4[key] = (average, len(filtered_values))
+
+    for key, values in result_dict.items():
+        # Convert and filter values greater than 0.6
+        filtered_values = list(filter(lambda x: 0.6 <= x < 0.7, map(float, values)))
+
+        # Calculate average if there are any values greater than 0.6, otherwise set to None
+        if filtered_values:
+            average = round(sum(filtered_values) / len(filtered_values), 2)
+        else:
+            average = None  # Or set to 0 or any indicator that no values are above the threshold
+
+        # Store the average and the count of values lower than 0.6
+        average_dict5[key] = (average, len(filtered_values))
+
+    for key, values in result_dict.items():
+        # Convert and filter values greater than 0.6
+        filtered_values = list(filter(lambda x: 0.5 <= x < 0.6, map(float, values)))
+
+        # Calculate average if there are any values greater than 0.6, otherwise set to None
+        if filtered_values:
+            average = round(sum(filtered_values) / len(filtered_values), 2)
+        else:
+            average = None  # Or set to 0 or any indicator that no values are above the threshold
+
+        # Store the average and the count of values lower than 0.6
+        average_dict6[key] = (average, len(filtered_values))
+
+    for key, values in result_dict.items():
+        # Convert and filter values greater than 0.6
+        filtered_values = list(filter(lambda x: 0.4 <= x < 0.5, map(float, values)))
+
+        # Calculate average if there are any values greater than 0.6, otherwise set to None
+        if filtered_values:
+            average = round(sum(filtered_values) / len(filtered_values), 2)
+        else:
+            average = None  # Or set to 0 or any indicator that no values are above the threshold
+
+        # Store the average and the count of values lower than 0.6
+        average_dict7[key] = (average, len(filtered_values))
+
 
     if not os.path.exists(path):
         os.makedirs(path)
@@ -203,7 +267,7 @@ def average_conf(dets_list, conf_list, path):
         f.write(output_string+'\n')
         print()
 
-        output_string = "Total number of detections for each class and average precision per class."
+        output_string = f"Total number of detections for each class and average precision per class using a conf_thr={conf_thr}"
         print(output_string)
         f.write(output_string + '\n')
         print(header)
@@ -217,7 +281,7 @@ def average_conf(dets_list, conf_list, path):
         print()
         f.write("\n")
 
-        output_string = f"Total number of detections and average of confidence score greater than {thr_metric} for each class."
+        output_string = f"Total number of detections and average of confidence score greater than 0.9 for each class."
         print(output_string)
         f.write(output_string + '\n')
         print(header)
@@ -235,7 +299,7 @@ def average_conf(dets_list, conf_list, path):
         print()
         f.write("\n")
 
-        output_string = f"Total number of detections and average of confidence score lower than {thr_metric} for each class."
+        output_string = f"Total number of detections and average of confidence score between 0.8 and 0.9 for each class."
         print(output_string)
         f.write(output_string)
         print(header)
@@ -251,6 +315,74 @@ def average_conf(dets_list, conf_list, path):
             print(row)
             f.write(row + '\n')
         print()
+
+        output_string = f"\nTotal number of detections and average of confidence score between 0.7 and 0.8 for each class."
+        print(output_string)
+        f.write(output_string)
+        print(header)
+        f.write('\n' + header + '\n')
+
+        # Print the results with each label, its average, and count of values greater than 0.6
+        for key, (average, count) in average_dict4.items():
+            if average is None:
+                average_display = "0"  # text for None
+            else:
+                average_display = f"{average:.3f}"
+            row = f"{key.capitalize():<17} {average_display:<14} {count:<9} "
+            print(row)
+            f.write(row + '\n')
+        print()
+        output_string = f"\nTotal number of detections and average of confidence score between 0.6 and 0.7 for each class."
+        print(output_string)
+        f.write(output_string)
+        print(header)
+        f.write('\n' + header + '\n')
+
+        # Print the results with each label, its average, and count of values greater than 0.6
+        for key, (average, count) in average_dict5.items():
+            if average is None:
+                average_display = "0"  # text for None
+            else:
+                average_display = f"{average:.3f}"
+            row = f"{key.capitalize():<17} {average_display:<14} {count:<9} "
+            print(row)
+            f.write(row + '\n')
+        print()
+
+        output_string = f"\nTotal number of detections and average of confidence score between 0.5 and 0.6 for each class."
+        print(output_string)
+        f.write(output_string)
+        print(header)
+        f.write('\n' + header + '\n')
+
+        # Print the results with each label, its average, and count of values greater than 0.6
+        for key, (average, count) in average_dict6.items():
+            if average is None:
+                average_display = "0"  # text for None
+            else:
+                average_display = f"{average:.3f}"
+            row = f"{key.capitalize():<17} {average_display:<14} {count:<9} "
+            print(row)
+            f.write(row + '\n')
+        print()
+
+        output_string = f"\nTotal number of detections and average of confidence score between 0.4 and 0.5 for each class."
+        print(output_string)
+        f.write(output_string)
+        print(header)
+        f.write('\n' + header + '\n')
+
+        # Print the results with each label, its average, and count of values greater than 0.6
+        for key, (average, count) in average_dict6.items():
+            if average is None:
+                average_display = "0"  # text for None
+            else:
+                average_display = f"{average:.3f}"
+            row = f"{key.capitalize():<17} {average_display:<14} {count:<9} "
+            print(row)
+            f.write(row + '\n')
+        print()
+
 
 def class_counts(dets_list, path):
     class_counts = defaultdict(int)

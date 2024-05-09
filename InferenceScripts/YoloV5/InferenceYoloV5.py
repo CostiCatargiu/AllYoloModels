@@ -202,11 +202,11 @@ def run(
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
             imc = im0.copy() if save_crop else im0  # for save_crop
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
+            dets = []
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
 
-                dets = []
                 # Print results
                 for c in det[:, 5].unique():
                     n = (det[:, 5] == c).sum()  # detections per class
@@ -239,13 +239,12 @@ def run(
                                 annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / "crops" / names[c] / f"{p.stem}.jpg", BGR=True)
-
+                dets_list.append(dets)
+                reversed_list = confidence_list[::-1]
+                conf_list.append(reversed_list)
                 # print("confidence_list:", confidence_list)
             print(s)
-
-            dets_list.append(dets)
-            conf_list.append(confidence_list)
-            # Stream results
+           # Stream results
             im0 = annotator.result()
             if view_img:
                 if platform.system() == "Linux" and p not in windows:
