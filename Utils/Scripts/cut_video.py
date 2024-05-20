@@ -19,9 +19,10 @@ def extract_and_combine_parts(input_path, output_path, time_segments):
     final_clip.write_videofile(output_path, codec='libx264')  # You can change the codec if needed
 
 # Example usage:
-input_video_path = '/home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/foctudor.mp4'
-output_video_path = '/home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/foctudor_cut.mp4'
+input_video_path = '/home/constantin/Doctorat/YoloModels/testVideos/trafficintersection5.mp4'
+output_video_path = '//home/constantin/Doctorat/YoloModels/testVideos/trafficintersection5_cut.mp4'
 # time_segments = [(0, 35),(120, 130), (240, 270)]  # List of tuples (start_time, end_time) in seconds
-time_segments = [(10, 30), (60, 80)]  # List of tuples (start_time, end_time) in seconds
+# time_segments = [(30, 33), (65, 68), (119, 122), (190,193), (250,253), (320, 323), (392,396), (447,450),(560,563), (590,593)]  # List of tuples (start_time, end_time) in seconds
+time_segments = [(30, 45)]  # List of tuples (start_time, end_time) in seconds
 
 extract_and_combine_parts(input_video_path, output_video_path, time_segments)

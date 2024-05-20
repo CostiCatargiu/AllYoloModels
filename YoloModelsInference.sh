@@ -15,6 +15,8 @@ labelTextColor="white"
 labelTextSize=2
 video_index=2
 initialypos=20
+nrCompareFrames=2
+saveConfusedPred=true
 
 # Check if the required parameter is provided
 if [ "$#" -eq 0 ]; then
@@ -50,6 +52,9 @@ usage() {
     echo "  optional_param11 (-p11 || --initialypos): default: = $initialypos"
     echo "  optional_param12 (-p12 || --labelTextColor): default: = $labelTextColor. Options: "blue","green", "white", "black", "cyan", "magenta","gray", "roboflow""
     echo "  optional_param13 (-p13 || --labelTextSize): default: = $labelTextSize"
+    echo "  optional_param14 (-p14 || --nrCompareFrames): default: = $nrCompareFrames"
+    echo "  optional_param15 (-p15 || --saveConfusedPred): default: = $saveConfusedPred"
+
 }
 
 # Parse optional parameters
@@ -108,6 +113,14 @@ while [[ "$#" -gt 0 ]]; do
             labelTextSize="$2"
             shift 2
             ;;
+        -p14|--nrCompareFrames)
+            nrCompareFrames="$2"
+            shift 2
+            ;;
+        -p15|--saveConfusedPred)
+            saveConfusedPred="$2"
+            shift 2
+            ;;
 
         *)  # Unknown option
             echo "Unknown option: $1"
@@ -143,6 +156,7 @@ export METRIC_THR="$thr_metric"
 export LABEL_SIZE="$labelTextSize"
 export LABEL_COLOR="$labelTextColor"
 export INITIALYPOS="$initialypos"
+export NR_COMPARE_FRAMES="$nrCompareFrames"
 
 
 export FONT_SCALE="$fontSize"
@@ -183,6 +197,8 @@ if [[ "$select_model" == *"yolov5"* ]]; then
         --name exp \
         --device $device \
         --view-img
+    cd "$inferenceScriptsPath"
+      python3 ExtractFramesDuplicate.py $experimetsPath/YoloV5/infer
 
 elif [[ "$select_model" == *"yolov6"* ]]; then
     if [ -z "$weights" ]; then
@@ -208,7 +224,12 @@ elif [[ "$select_model" == *"yolov6"* ]]; then
         --name exp \
         --view-img \
         --device $device \
-        --yaml /home/constantin/Doctorat/FireDataset/RoboflowDS/yolov6/data.yaml
+        --yaml $datasetPath
+
+        if [ "$saveConfusedPred" = "true" ]; then
+          cd "$inferenceScriptsPath"
+             python3 ExtractFramesDuplicate.py $experimetsPath/YoloV6/infer
+        fi
 
 elif [[ "$select_model" == *"yolov7"* ]]; then
     source_file="$inferenceScriptsPath/YoloV7/InferenceYoloV7.py"
@@ -243,6 +264,10 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
         --conf-thres $conf_thr\
         --device $device
 
+        if [ "$saveConfusedPred" = "true" ]; then
+        cd "$inferenceScriptsPath"
+           python3 ExtractFramesDuplicate.py $experimetsPath/YoloV7/infer
+        fi
 
 elif [[ "$select_model" == *"yolov8"* ]]; then
     if [ -z "$weights" ]; then
@@ -270,6 +295,12 @@ elif [[ "$select_model" == *"yolov8"* ]]; then
         --project $experimetsPath/YoloV8/infer \
         --name exp \
         --device $device
+
+    if [ "$saveConfusedPred" = "true" ]; then
+        cd "$inferenceScriptsPath"
+           python3 ExtractFramesDuplicate.py $experimetsPath/YoloV8/infer
+    fi
+
 
 elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; then    # Source file path
     source_file="$inferenceScriptsPath/YoloV9/InferenceYoloV9dual.py"
@@ -305,6 +336,11 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
         --view-img \
         --device $device
 
+    if [ "$saveConfusedPred" = "true" ]; then
+      cd "$inferenceScriptsPath"
+         python3 ExtractFramesDuplicate.py $experimetsPath/YoloV9/infer
+    fi
+
 elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; then    # Source file path
     source_file="$inferenceScriptsPath/YoloV9/InferenceYoloV9gelan.py"
     destination_directory="$current_location/YoloModels/YoloV9"
@@ -338,6 +374,10 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
         --view-img \
         --device $device
 
+    if [ "$saveConfusedPred" = "true" ]; then
+        cd "$inferenceScriptsPath"
+           python3 ExtractFramesDuplicate.py $experimetsPath/YoloV9/inferGelan
+    fi
 
 else
     echo "Invalid model. Please provide either 'yolov5', 'yolov6', 'yolov7', 'yolov8', 'yolov9' or 'yolonas'."

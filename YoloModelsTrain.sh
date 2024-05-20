@@ -8,7 +8,6 @@ batchSize=64
 labelTextColor="black"
 labelTextSize=2
 nr_classes=3
-classes_names=['fire', 'other', 'smoke']
 labelTextColor="white"
 labelTextSize=2
 
@@ -21,7 +20,7 @@ delete_cache
 
 # Function to display usage information
 usage() {
-    echo "Usage: $0 <required param> [optional_param1] [optional_param2]"
+    echo "Usage: $0 <required param> [optional_param1] [optional_param2] [optional_param3]"
     echo "Parameters:"
     echo "  required_param: YoloModel that want to use for training: egg. yolov5s, yolov5m, yolov6s, yolov7, yolov8s, yolov8m, yolov9-c, gelan-c, yolonas"
     echo "  optional_param1 (datasetPath): default: = $datasetPath"

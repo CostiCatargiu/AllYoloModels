@@ -2,9 +2,9 @@ from supervision.draw.utils import draw_text
 import os, cv2
 from collections import deque
 import numpy as np
-from collections import defaultdict
-import json
+import json, time
 from ultralytics.utils.plotting import colors
+import yaml
 
 fps_list=[]
 inf_list = []
@@ -18,8 +18,31 @@ countFlag = os.environ.get('COUNT_FLAG')
 fontScale = float(os.environ.get('FONT_SCALE'))
 font_thickness = int(os.environ.get('FONT_THICKNESS'))
 posScale = int(os.environ.get('POS_SCALE'))
+maxCompareFrames = int(os.environ.get('NR_COMPARE_FRAMES'))
+
 video_path = ""
 initialypos = int(os.environ.get('INITIALYPOS'))
+frames_extract = []
+
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+yaml_file_path = os.path.join(current_dir, '../parameters.yaml')
+
+# Function to read the YAML file
+def read_yaml(file_path):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Filter out commented lines and join them
+    active_lines = [line for line in lines if not line.strip().startswith('#')]
+    active_content = ''.join(active_lines)
+
+    # Parse the active YAML content
+    data = yaml.safe_load(active_content)
+    return data
+
+used_config = read_yaml(yaml_file_path)
+dataset_path = used_config.get('datasetPath')
 
 def get_nr_frames():
     global video_path
@@ -81,8 +104,7 @@ def show_details(p, im0, dets, inference_time, avg_fps):
         for i in range(0, len(classesCount)):
             ok = 0
             for j in range(0, (len(dets))):
-                if dets[j] == classesCount[
-                    i] or str(dets[j])[:-1] == classesCount[i]:
+                if dets[j] == classesCount[i] or str(dets[j])[:-1] == classesCount[i]:
                     nr_dets.append(str(dets[j-1]))
                     ok = 1
             if ok == 0:
@@ -102,6 +124,8 @@ def show_details(p, im0, dets, inference_time, avg_fps):
     cv2.imshow(str(p), im0)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         exit(1)
+    if frames == nrFrames:
+        cv2.destroyAllWindows()
     return im0
 
 def avg_time(path):
@@ -136,10 +160,10 @@ def avg_time(path):
         f.write(f"Total inference time: {str(total_inf_time)}s for {str(nrFrames)} frames.")
         f.write(f"\nVideo used for inference: {video_path}")
 
-def average_conf(dets_list, conf_list, path):
+def average_conf(dets_list, conf_list, coord_list, path):
+    global frames_extract
     # Initialize an empty dictionary to collect confidences for each class
     result_dict = {}
-
     thr_metric = metric_thr
     # Process each detection and confidence list
     for dets, confs in zip(dets_list, conf_list):
@@ -259,6 +283,10 @@ def average_conf(dets_list, conf_list, path):
     columns = ['Class', 'AvgP', 'NrDet']
     widths = [17, 14, 9]
     header = ' '.join(name.ljust(width) for name, width in zip(columns, widths))
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+    file_path = os.path.join("/", path, f"{yolo_model}.txt")
 
     with open(file_path, "w") as f:
         print()
@@ -382,6 +410,8 @@ def average_conf(dets_list, conf_list, path):
             print(row)
             f.write(row + '\n')
         print()
+    detector.process_detections(coord_list, file_path)
+
 
 
 def class_counts(dets_list, path):
@@ -506,3 +536,221 @@ class CalcFPS:
             return np.average(self.framerate)
         else:
             return 0.0
+
+
+import yaml
+from collections import defaultdict
+
+
+
+class MismatchDetector:
+    def __init__(self, yaml_file_path):
+        self.class_names = self.load_class_names_from_yaml(yaml_file_path)
+
+    def load_class_names_from_yaml(self, file_path):
+        with open(file_path, 'r') as file:
+            data = yaml.safe_load(file)
+        return data['names']
+
+    def calculate_similarity(self, t1, t2, threshold=0.005):
+        # Check the similarity of coordinates with a threshold
+        coordinate_matches = sum(1 for i in range(1, 5) if abs(t1[i] - t2[i]) <= threshold)
+        # Check if at least three out of four coordinates are similar
+        return coordinate_matches >= 4
+
+    def find_similarities_within_frame(self, frame, threshold=0.005):
+        similarities = []
+        for i in range(len(frame)):
+            for j in range(i + 1, len(frame)):
+                if self.calculate_similarity(frame[i], frame[j], threshold):
+                    similarities.append((frame[i], frame[j]))
+        return similarities
+
+    def find_mismatches_between_frames(self, detections, max_compare_frames=maxCompareFrames):
+        class_mismatches = defaultdict(lambda: defaultdict(set))
+        n = len(detections)
+
+        for i in range(n):
+            for j in range(i + 1, min(i + 1 + max_compare_frames, n)):
+                list1 = detections[i]
+                list2 = detections[j]
+                for item1 in list1:
+                    for item2 in list2:
+                        if self.calculate_similarity(item1, item2) and item1[0] != item2[0]:
+                            class_pair = tuple(sorted([self.class_names[item1[0]], self.class_names[item2[0]]]))
+                            class_mismatches[class_pair][i].add(item1)
+                            class_mismatches[class_pair][j].add(item2)
+
+        return class_mismatches
+
+    def process_detections(self, detections, path_to_metric):
+        # Find similarities within each frame
+        frame_similarities = [self.find_similarities_within_frame(frame) for frame in detections]
+
+        # Track intra-frame mismatches
+        intra_frame_mismatches = defaultdict(lambda: defaultdict(set))
+        for frame_idx, similarities in enumerate(frame_similarities):
+            for item1, item2 in similarities:
+                if item1[0] != item2[0]:
+                    class_pair = tuple(sorted([self.class_names[item1[0]], self.class_names[item2[0]]]))
+                    intra_frame_mismatches[class_pair][frame_idx].add(item1)
+                    intra_frame_mismatches[class_pair][frame_idx].add(item2)
+
+        # Compare similarities between frames within a range of max_compare_frames
+        inter_frame_mismatches = self.find_mismatches_between_frames(detections, max_compare_frames=20)
+
+        # Combine intra-frame and inter-frame mismatches
+        combined_class_mismatches = defaultdict(lambda: defaultdict(set))
+        for classes, frames_dict in inter_frame_mismatches.items():
+            combined_class_mismatches[classes].update(frames_dict)
+        for classes, frames_dict in intra_frame_mismatches.items():
+            combined_class_mismatches[classes].update(frames_dict)
+
+        # Convert class_counts to total counts for each class
+        class_counts = defaultdict(int)
+        for frames_dict in combined_class_mismatches.values():
+            for items in frames_dict.values():
+                for item in items:
+                    class_counts[item[0]] += 1
+        #
+        # if not os.path.exists(path):
+        #     os.makedirs(path)
+        # file_path = os.path.join(path, "ConfusedPredictions.txt")
+
+        with open(path_to_metric, "a") as f:
+            if not combined_class_mismatches:
+                print("No mismatched items found.")
+                f.write("No mismatched items found.\n")
+                return
+
+            # Print the results with class names
+            # f.write("Class Confusion During Inference:\n")
+            # print("\nClass Confusion During Inference:")
+            # for cls, count in class_counts.items():
+            #     print(f"{self.class_names[cls]}: {count}")
+            #     f.write(f"{self.class_names[cls]}: {count}\n")
+
+            # Print mismatched classes and frames
+            # f.write("\nConfused classes and frames tracking:\n")
+            # print("\nConfused classes and frames tracking:")
+            all_affected_frames = set()
+            class_pair_frames = defaultdict(set)
+            # for classes, frames_dict in combined_class_mismatches.items():
+            #     sorted_frames = sorted(frames_dict.keys())
+            #     all_affected_frames.update(sorted_frames)
+            #     class_pair_frames[classes].update(sorted_frames)
+            #     print(f"Classes {classes} mismatched in frames: {sorted_frames}")
+            #     f.write(f"Classes {classes} mismatched in frames: {sorted_frames}\n")
+
+            # # Print number of frames each pair of classes mismatched in
+            # f.write("\nNumber of frames each pair of classes mismatched in:\n")
+            # print("\nNumber of frames each pair of classes mismatched in:")
+            # for classes, frames_dict in combined_class_mismatches.items():
+            #     print(f"Classes {classes} mismatched in {len(frames_dict)} frames")
+            #     f.write(f"Classes {classes} mismatched in {len(frames_dict)} frames\n")
+
+            # Include internal mismatched frames in the all_affected_frames set
+            frames_with_internal_mismatches = [i for i, similarities in enumerate(frame_similarities) if similarities]
+            all_affected_frames.update(frames_with_internal_mismatches)
+
+            # Print all unique affected frames for classes with fewer appearances
+            unique_frames_fewer_appearances = set()
+            for classes, frames in class_pair_frames.items():
+                class1, class2 = classes
+                class1_count = sum(1 for items in combined_class_mismatches[classes].values() for item in items if self.class_names[item[0]] == class1)
+                class2_count = sum(1 for items in combined_class_mismatches[classes].values() for item in items if self.class_names[item[0]] == class2)
+                if class1_count <= class2_count:
+                    unique_frames_fewer_appearances.update(frames)
+                else:
+                    unique_frames_fewer_appearances.update(frames)
+
+            # print(f"\nAll unique frames affected by mismatches: {sorted(unique_frames_fewer_appearances)}")
+            # print(f"Total number of frames affected by mismatches: {len(unique_frames_fewer_appearances)}")
+            # f.write(f"\nAll unique frames affected by mismatches: {sorted(unique_frames_fewer_appearances)}\n")
+            # f.write(f"Total number of frames affected by mismatches: {len(unique_frames_fewer_appearances)}\n")
+
+            # # Print mismatched frames by class
+            # print("\nMismatched frames by class:")
+            # for cls, count in class_counts.items():
+            #     frames = {frame for frame, items in combined_class_mismatches.items() if cls in items}
+            #     if frames:
+            #         print(f"Mismatched frames for {self.class_names[cls]} class: {sorted(frames)}")
+            #         f.write(f"\nMismatched frames for {self.class_names[cls]} class: {sorted(frames)}\n")
+
+            # Print the number of frames with mismatches within the same frame
+
+            f.write(f"\n-------------------------------------------------------------------------------\n")
+            if frames_with_internal_mismatches:
+                print(f"\nNumber of frames with internal mismatches: {len(frames_with_internal_mismatches)}")
+                # print(f"Frames with internal mismatches: {frames_with_internal_mismatches}")
+                f.write(f"\nNumber of frames with internal mismatches: {len(frames_with_internal_mismatches)}\n")
+                # f.write(f"Frames with internal mismatches: {frames_with_internal_mismatches}\n")
+            else:
+                print("\nNo internal mismatches found.")
+                f.write("\nNo internal mismatches found.\n")
+
+            listclass = []
+            count = 0
+            # Print detailed class confusion information
+            for classes, frames_dict in combined_class_mismatches.items():
+                class1, class2 = classes
+                frames = sorted(frames_dict.keys())
+                internal_mismatches_count = sum(1 for frame in frames_dict if len(frames_dict[frame]) > 1)
+
+                # Update class1_count and class2_count to only include mismatched appearances
+                class1_count = sum(len([item for item in items if self.class_names[item[0]] == class1]) for items in frames_dict.values())
+                class2_count = sum(len([item for item in items if self.class_names[item[0]] == class2]) for items in frames_dict.values())
+
+                print(f"\nClasses {class1} and {class2} mismatched in {len(frames)} frames.")
+                print(f"Class {class1} was predicted: {class1_count} times in these frames.")
+                print(f"Class {class2} was predicted: {class2_count} times in these frames.")
+                print(f"Classes {class1} and {class2} were mismatched in the same frame {internal_mismatches_count} times.")
+                print(f"Frames in which {class1} were predicted to be {class2} or vice versa: {frames}")
+
+                f.write(f"\nClasses {class1} and {class2} mismatched in {len(frames)} frames.\n")
+                f.write(f"Class {class1} was predicted: {class1_count} times in these frames.\n")
+                f.write(f"Class {class2} was predicted: {class2_count} times in these frames.\n")
+                f.write(f"Classes {class1} and {class2} were mismatched in the same frame {internal_mismatches_count} times.\n")
+                f.write(f"Frames in which {class1} were predicted to be {class2} or vice versa: {frames}\n")
+
+
+            print("\nSummary of Confused Predictions:")
+            f.write(f"\nSummary:\n")
+            for classes, frames_dict in combined_class_mismatches.items():
+                class1, class2 = classes
+                class1_frames = {frame for frame, items in frames_dict.items() if
+                                 any(self.class_names[item[0]] == class1 for item in items)}
+                class2_frames = {frame for frame, items in frames_dict.items() if
+                                 any(self.class_names[item[0]] == class2 for item in items)}
+
+                # Update class1_count and class2_count to only include mismatched appearances
+                class1_count = sum(len([item for item in items if self.class_names[item[0]] == class1]) for items in
+                                   frames_dict.values())
+                class2_count = sum(len([item for item in items if self.class_names[item[0]] == class2]) for items in
+                                   frames_dict.values())
+
+                if len(class1_frames) < len(class2_frames):
+                    print(f"{class2} was confused to be {class1} for {class1_count} time in frames : {sorted(class1_frames)}")
+                    f.write(f"{class2} was confused to be {class1} for {class1_count} time in frames : {sorted(class1_frames)}\n")
+                    listclass.append(class1_frames)
+                    count +=class1_count
+                else:
+                    print(f"{class1} was confused to be {class2} for {class2_count} time in frames : {sorted(class2_frames)}")
+                    f.write(f"{class1} was confused to be {class2} for {class2_count} time in frames : {sorted(class2_frames)}\n")
+                    listclass.append(class2_frames)
+                    count +=class2_count
+
+
+            flattened_list = [item for sublist in listclass for item in sublist]
+            sorted_list = sorted(flattened_list)
+            print(f"\nTotal number of frames affected by confused predictions: {len(sorted_list)}.")
+            print(f"\nTotal number of error predictions for all classes: {count}.")
+            f.write(f"\nTotal number of frames affected by confused predictions: {len(sorted_list)}.")
+            f.write(f"\nTotal number of error predictions for all classes: {count}\n.")
+
+
+# Example usage:
+yaml_file_path = dataset_path  # Update this with the correct path to your YAML file
+
+# Create an instance of the MismatchDetector class
+detector = MismatchDetector(yaml_file_path)

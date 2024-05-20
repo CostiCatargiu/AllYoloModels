@@ -1,1 +1,4 @@
-datasetPath: /home/constantin/Doctorat/FireDataset/RoboflowDS/yolov7/data.yaml
+datasetPath: /home/constantin/Doctorat/YoloModels/YoloLib2/Utils/YAMLconfigs/coco.yaml
+#datasetPath: /home/constantin/Doctorat/FireDataset/RoboflowDS/yolov6/data.yaml
+#testVideosPath: /home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/
+testVideosPath: /home/constantin/Doctorat/YoloModels/testVideos/
