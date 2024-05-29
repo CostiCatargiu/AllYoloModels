@@ -19,7 +19,7 @@ def go_to_frame(video_path, frame_number):
     # Set the frame position
     cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
 
-    # Read the frame
+    # Read the frameq
     ret, frame = cap.read()
 
     if not ret:
@@ -34,7 +34,8 @@ def go_to_frame(video_path, frame_number):
     cv2.destroyAllWindows()
 
 
+
 # Example usage
-video_path = '/home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV8/infer/exp32/DayFire11cut.avi'
-frame_number = 62# Change this to the frame number you want to go to
+video_path = '/home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV5/infer/exp50/mergedd_video.mp4'
+frame_number = 207# Change this to the frame number you want to go to
 go_to_frame(video_path, frame_number)

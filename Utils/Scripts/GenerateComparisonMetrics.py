@@ -92,9 +92,6 @@ def extract_additional_data(filename):
     avg_fps_pattern = re.compile(r'Average FPS:\s*([\d\.]+)')
     avg_inf_time_pattern = re.compile(r'Average InfTime:\s*([\d\.]+)\s*ms')
     total_inf_time_pattern = re.compile(r'Total inference time:\s*([\d\.]+)\s*s')
-    nr_missmatch = re.compile(r'Number of Frames that contains missmatches:\s*(\d+)')
-    frames_confused = re.compile(r'Total number of frames affected by confused predictions:\s*(\d+)')
-    nr_confusions = re.compile(r'otal number of error predictions for all classes:\s*(\d+)')
 
     for line in lines:
         if match := total_detections_pattern.search(line):
@@ -107,11 +104,6 @@ def extract_additional_data(filename):
             additional_data['Total InfTime'] = match.group(1) + ' s'
         if match := confidence_threshold_pattern.search(line):
             additional_data['Conf_thr'] = match.group(1)
-        if match := frames_confused.search(line):
-            additional_data['FrameErrorPred'] = match.group(1)
-        if match := nr_confusions.search(line):
-            additional_data['NrErrorPred'] = match.group(1)
-
     return additional_data
 
 
@@ -135,16 +127,21 @@ def compare_additional_metrics(all_additional_data, headers, file):
 
     # Print the table
     print(table, file=file)
+    print("\n*************************************More Informations**************************************", file=file)
+
+
 
 def read_last_line(filename):
     with open(filename, 'r') as file:
         lines = file.readlines()
-    return lines[-1] if lines else None
+    return lines[-1], lines[-2] if lines else None
 def print_last_lines_from_files(file_list,file):
     for filename in file_list:
         base_filename = os.path.splitext(os.path.basename(filename))[0]
-        last_line = read_last_line(filename)
+        last_line, lastt_line = read_last_line(filename)
         print(f"{base_filename}: {last_line}",file=file)
+        print(f"{base_filename}: {lastt_line}",file=file)
+
 
 # Print the last line from each file
 
@@ -154,28 +151,33 @@ class ConfusionMatrixAnalyzer:
         self.output_file = output_file
         self.confusion_data = {}
 
-    def parse_line(self, line):
-        parts = line.split()
-        class1 = parts[0]
-        class2 = parts[5]
-        count_index = parts.index('for') + 1
-        count = int(parts[count_index])
-        return f"{class1}/{class2}", count
+    def parse_file(self, filename):
+        model_name = filename.split('.')[0]
+        self.confusion_data[model_name] = {}
+
+        pattern = re.compile(
+            r'Classes (?P<class1>\w+) and (?P<class2>\w+) mismatched in (?P<frames>\d+) frames\.\n'
+            r'Class (?P<class1_repeat>\w+) was predicted: (?P<class1_count>\d+) times in these frames\.\n'
+            r'Class (?P<class2_repeat>\w+) was predicted: (?P<class2_count>\d+) times in these frames\.\n'
+        )
+
+        with open(os.path.join(self.input_directory, filename), 'r') as file:
+            content = file.read()
+            matches = pattern.finditer(content)
+            for match in matches:
+                class1 = match.group('class1')
+                class2 = match.group('class2')
+                frames = match.group('frames')
+                class1_count = match.group('class1_count')
+                class2_count = match.group('class2_count')
+
+                class_pair = f"{class1} - {class2}"
+                self.confusion_data[model_name][class_pair] = f"{class1_count} - {class2_count} ({frames})"
 
     def read_files(self):
         for filename in os.listdir(self.input_directory):
             if filename.endswith('.txt'):
-                model_name = filename.split('.')[0]
-                self.confusion_data[model_name] = {}
-                with open(os.path.join(self.input_directory, filename), 'r') as file:
-                    lines = file.readlines()
-                    for line in lines:
-                        if 'confused to be' in line:
-                            confusion_pair, count = self.parse_line(line)
-                            if confusion_pair in self.confusion_data[model_name]:
-                                self.confusion_data[model_name][confusion_pair] += count
-                            else:
-                                self.confusion_data[model_name][confusion_pair] = count
+                self.parse_file(filename)
 
     def create_dataframe(self):
         # Get all unique confusion pairs
@@ -186,11 +188,15 @@ class ConfusionMatrixAnalyzer:
         # Ensure consistent order of columns
         all_pairs = sorted(all_pairs)
 
+        # Sort models alphabetically
+        sorted_models = sorted(self.confusion_data.keys())
+
         # Create a list to store the DataFrame rows
         rows = []
 
         # Populate the rows list with confusion data
-        for model, data in self.confusion_data.items():
+        for model in sorted_models:
+            data = self.confusion_data[model]
             row = {'Model': model}
             for pair in all_pairs:
                 row[pair] = data.get(pair, 'N/A')
@@ -199,23 +205,10 @@ class ConfusionMatrixAnalyzer:
         # Convert the list of rows into a DataFrame
         self.df = pd.DataFrame(rows, columns=['Model'] + all_pairs)
 
-        # Set the 'Model' column as the index
-        self.df.set_index('Model', inplace=True)
-
-        # Calculate total confusions for sorting
-        total_confusions = self.df.replace('N/A', 0).apply(pd.to_numeric, errors='coerce').sum(axis=0)
-        sorted_columns = total_confusions.sort_values(ascending=False).index.tolist()
-
-        # Add 'Model' to the beginning of the sorted columns
-        sorted_columns = ['Model'] + sorted_columns
-        self.df = self.df[sorted_columns[1:]]
-        self.df.insert(0, 'Model', self.df.index)
-        self.df.index = range(len(self.df))
-
     def generate_table(self):
         # Center align values
         for col in self.df.columns:
-            self.df[col] = self.df[col].astype(str).apply(lambda x: x.center(10))
+            self.df[col] = self.df[col].astype(str).apply(lambda x: x.center(20))
 
         # Format the DataFrame as a table
         self.table = tabulate(self.df, headers='keys', tablefmt='grid')
@@ -223,10 +216,9 @@ class ConfusionMatrixAnalyzer:
     def save_to_file(self):
         # Write the formatted table to a text file
         with open(self.output_file, 'a') as f:
-            f.write("\n\nTable that contains on overview of the Confused Classes that were predicted for each model\n")
+            f.write("\n\nTable that contains an overview of the Confused Classes that were predicted for each model\n")
             f.write(self.table)
             f.write("\n\n")
-
 
     def run(self):
         self.read_files()
@@ -237,7 +229,7 @@ class ConfusionMatrixAnalyzer:
 
 
 def main():
-    directory_path = '../../ExperimentalResults/Metrics/'
+    directory_path = '../../ExperimentalResults/Metrics/day_video'
     filenames = [os.path.join(directory_path, f) for f in os.listdir(directory_path) if f.endswith('.txt')]
     filenames.sort()
     headers = [os.path.basename(file).split('.')[0] for file in filenames]

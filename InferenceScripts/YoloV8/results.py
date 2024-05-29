@@ -16,7 +16,7 @@ from ultralytics.data.augment import LetterBox
 from ultralytics.utils import LOGGER, SimpleClass, ops
 from ultralytics.utils.plotting import Annotator, colors, save_one_box
 from ultralytics.utils.torch_utils import smart_inference_mode
-sys.path.append('../../../../InferenceScripts')
+sys.path.append('../../InferenceScripts/')
 from UtilFunctions import average_conf, class_counts, yolov8_statisctics, average_precision_classes_yolov8
 
 color_label = {
@@ -77,6 +77,7 @@ class BaseTensor(SimpleClass):
         return self.__class__(self.data[idx], self.orig_shape)
 
 labels_list = []
+coord_list = []
 class Results(SimpleClass):
     """
     A class for storing and manipulating inference results.
@@ -317,9 +318,19 @@ class Results(SimpleClass):
 
         return annotator.result()
 
+
+
     def print_metrics(self, path):
         l1, l2 = yolov8_statisctics(labels_list)
-        average_conf(l1, l2, path)
+        reformatted_list = []
+        for sublist in coord_list:
+            new_sublist = []
+            for tup in sublist:
+                new_tup = (tup[0],) + tuple(int(t.item()) for t in tup[1:])
+                new_sublist.append(new_tup)
+            reformatted_list.append(new_sublist)
+
+        average_conf(l1, l2, reformatted_list, path)
 
     def show(self, *args, **kwargs):
         """Show annotated results image."""
@@ -361,6 +372,7 @@ class Results(SimpleClass):
         probs = self.probs
         kpts = self.keypoints
         texts = []
+        boox_coord = []
         if probs is not None:
             # Classify
             [texts.append(f"{probs.data[j]:.2f} {self.names[j]}") for j in probs.top5]
@@ -369,6 +381,8 @@ class Results(SimpleClass):
             for j, d in enumerate(boxes):
                 c, conf, id = int(d.cls), float(d.conf), None if d.id is None else int(d.id.item())
                 line = (c, *(d.xyxyxyxyn.view(-1) if is_obb else d.xywhn.view(-1)))
+                line1 = (c, *(d.xyxyxyxyn.view(-1) if is_obb else d.xyxy.view(-1)))
+                boox_coord.append(line1)
                 if masks:
                     seg = masks[j].xyn[0].copy().reshape(-1)  # reversed mask.xyn, (n,2) to (n*2)
                     line = (c, *seg)
@@ -377,11 +391,14 @@ class Results(SimpleClass):
                     line += (*kpt.reshape(-1).tolist(),)
                 line += (conf,) * save_conf + (() if id is None else (id,))
                 texts.append(("%g " * len(line)).rstrip() % line)
-
-        if texts:
-            Path(txt_file).parent.mkdir(parents=True, exist_ok=True)  # make directory
-            with open(txt_file, "a") as f:
-                f.writelines(text + "\n" for text in texts)
+            coord_list.append(boox_coord)
+        else:
+            coord_list.append([])
+            # print(coord_list)
+        # if texts:
+        #     Path(txt_file).parent.mkdir(parents=True, exist_ok=True)  # make directory
+        #     with open(txt_file, "a") as f:
+        #         f.writelines(text + "\n" for text in texts)
 
     def save_crop(self, save_dir, file_name=Path("im.jpg")):
         """

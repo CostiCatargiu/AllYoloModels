@@ -15,7 +15,8 @@ labelTextColor="white"
 labelTextSize=2
 video_index=2
 initialypos=20
-nrCompareFrames=2
+nrCompareFrames=4
+boxSimilarity=5
 saveConfusedPred=true
 
 # Check if the required parameter is provided
@@ -121,6 +122,10 @@ while [[ "$#" -gt 0 ]]; do
             saveConfusedPred="$2"
             shift 2
             ;;
+        -p16|--boxSimilarity)
+            boxSimilarity="$2"
+            shift 2
+            ;;
 
         *)  # Unknown option
             echo "Unknown option: $1"
@@ -157,6 +162,7 @@ export LABEL_SIZE="$labelTextSize"
 export LABEL_COLOR="$labelTextColor"
 export INITIALYPOS="$initialypos"
 export NR_COMPARE_FRAMES="$nrCompareFrames"
+export BOX_SIMILARITY="$boxSimilarity"
 
 
 export FONT_SCALE="$fontSize"
@@ -180,6 +186,7 @@ if [[ "$select_model" == *"yolov5"* ]]; then
     if [[ "$weights" == *"exp"* ]]; then
         weight=${current_location}/ExperimentalResults/YoloV5/train/${weights}/weights/best.pt
     fi
+    export WEIGHTS_USED="$weight"
 
     source_file="$inferenceScriptsPath/YoloV5/InferenceYoloV5.py"
     destination_directory="$current_location/YoloModels/YoloV5"
@@ -187,6 +194,7 @@ if [[ "$select_model" == *"yolov5"* ]]; then
     destination_directory1="$current_location/YoloModels/YoloV5/utils"
     cp "$source_file" "$destination_directory"
     cp "$source_file1" "$destination_directory1"
+
     cd "$current_location/YoloModels/YoloV5/"
     python3 InferenceYoloV5.py \
         --data $datasetPath \
@@ -208,6 +216,7 @@ elif [[ "$select_model" == *"yolov6"* ]]; then
     if [[ "$weights" == *"exp"* ]]; then
         weight=${current_location}/ExperimentalResults/YoloV6/train/${weights}/weights/best_ckpt.pt
     fi
+    export WEIGHTS_USED="$weight"
 
     source_file="$inferenceScriptsPath/YoloV6/InferenceYoloV6.py"
     destination_directory="$current_location/YoloModels/YoloV6"
@@ -253,6 +262,7 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
     if [[ "$weights" == *"exp"* ]]; then
         weight=${current_location}/ExperimentalResults/YoloV7/train/${weights}/weights/best.pt
     fi
+    export WEIGHTS_USED="$weight"
 
     cd "$current_location/YoloModels/YoloV7/"
     python3 InferenceYoloV7.py \
@@ -277,6 +287,7 @@ elif [[ "$select_model" == *"yolov8"* ]]; then
     if [[ "$weights" == *"exp"* ]]; then
         weight=${current_location}/ExperimentalResults/YoloV8/train/${weights}/weights/best.pt
     fi
+    export WEIGHTS_USED="$weight"
 
     source_file1="$inferenceScriptsPath/YoloV8/InferenceYoloV8.py"
     source_file="$inferenceScriptsPath/YoloV8/predictor.py"
@@ -324,6 +335,7 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
     if [[ "$weights" == *"exp"* ]]; then
         weight=${current_location}/ExperimentalResults/YoloV9/train/${weights}/weights/best.pt
     fi
+    export WEIGHTS_USED="$weight"
 
     cd "$current_location/YoloModels/YoloV9/"
     python3 InferenceYoloV9dual.py \
@@ -362,6 +374,7 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
     if [[ "$weights" == *"exp"* ]]; then
         weight=${current_location}/ExperimentalResults/YoloV9/trainGelan/${weights}/weights/best.pt
     fi
+    export WEIGHTS_USED="$weight"
 
     cd "$current_location/YoloModels/YoloV9/"
     python3 InferenceYoloV9gelan.py \

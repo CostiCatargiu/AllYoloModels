@@ -96,9 +96,10 @@ elif [[ "$select_model" == *"yolov6"* ]]; then
         --conf /home/constantin/Doctorat/YoloModels/YoloLib2/YoloModels/YoloV6/configs/yolov6m.py \
         --data $datasetPath \
         --device 0 \
-        --eval-interval 10 \
+        --eval-interval 5 \
         --output-dir $experimetsPath/YoloV6/train \
-        --name exp
+        --name exp\
+
 
 elif [[ "$select_model" == *"yolov7"* ]]; then
     cd "$experimetsPath/YoloV7/weights/"
@@ -144,12 +145,13 @@ elif [[ "$select_model" == *"yolov8"* ]]; then
         epochs=$epochs \
         batch=$batchSize\
         project=$experimetsPath/YoloV8/train \
-        name=exp\
-        cos_lr=True\
-        box=1.5 \
-        mixup=0.2\
-        scale=0.6\
-        iou=0.3
+        name=exp
+#        cos_lr=True\
+#        box=0.05 \
+#        mixup=0.2\
+#        scale=0.6\
+#        iou=0.3\
+#        patience=20
 
 
 elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; then    # Source file path

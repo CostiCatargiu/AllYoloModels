@@ -214,7 +214,7 @@ elif [[ "$select_model" == *"yolov8"* ]]; then
         data=$datasetPath \
         imgsz=$imgSize \
         conf=$confThr \
-        iou=$iouThr
+        iou=0.9
 
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect

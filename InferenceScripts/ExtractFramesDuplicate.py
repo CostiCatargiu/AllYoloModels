@@ -26,7 +26,7 @@ def extract_frames(video_path, frame_indices, output_folder):
 
         if frame_count in frame_indices:
             # Save the frame as a JPEG file
-            frame_filename = os.path.join(output_folder, f"frame_{frame_count + 1}.jpg")
+            frame_filename = os.path.join(output_folder, f"frame_{frame_count}.jpg")
             cv2.imwrite(frame_filename, frame)
         frame_count += 1
         # Break early if we've saved all the requested frames
@@ -102,7 +102,7 @@ def extract_confusion_frames(video_path, txt_file_path, output_directory):
             line = line.strip()
             if line:
                 # Use regular expressions to extract the classes and frame numbers
-                match = re.match(r"(.+?) was confused to be (.+?) for \d+ time in frames : \[(.+)\]", line)
+                match = re.match(r"Frames in which (.+?) were predicted to be (.+?) or vice versa: \[(.+)\]", line)
                 if match:
                     class1, class2, frames_str = match.groups()
                     frames = list(map(int, frames_str.split(',')))
@@ -137,7 +137,7 @@ def extract_confusion_frames(video_path, txt_file_path, output_directory):
             ret, frame = cap.read()
 
             if ret:
-                frame_filename = os.path.join(folder_path, f"frame_{frame_num + 1}.jpg")
+                frame_filename = os.path.join(folder_path, f"frame_{frame_num}.jpg")
                 cv2.imwrite(frame_filename, frame)
             else:
                 print(f"Error: Could not read frame {frame_num}.")

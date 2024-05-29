@@ -4,11 +4,11 @@ from collections import deque
 import numpy as np
 import json, time
 from ultralytics.utils.plotting import colors
-import yaml
+import yaml, torch
 
 fps_list=[]
 inf_list = []
-frames = 0
+frames = -1
 yolo_model = os.environ.get('PARAMETER')
 conf_thr = os.environ.get('CONF_THR')
 metric_thr = float(os.environ.get('METRIC_THR'))
@@ -19,6 +19,8 @@ fontScale = float(os.environ.get('FONT_SCALE'))
 font_thickness = int(os.environ.get('FONT_THICKNESS'))
 posScale = int(os.environ.get('POS_SCALE'))
 maxCompareFrames = int(os.environ.get('NR_COMPARE_FRAMES'))
+weights_used = os.environ.get('WEIGHTS_USED')
+box_similarity = int(os.environ.get('BOX_SIMILARITY'))
 
 video_path = ""
 initialypos = int(os.environ.get('INITIALYPOS'))
@@ -145,7 +147,7 @@ def avg_time(path):
     average_inf = inf_sum / len(inf_time_list)
     average_inf = "{:.2f}".format(average_inf)
     print(f"Average InfTime: {average_inf}ms per frame.")
-    total_inf_time = (float(average_inf) * int(nrFrames)) / 100
+    total_inf_time = (float(average_inf) * int(nrFrames)) / 1000
     total_inf_time = "{:.2f}".format(total_inf_time)
     print(f"Total Inference time:{total_inf_time}s")
     if not os.path.exists(path):
@@ -159,9 +161,22 @@ def avg_time(path):
         f.write("ms per frame.\n")
         f.write(f"Total inference time: {str(total_inf_time)}s for {str(nrFrames)} frames.")
         f.write(f"\nVideo used for inference: {video_path}")
+        f.write(f"\nWeights used for inference: {weights_used}")
+
 
 def average_conf(dets_list, conf_list, coord_list, path):
     global frames_extract
+    if 'yolov8' not in yolo_model:
+        new_data = []
+        for sublist in coord_list:
+            new_sublist = []
+            for item in sublist:
+                new_item = (item[0],) + tuple(int(t.item()) if isinstance(t, torch.Tensor) else t for t in item[1:])
+                new_sublist.append(new_item)
+            new_data.append(new_sublist)
+    else:
+        new_data = coord_list
+        print(new_data)
     # Initialize an empty dictionary to collect confidences for each class
     result_dict = {}
     thr_metric = metric_thr
@@ -410,7 +425,7 @@ def average_conf(dets_list, conf_list, coord_list, path):
             print(row)
             f.write(row + '\n')
         print()
-    detector.process_detections(coord_list, file_path)
+    detector.process_detections(new_data, file_path)
 
 
 
@@ -552,23 +567,26 @@ class MismatchDetector:
             data = yaml.safe_load(file)
         return data['names']
 
-    def calculate_similarity(self, t1, t2, threshold=0.005):
+    def calculate_similarity(self, t1, t2, threshold=box_similarity):
         # Check the similarity of coordinates with a threshold
         coordinate_matches = sum(1 for i in range(1, 5) if abs(t1[i] - t2[i]) <= threshold)
         # Check if at least three out of four coordinates are similar
         return coordinate_matches >= 4
 
-    def find_similarities_within_frame(self, frame, threshold=0.005):
+    def find_similarities_within_frame(self, frame, threshold=box_similarity):
         similarities = []
+        frame_mismatches = defaultdict(set)
         for i in range(len(frame)):
             for j in range(i + 1, len(frame)):
                 if self.calculate_similarity(frame[i], frame[j], threshold):
-                    similarities.append((frame[i], frame[j]))
+                    if frame[i][0] != frame[j][0]:
+                        similarities.append((frame[i], frame[j]))
         return similarities
 
     def find_mismatches_between_frames(self, detections, max_compare_frames=maxCompareFrames):
         class_mismatches = defaultdict(lambda: defaultdict(set))
         n = len(detections)
+        mismatches = defaultdict(lambda: defaultdict(set))
 
         for i in range(n):
             for j in range(i + 1, min(i + 1 + max_compare_frames, n)):
@@ -577,11 +595,14 @@ class MismatchDetector:
                 for item1 in list1:
                     for item2 in list2:
                         if self.calculate_similarity(item1, item2) and item1[0] != item2[0]:
+                            mismatches[i][item1[0]].add(item1)
+                            mismatches[i + 1][item2[0]].add(item2)
                             class_pair = tuple(sorted([self.class_names[item1[0]], self.class_names[item2[0]]]))
                             class_mismatches[class_pair][i].add(item1)
                             class_mismatches[class_pair][j].add(item2)
 
-        return class_mismatches
+        return mismatches, class_mismatches
+
 
     def process_detections(self, detections, path_to_metric):
         # Find similarities within each frame
@@ -597,7 +618,14 @@ class MismatchDetector:
                     intra_frame_mismatches[class_pair][frame_idx].add(item2)
 
         # Compare similarities between frames within a range of max_compare_frames
-        inter_frame_mismatches = self.find_mismatches_between_frames(detections, max_compare_frames=20)
+        mismatched_dict, inter_frame_mismatches = self.find_mismatches_between_frames(detections, max_compare_frames=maxCompareFrames)
+
+        # Print the results with class names
+        print("\nMismatched items by frame:")
+        for frame, items in mismatched_dict.items():
+            for cls, tuples in items.items():
+                items_with_names = [(self.class_names[cls], *t[1:]) for t in tuples]
+                print(f"Frame {frame}: {items_with_names}")
 
         # Combine intra-frame and inter-frame mismatches
         combined_class_mismatches = defaultdict(lambda: defaultdict(set))
@@ -612,10 +640,6 @@ class MismatchDetector:
             for items in frames_dict.values():
                 for item in items:
                     class_counts[item[0]] += 1
-        #
-        # if not os.path.exists(path):
-        #     os.makedirs(path)
-        # file_path = os.path.join(path, "ConfusedPredictions.txt")
 
         with open(path_to_metric, "a") as f:
             if not combined_class_mismatches:
@@ -623,32 +647,8 @@ class MismatchDetector:
                 f.write("No mismatched items found.\n")
                 return
 
-            # Print the results with class names
-            # f.write("Class Confusion During Inference:\n")
-            # print("\nClass Confusion During Inference:")
-            # for cls, count in class_counts.items():
-            #     print(f"{self.class_names[cls]}: {count}")
-            #     f.write(f"{self.class_names[cls]}: {count}\n")
-
-            # Print mismatched classes and frames
-            # f.write("\nConfused classes and frames tracking:\n")
-            # print("\nConfused classes and frames tracking:")
             all_affected_frames = set()
             class_pair_frames = defaultdict(set)
-            # for classes, frames_dict in combined_class_mismatches.items():
-            #     sorted_frames = sorted(frames_dict.keys())
-            #     all_affected_frames.update(sorted_frames)
-            #     class_pair_frames[classes].update(sorted_frames)
-            #     print(f"Classes {classes} mismatched in frames: {sorted_frames}")
-            #     f.write(f"Classes {classes} mismatched in frames: {sorted_frames}\n")
-
-            # # Print number of frames each pair of classes mismatched in
-            # f.write("\nNumber of frames each pair of classes mismatched in:\n")
-            # print("\nNumber of frames each pair of classes mismatched in:")
-            # for classes, frames_dict in combined_class_mismatches.items():
-            #     print(f"Classes {classes} mismatched in {len(frames_dict)} frames")
-            #     f.write(f"Classes {classes} mismatched in {len(frames_dict)} frames\n")
-
             # Include internal mismatched frames in the all_affected_frames set
             frames_with_internal_mismatches = [i for i, similarities in enumerate(frame_similarities) if similarities]
             all_affected_frames.update(frames_with_internal_mismatches)
@@ -664,27 +664,13 @@ class MismatchDetector:
                 else:
                     unique_frames_fewer_appearances.update(frames)
 
-            # print(f"\nAll unique frames affected by mismatches: {sorted(unique_frames_fewer_appearances)}")
-            # print(f"Total number of frames affected by mismatches: {len(unique_frames_fewer_appearances)}")
-            # f.write(f"\nAll unique frames affected by mismatches: {sorted(unique_frames_fewer_appearances)}\n")
-            # f.write(f"Total number of frames affected by mismatches: {len(unique_frames_fewer_appearances)}\n")
-
-            # # Print mismatched frames by class
-            # print("\nMismatched frames by class:")
-            # for cls, count in class_counts.items():
-            #     frames = {frame for frame, items in combined_class_mismatches.items() if cls in items}
-            #     if frames:
-            #         print(f"Mismatched frames for {self.class_names[cls]} class: {sorted(frames)}")
-            #         f.write(f"\nMismatched frames for {self.class_names[cls]} class: {sorted(frames)}\n")
 
             # Print the number of frames with mismatches within the same frame
 
             f.write(f"\n-------------------------------------------------------------------------------\n")
             if frames_with_internal_mismatches:
                 print(f"\nNumber of frames with internal mismatches: {len(frames_with_internal_mismatches)}")
-                # print(f"Frames with internal mismatches: {frames_with_internal_mismatches}")
                 f.write(f"\nNumber of frames with internal mismatches: {len(frames_with_internal_mismatches)}\n")
-                # f.write(f"Frames with internal mismatches: {frames_with_internal_mismatches}\n")
             else:
                 print("\nNo internal mismatches found.")
                 f.write("\nNo internal mismatches found.\n")
@@ -746,7 +732,7 @@ class MismatchDetector:
             print(f"\nTotal number of frames affected by confused predictions: {len(sorted_list)}.")
             print(f"\nTotal number of error predictions for all classes: {count}.")
             f.write(f"\nTotal number of frames affected by confused predictions: {len(sorted_list)}.")
-            f.write(f"\nTotal number of error predictions for all classes: {count}\n.")
+            f.write(f"\nTotal number of error predictions for all classes: {count}.\n")
 
 
 # Example usage:
