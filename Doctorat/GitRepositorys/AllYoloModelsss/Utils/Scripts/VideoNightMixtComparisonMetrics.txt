@@ -1,0 +1,256 @@
+
+Comparison for: Total number of detections for each class and average precision per class using a conf_thr=0.4
+Model      Metric  Other  Fire   Smoke
+--------------------------------------------
+1_yolov5m  AvgP    0.704  0.836  0.744
+1_yolov5m  NrDet   31212  7053   6105
+--------------------------------------------
+2_yolov6m  AvgP    0.607  0.772  0.673
+2_yolov6m  NrDet   32888  7472   5777
+--------------------------------------------
+3_yolov7   AvgP    0.661  0.796  0.693
+3_yolov7   NrDet   32828  7533   6152
+--------------------------------------------
+4_yolov8m  AvgP    0.668  0.786  0.722
+4_yolov8m  NrDet   25327  7114   4752
+--------------------------------------------
+5_yolov9-c AvgP    0.665  0.778  0.721
+5_yolov9-c NrDet   21405  6358   5181
+--------------------------------------------
+6_gelan-c  AvgP    0.701  0.806  0.725
+6_gelan-c  NrDet   32881  7859   5609
+--------------------------------------------
+7_yolov10b AvgP    0.702  0.835  0.743
+7_yolov10b NrDet   23794  6606   4621
+--------------------------------------------
+8_yolonas_s AvgP    0.661  0.781  0.720
+8_yolonas_s NrDet   34601  5408   3020
+--------------------------------------------
+
+Comparison for: Total number of detections and average of confidence score between 0.9 and inf for each class.
+Model      Metric  Other  Fire   Smoke
+--------------------------------------------
+1_yolov5m  AvgP    0.911  0.919  0.919
+1_yolov5m  NrDet   122    2050   553
+--------------------------------------------
+2_yolov6m  AvgP    0.901  0.918  0.921
+2_yolov6m  NrDet   1      1723   265
+--------------------------------------------
+3_yolov7   AvgP    0.914  0.915  0.915
+3_yolov7   NrDet   175    402    234
+--------------------------------------------
+4_yolov8m  AvgP    0.900  0.910  0.910
+4_yolov8m  NrDet   3      318    650
+--------------------------------------------
+5_yolov9-c AvgP    0.000  0.915  0.920
+5_yolov9-c NrDet   0      105    332
+--------------------------------------------
+6_gelan-c  AvgP    0.910  0.913  0.914
+6_gelan-c  NrDet   1      277    628
+--------------------------------------------
+7_yolov10b AvgP    0.913  0.918  0.924
+7_yolov10b NrDet   56     2400   1162
+--------------------------------------------
+8_yolonas_s AvgP    0.914  0.919  0.922
+8_yolonas_s NrDet   23     657    448
+--------------------------------------------
+
+Comparison for: Total number of detections and average of confidence score between 0.8 and 0.9 for each class.
+Model      Metric  Other  Fire   Smoke
+--------------------------------------------
+1_yolov5m  AvgP    0.855  0.863  0.859
+1_yolov5m  NrDet   10513  3396   2146
+--------------------------------------------
+2_yolov6m  AvgP    0.845  0.861  0.853
+2_yolov6m  NrDet   4448   2493   1440
+--------------------------------------------
+3_yolov7   AvgP    0.851  0.863  0.848
+3_yolov7   NrDet   7113   4579   1633
+--------------------------------------------
+4_yolov8m  AvgP    0.820  0.860  0.850
+4_yolov8m  NrDet   6139   4570   1309
+--------------------------------------------
+5_yolov9-c AvgP    0.828  0.851  0.867
+5_yolov9-c NrDet   3197   3611   1775
+--------------------------------------------
+6_gelan-c  AvgP    0.832  0.862  0.858
+6_gelan-c  NrDet   9490   5460   1691
+--------------------------------------------
+7_yolov10b AvgP    0.857  0.874  0.862
+7_yolov10b NrDet   8459   2686   1052
+--------------------------------------------
+8_yolonas_s AvgP    0.840  0.861  0.862
+8_yolonas_s NrDet   4104   2311   492
+--------------------------------------------
+
+Comparison for: Total number of detections and average of confidence score between 0.7 and 0.8 for each class.
+Model      Metric  Other  Fire   Smoke
+--------------------------------------------
+1_yolov5m  AvgP    0.759  0.760  0.760
+1_yolov5m  NrDet   6653   811    1385
+--------------------------------------------
+2_yolov6m  AvgP    0.744  0.752  0.756
+2_yolov6m  NrDet   5260   1000   952
+--------------------------------------------
+3_yolov7   AvgP    0.759  0.758  0.757
+3_yolov7   NrDet   6930   1146   1438
+--------------------------------------------
+4_yolov8m  AvgP    0.750  0.760  0.740
+4_yolov8m  NrDet   6594   882    874
+--------------------------------------------
+5_yolov9-c AvgP    0.761  0.756  0.757
+5_yolov9-c NrDet   6712   1301   888
+--------------------------------------------
+6_gelan-c  AvgP    0.764  0.769  0.761
+6_gelan-c  NrDet   9765   906    1083
+--------------------------------------------
+7_yolov10b AvgP    0.759  0.760  0.758
+7_yolov10b NrDet   4700   549    714
+--------------------------------------------
+8_yolonas_s AvgP    0.752  0.757  0.751
+8_yolonas_s NrDet   7838   1001   609
+--------------------------------------------
+
+Comparison for: Total number of detections and average of confidence score between 0.6 and 0.7 for each class.
+Model      Metric  Other  Fire   Smoke
+--------------------------------------------
+1_yolov5m  AvgP    0.655  0.661  0.655
+1_yolov5m  NrDet   4953   392    816
+--------------------------------------------
+2_yolov6m  AvgP    0.651  0.651  0.649
+2_yolov6m  NrDet   6120   1063   958
+--------------------------------------------
+3_yolov7   AvgP    0.654  0.660  0.656
+3_yolov7   NrDet   5876   642    941
+--------------------------------------------
+4_yolov8m  AvgP    0.650  0.650  0.640
+4_yolov8m  NrDet   4434   401    764
+--------------------------------------------
+5_yolov9-c AvgP    0.657  0.666  0.655
+5_yolov9-c NrDet   4339   667    754
+--------------------------------------------
+6_gelan-c  AvgP    0.658  0.659  0.657
+6_gelan-c  NrDet   5434   459    750
+--------------------------------------------
+7_yolov10b AvgP    0.657  0.655  0.651
+7_yolov10b NrDet   3404   335    452
+--------------------------------------------
+8_yolonas_s AvgP    0.655  0.661  0.654
+8_yolonas_s NrDet   10112  718    656
+--------------------------------------------
+
+Comparison for: Total number of detections and average of confidence score between 0.5 and 0.6 for each class.
+Model      Metric  Other  Fire   Smoke
+--------------------------------------------
+1_yolov5m  AvgP    0.557  0.561  0.558
+1_yolov5m  NrDet   5020   223    589
+--------------------------------------------
+2_yolov6m  AvgP    0.548  0.559  0.551
+2_yolov6m  NrDet   6597   602    1013
+--------------------------------------------
+3_yolov7   AvgP    0.555  0.556  0.555
+3_yolov7   NrDet   6065   394    896
+--------------------------------------------
+4_yolov8m  AvgP    0.540  0.540  0.550
+4_yolov8m  NrDet   4057   477    599
+--------------------------------------------
+5_yolov9-c AvgP    0.556  0.560  0.554
+5_yolov9-c NrDet   3733   379    730
+--------------------------------------------
+6_gelan-c  AvgP    0.555  0.558  0.554
+6_gelan-c  NrDet   4131   369    682
+--------------------------------------------
+7_yolov10b AvgP    0.553  0.559  0.554
+7_yolov10b NrDet   3566   369    572
+--------------------------------------------
+8_yolonas_s AvgP    0.553  0.554  0.553
+8_yolonas_s NrDet   11885  682    783
+--------------------------------------------
+
+Comparison for: Total number of detections and average of confidence score between 0.4 and 0.5 for each class.
+Model      Metric  Other  Fire   Smoke
+--------------------------------------------
+1_yolov5m  AvgP    0.457  0.455  0.452
+1_yolov5m  NrDet   3768   176    584
+--------------------------------------------
+2_yolov6m  AvgP    0.448  0.444  0.450
+2_yolov6m  NrDet   10414  585    1144
+--------------------------------------------
+3_yolov7   AvgP    0.456  0.457  0.455
+3_yolov7   NrDet   6423   342    970
+--------------------------------------------
+4_yolov8m  AvgP    0.540  0.540  0.550
+4_yolov8m  NrDet   4057   477    599
+--------------------------------------------
+5_yolov9-c AvgP    0.455  0.453  0.455
+5_yolov9-c NrDet   3247   280    665
+--------------------------------------------
+6_gelan-c  AvgP    0.455  0.454  0.452
+6_gelan-c  NrDet   3879   375    745
+--------------------------------------------
+7_yolov10b AvgP    0.455  0.455  0.455
+7_yolov10b NrDet   3449   252    633
+--------------------------------------------
+8_yolonas_s AvgP    0.500  0.500  0.500
+8_yolonas_s NrDet   639    39     32
+--------------------------------------------
+
+
+Table that contains an overview of the Confused Classes that were predicted for each model
++----+-------------+-----------------+----------------+
+|    | Model       | fire - other    | fire - smoke   |
++====+=============+=================+================+
+|  0 | 1_yolov5m   | 224 - 232 (343) | N/A            |
++----+-------------+-----------------+----------------+
+|  1 | 2_yolov6m   | 387 - 300 (459) | N/A            |
++----+-------------+-----------------+----------------+
+|  2 | 3_yolov7    | 654 - 742 (900) | 7 - 7 (8)      |
++----+-------------+-----------------+----------------+
+|  3 | 4_yolov8m   | 267 - 230 (393) | 4 - 5 (5)      |
++----+-------------+-----------------+----------------+
+|  4 | 5_yolov9-c  | 120 - 134 (211) | 2 - 2 (2)      |
++----+-------------+-----------------+----------------+
+|  5 | 6_gelan-c   | 301 - 218 (443) | 6 - 6 (8)      |
++----+-------------+-----------------+----------------+
+|  6 | 7_yolov10b  | 79 - 147 (205)  | N/A            |
++----+-------------+-----------------+----------------+
+|  7 | 8_yolonas_s | N/A             | N/A            |
++----+-------------+-----------------+----------------+
+
+
+Comparison of Additional Metrics
++----+----------------+-------------+-------------+------------+-------------+--------------+-------------+--------------+---------------+
+|    | Metric         | 1_yolov5m   | 2_yolov6m   | 3_yolov7   | 4_yolov8m   | 5_yolov9-c   | 6_gelan-c   | 7_yolov10b   | 8_yolonas_s   |
++====+================+=============+=============+============+=============+==============+=============+==============+===============+
+|  0 | All Detections | 44370       | 46137       | 46513      | 37193       | 32944        | 46349       | 35021        | 43029         |
++----+----------------+-------------+-------------+------------+-------------+--------------+-------------+--------------+---------------+
+|  1 | Avg FPS        | 180         | 219         | 245        | 240         | 114          | 93          | 216          | N/A           |
++----+----------------+-------------+-------------+------------+-------------+--------------+-------------+--------------+---------------+
+|  2 | Avg InfTime    | 5.79 ms     | 4.80 ms     | 4.75 ms    | 4.31 ms     | 8.98 ms      | 11.05 ms    | 4.71 ms      | N/A           |
++----+----------------+-------------+-------------+------------+-------------+--------------+-------------+--------------+---------------+
+|  3 | Conf_thr       | 0.4         | 0.4         | 0.4        | 0.4         | 0.4          | 0.4         | 0.4          | 0.4           |
++----+----------------+-------------+-------------+------------+-------------+--------------+-------------+--------------+---------------+
+|  4 | Total InfTime  | 61.63 s     | 51.10 s     | 50.56 s    | 458.80 s    | 95.59 s      | 117.63 s    | 50.14 s      | N/A           |
++----+----------------+-------------+-------------+------------+-------------+--------------+-------------+--------------+---------------+
+
+*************************************More Informations**************************************
+1_yolov5m: Weights used for inference: /home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV5/train/exp3/weights/best.pt
+1_yolov5m: Video used for inference: /home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/VideoNightMixt.mp4
+
+2_yolov6m: Weights used for inference: /home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV6/train/expm/weights/best_ckpt.pt
+2_yolov6m: Video used for inference: /home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/VideoNightMixt.mp4
+
+3_yolov7: Weights used for inference: /home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV7/train/exp_best/weights/best.pt
+3_yolov7: Video used for inference: /home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/VideoNightMixt.mp4
+
+4_yolov8m: Weights used for inference: /home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV8/train/exp_best/weights/best.pt
+4_yolov8m: Video used for inference: /home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/VideoNightMixt.mp4
+
+5_yolov9-c: Weights used for inference: /home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV9/train/exp_best/weights/best.pt
+5_yolov9-c: Video used for inference: /home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/VideoNightMixt.mp4
+
+6_gelan-c: Weights used for inference: /home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV9/trainGelan/exp_best/weights/best.pt
+6_gelan-c: Video used for inference: /home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/VideoNightMixt.mp4
+
+7_yolov10b: Weights used for inference: /home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV10/train/exp5/weights/best.pt
+7_yolov10b: Video used for inference: /home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/VideoNightMixt.mp4
