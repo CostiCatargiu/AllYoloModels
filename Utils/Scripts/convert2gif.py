@@ -18,10 +18,10 @@ def convert_video_to_gif(input_path, output_path, start_time, end_time, max_widt
 
 
 # Specify the input video path, output GIF path, start and end times in seconds
-input_video = '/home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV9/inferGelan/exp14/trafficintersection1.mp4'
+input_video = '/home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV5/infer/exp/VideoNightMixt.mp4'
 output_gif = 'output_filename.gif'
 start = 0  # Start time in seconds
-end = 3  # End time in seconds
+end = 30  # End time in seconds
 
 convert_video_to_gif(input_video, output_gif, start, end)
 

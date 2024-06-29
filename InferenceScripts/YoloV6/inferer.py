@@ -23,7 +23,6 @@ sys.path.append('../../InferenceScripts')
 # from UtilFunctions import CalcFPS, average_conf, avg_time, show_details
 from UtilFunctions import CalcFPS, average_conf, avg_time, show_details
 
-conf_list = []
 
 color_label = {
     "green": (0, 255, 0),
@@ -93,7 +92,8 @@ class Inferer:
         fps_calculator = CalcFPS()
         classesFilter = os.environ.get('FILTER_LIST', '').split(',')
         windows = []
-        dets_list = []
+        coord_list = []
+        conf_list = []
         for img_src, img_path, vid_cap in tqdm(self.files):
             img, img_src = self.process_image(img_src, self.img_size, self.stride, self.half)
             img = img.to(self.device)
@@ -125,8 +125,10 @@ class Inferer:
             self.font_check()
 
             dets = []
-            confidence_list = []
+
             if len(det):
+                confidence_list = []
+                box_coord = []
                 det[:, :4] = self.rescale(img.shape[2:], det[:, :4], img_src.shape).round()
                 for *xyxy, conf, cls in reversed(det):
                     if save_txt:  # Write to file
@@ -137,6 +139,7 @@ class Inferer:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
                     dets.append(self.class_names[int(cls)])
                     formatted_confidence = f"{conf.item():.3f}"
+                    confidence_list.append(int(cls.item()))
                     confidence_list.append(float(formatted_confidence))
                     # print(conf)
                     if save_img:
@@ -147,15 +150,21 @@ class Inferer:
                             if classesFilter[i] != self.class_names[class_num]:
                                 self.plot_box_and_label(img_ori, labelSize, xyxy, label, txt_color=color_label[labelColor],
                                                 color=self.generate_colors(class_num, True))
+                                line1 = (int(cls.item()), *xyxy)
+                                box_coord.append(line1)
 
                 my_dict = {i: dets.count(i) for i in dets}
-                dets = []
+                dets =[]
                 keys = list(my_dict.keys())
                 values = list(my_dict.values())
                 for key, value in zip(keys, values):
                     dets.extend([str(value), str(key)])
                 img_src = np.asarray(img_ori)
 
+                conf_list.append(confidence_list)
+                coord_list.append(box_coord)
+            else:
+                coord_list.append([])
             # FPS counter
             yolo_model = os.environ.get('PARAMETER')
 
@@ -169,9 +178,7 @@ class Inferer:
             #         text_color_bg=(255, 255, 255),
             #         font_thickness=2,
             #     )
-            dets_list.append(dets)
-            conf_list.append(confidence_list)
-            # print(dets_list)
+
             # print(conf_list)
             if view_img:
                 if img_path not in windows:
@@ -201,10 +208,11 @@ class Inferer:
                         vid_writer = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
                     vid_writer.write(img_src)
 
+
         path_parts = save_path.strip("/").split("/")
         path_parts.pop()
         new_path = "/".join(path_parts) + "/"
-        average_conf(dets_list, conf_list, new_path)
+        average_conf(conf_list, coord_list, new_path)
         avg_time(new_path)
 
 

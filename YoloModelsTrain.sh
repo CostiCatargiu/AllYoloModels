@@ -8,7 +8,6 @@ batchSize=64
 labelTextColor="black"
 labelTextSize=2
 nr_classes=3
-classes_names=['fire', 'other', 'smoke']
 labelTextColor="white"
 labelTextSize=2
 
@@ -21,7 +20,7 @@ delete_cache
 
 # Function to display usage information
 usage() {
-    echo "Usage: $0 <required param> [optional_param1] [optional_param2]"
+    echo "Usage: $0 <required param> [optional_param1] [optional_param2] [optional_param3]"
     echo "Parameters:"
     echo "  required_param: YoloModel that want to use for training: egg. yolov5s, yolov5m, yolov6s, yolov7, yolov8s, yolov8m, yolov9-c, gelan-c, yolonas"
     echo "  optional_param1 (datasetPath): default: = $datasetPath"
@@ -97,9 +96,10 @@ elif [[ "$select_model" == *"yolov6"* ]]; then
         --conf /home/constantin/Doctorat/YoloModels/YoloLib2/YoloModels/YoloV6/configs/yolov6m.py \
         --data $datasetPath \
         --device 0 \
-        --eval-interval 10 \
+        --eval-interval 5 \
         --output-dir $experimetsPath/YoloV6/train \
-        --name exp
+        --name exp\
+
 
 elif [[ "$select_model" == *"yolov7"* ]]; then
     cd "$experimetsPath/YoloV7/weights/"
@@ -145,12 +145,13 @@ elif [[ "$select_model" == *"yolov8"* ]]; then
         epochs=$epochs \
         batch=$batchSize\
         project=$experimetsPath/YoloV8/train \
-        name=exp\
-        cos_lr=True\
-        box=1.5 \
-        mixup=0.2\
-        scale=0.6\
-        iou=0.3
+        name=exp
+#        cos_lr=True\
+#        box=0.05 \
+#        mixup=0.2\
+#        scale=0.6\
+#        iou=0.3\
+#        patience=20
 
 
 elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; then    # Source file path
@@ -213,6 +214,41 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
         --name exp \
         --close-mosaic 15\
         --patience 30
+
+elif [[ "$select_model" == *"yolov10"* ]]; then
+    cd "$experimetsPath/YoloV10/weights/"
+    weights_url="https://github.com/jameslahm/yolov10/releases/download/v1.0/$select_model.pt"
+    if [ -f "$select_model.pt" ]; then
+        echo "Weights $select_model.pt exists..."
+    else
+        echo "Download weights $select_model.pt..."
+        curl -L -o "$select_model.pt" "$weights_url"
+    fi
+
+    if [ -z "$weights" ]; then
+        weight=$experimetsPath/YoloV10/weights/$select_model.pt
+    fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV10/train/${weights}/weights/best.pt
+    fi
+
+    yolo \
+        task=detect \
+        mode=train \
+        model=$weight \
+        data=$datasetPath \
+        epochs=$epochs \
+        batch=$batchSize\
+        project=$experimetsPath/YoloV10/train \
+        name=exp
+#        cos_lr=True\
+#        box=0.05 \
+#        mixup=0.2\
+#        scale=0.6\
+#        iou=0.3\
+#        patience=20
+
 
 else
     echo "Invalid model. Please provide either 'yolov5', 'yolov6', 'yolov7', 'yolov8', 'yolov9' or 'yolonas'."

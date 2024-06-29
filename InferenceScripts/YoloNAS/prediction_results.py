@@ -1,8 +1,8 @@
-import os, sys
+import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import List, Optional, Tuple, Iterator, Union
-from collections import deque
+
 import cv2, time
 import numpy as np
 
@@ -18,13 +18,8 @@ from .predictions import Prediction, DetectionPrediction, ClassificationPredicti
 from ...datasets.data_formats.bbox_formats import convert_bboxes
 
 from tqdm import tqdm
-sys.path.append('../../InferenceScripts')
-from UtilFunctions import show_inference, CalcFPS, set_parameters
 
-fps_calculator = CalcFPS()
-classesFilter = os.environ.get('FILTER_LIST', '').split(',')
-
-
+list_result = []
 @dataclass
 class ImagePrediction(ABC):
     """Object wrapping an image and a model's prediction.
@@ -112,6 +107,7 @@ class ImageDetectionPrediction(ImagePrediction):
     image: np.ndarray
     prediction: DetectionPrediction
     class_names: List[str]
+    global list_result
 
     def draw(
         self,
@@ -143,7 +139,6 @@ class ImageDetectionPrediction(ImagePrediction):
         :return:                Image with predicted bboxes. Note that this does not modify the original image.
         """
         image = self.image.copy()
-
         target_bboxes = target_bboxes if target_bboxes is not None else np.zeros((0, 4))
         target_class_ids = target_class_ids if target_class_ids is not None else np.zeros((0, 1))
 
@@ -168,13 +163,13 @@ class ImageDetectionPrediction(ImagePrediction):
             )
         else:
             target_bboxes_xyxy = target_bboxes
-
+        list_resultt = []
+        detss = []
         plot_targets = any([len(tbbx) > 0 for tbbx in target_bboxes_xyxy])
         color_mapping = color_mapping or generate_color_mapping(len(self.class_names))
-        names = []
-        t1=time.time()
+        time1 = time.time()
         for pred_i in np.argsort(self.prediction.confidence):
-
+            # print(pred_i)
             class_id = int(self.prediction.labels[pred_i])
             if class_id in class_ids_to_show:
                 score = "" if not show_confidence else str(round(self.prediction.confidence[pred_i], 2))
@@ -188,20 +183,17 @@ class ImageDetectionPrediction(ImagePrediction):
                     x2=int(self.prediction.bboxes_xyxy[pred_i, 2]),
                     y2=int(self.prediction.bboxes_xyxy[pred_i, 3]),
                 )
-
-            # print(f"{self.class_names[class_id]} {score}")
-            # print(self.prediction.confidence)
-            names.append(self.class_names[class_id])
-        t2 = time.time()
-        inference_time = t2 - t1
-        fps_calculator.update(1.0 / (t2 - t1))
-        avg_fps = fps_calculator.accumulate()
-        list_str = ','.join(map(str, names))
-        # print("\n inf time", inference_time)
-        with open("/home/constantin/Doctorat/YoloModels/YoloLib2/InferenceScripts/infos.txt", 'w') as f:
-            f.write(str(inference_time)+"\n")
-            f.write(str(avg_fps)+"\n")
-            f.write(list_str)
+            list_resultt.append(f"{self.class_names[class_id]} {score}")
+            detss.append(f"{self.class_names[class_id]}")
+        time2 = time.time()
+        inf_time = (time2 - time1) * 1000
+        # print(1.0/inf_time)
+        with open("/home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloNAS/infer/results.txt",'a') as f:
+            for item in list_resultt:
+                f.write(f"{item} ")  # Add a newline character after each string
+            f.write(", ")
+        with open("/home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloNAS/infer/dets.txt",'w') as f:
+            f.write(" ".join(detss))
 
         if plot_targets:
             target_image = self.image.copy()
@@ -277,9 +269,6 @@ class ImageDetectionPrediction(ImagePrediction):
         )
         show_image(image)
 
-    def return_info(self, inf_time, avg_fps):
-        return inf_time, avg_fps
-
     def save(
         self,
         output_path: str,
@@ -350,7 +339,7 @@ class ImageSegmentationPrediction(ImagePrediction):
         color_mapping = color_mapping or generate_color_mapping(len(class_names))
 
         return overlay_segmentation(
-            image=image, pred_mask=self.prediction, num_classes=len(class_names), alpha=alpha, colors=color_mapping, class_names=class_names
+            image=image, pred_mask=self.prediction.segmentation_map, num_classes=len(class_names), alpha=alpha, colors=color_mapping, class_names=class_names
         )
 
     def show(self, alpha: float = 0.6, color_mapping: Optional[List[Tuple[int, int, int]]] = None) -> None:
@@ -383,6 +372,7 @@ class ImagesPredictions(ABC):
     """
 
     _images_prediction_lst: List[ImagePrediction]
+
     def __len__(self) -> int:
         return len(self._images_prediction_lst)
 
@@ -464,6 +454,7 @@ class ImagesDetectionPrediction(ImagesPredictions):
     """
 
     _images_prediction_lst: List[ImageDetectionPrediction]
+
     def show(
         self,
         box_thickness: Optional[int] = None,
@@ -590,6 +581,7 @@ class VideoDetectionPrediction(VideoPredictions):
     _images_prediction_gen: Iterator[ImagePrediction]
     fps: int
     n_frames: int
+
     def draw(
         self,
         box_thickness: Optional[int] = None,
@@ -614,6 +606,7 @@ class VideoDetectionPrediction(VideoPredictions):
                 color_mapping=color_mapping,
                 class_names=class_names,
             )
+
     def show(
         self,
         box_thickness: Optional[int] = None,
@@ -629,8 +622,9 @@ class VideoDetectionPrediction(VideoPredictions):
                                 Default is None, which generates a default color mapping based on the number of class names.
         :param class_names:     List of class names to show. By default, is None which shows all classes using during training.
         """
-        frames = self.draw(box_thickness=box_thickness, show_confidence=show_confidence, color_mapping=color_mapping, class_names=class_names)
+        frames = self.draw(box_thickness=4, show_confidence=show_confidence, color_mapping=color_mapping, class_names=class_names)
         show_video_from_frames(window_name="Detection", frames=frames, fps=self.fps)
+
 
     def save(
         self,
@@ -733,4 +727,3 @@ class VideoSegmentationPrediction(VideoPredictions):
         """
         frames = self.draw(alpha=alpha, color_mapping=color_mapping, class_names=class_names)
         save_video(output_path=output_path, frames=frames, fps=self.fps)
-

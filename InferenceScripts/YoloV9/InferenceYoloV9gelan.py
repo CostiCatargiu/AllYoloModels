@@ -88,10 +88,10 @@ def run(
     # Run inference
     fps_calculator = CalcFPS()
     classesFilter = os.environ.get('FILTER_LIST', '').split(',')
-    dets_list = []
     conf_list = []
     fps_list = []
     inf_list = []
+    coord_list = []
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(), Profile(), Profile())
     for path, im, im0s, vid_cap, s in dataset:
@@ -140,13 +140,11 @@ def run(
             imc = im0.copy() if save_crop else im0  # for save_crop
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
             dets = []
-
-
+            box_coord = []
             if len(det):
+                confidence_list = []
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
-
-                confidence_list = []
                 # Print results
                 for c in det[:, 5].unique():
                     n = (det[:, 5] == c).sum()  # detections per class
@@ -168,15 +166,19 @@ def run(
                         for i in range(0, len(classesFilter)):
                             if classesFilter[i] != names[c]:
                                 annotator.box_label(xyxy, label, color=colors(c, True))
+                                line1 = (int(cls.item()), *xyxy)
+                                box_coord.append(line1)
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
                     confidence = float(conf)
                     confidence_str = f"{confidence:.2f}"
+                    confidence_list.append(int(cls.item()))
                     confidence_list.append(confidence_str)
 
-                reversed_list = confidence_list[::-1]
-                conf_list.append(reversed_list)
-
+                conf_list.append(confidence_list)
+                coord_list.append(box_coord)
+            else:
+                coord_list.append([])
             # Stream results
             im0 = annotator.result()
             yolo_model = os.environ.get('PARAMETER')
@@ -187,7 +189,6 @@ def run(
                     cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
 
                 show_details(p, im0, dets, inference_time, avg_fps)
-                dets_list.append(dets)
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':
@@ -222,7 +223,7 @@ def run(
     path_parts = save_path.strip("/").split("/")
     path_parts.pop()
     new_path = "/".join(path_parts) + "/"
-    average_conf(dets_list, conf_list, new_path)
+    average_conf(conf_list, coord_list, new_path)
     avg_time(new_path)
 
 def parse_opt():

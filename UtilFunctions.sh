@@ -1,5 +1,7 @@
 #!/bin/bash
 
+testVideos=$(yq e '.testVideosPath' parameters.yaml)
+
 delete_cache() {
           train=$(yq e '.train' $datasetPath)
           new_path=$(echo "$train" | sed 's/images/labels/')
@@ -31,7 +33,7 @@ downloadCCOCOannotations() {
 
 # Function to scan a directory and get the path of a video by its index
 get_video_path() {
-    local directory="/home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay" # Modify this path as needed
+    local directory=$testVideos
     local video_index=$1
 
     # Create an empty array to store the paths of video files
@@ -55,7 +57,7 @@ get_video_path() {
 
 
 list_videos() {
-    local directory="/home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/" # Modify this path as needed
+    local directory=$testVideos
 
     # Create an empty array to store the paths of video files
     declare -a video_list

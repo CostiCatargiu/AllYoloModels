@@ -154,6 +154,31 @@ elif [[ "$select_model" == *"yolov9"* ]]; then
       pip install -r requirements.txt
     fi
 
+elif [[ "$select_model" == *"yolov10"* ]]; then
+    folder_path="$current_location/YoloModels/YoloV10"
+    if [ -d "$folder_path" ]; then
+        read -p "Folder already exists. Do you want to delete it and clone again? (y/n): " answer
+        if [ "$answer" = "y" ]; then
+            echo "Deleting existing folder..."
+            rm -rf "$folder_path"
+            git clone https://github.com/THU-MIG/yolov10.git
+            name="$current_location/YoloModels/yolov10"
+            rename="$current_location/YoloModels/YoloV10"
+            mv "$name" "$rename"
+#            cd "$current_location/YoloModels/YoloV10"
+#            pip install -r requirements.txt
+        else
+            echo "Exiting without cloning."
+        fi
+    else
+      git clone https://github.com/THU-MIG/yolov10.git
+      name="$current_location/YoloModels/yolov10"
+      rename="$current_location/YoloModels/YoloV10"
+      mv "$name" "$rename"
+#      cd "$current_location/YoloModels/YoloV9"
+#      pip install -r requirements.txt
+    fi
+
 elif [[ "$select_model" == *"yolonas"* ]]; then
     git clone https://github.com/Deci-AI/super-gradients.git
     name="$current_location/YoloModels/super-gradients"
@@ -161,6 +186,31 @@ elif [[ "$select_model" == *"yolonas"* ]]; then
     mv "$name" "$rename"
     cd "YoloNAS"
     pip install -r requirements.txt
+
+elif [[ "$select_model" == *"yolov10"* ]]; then
+    folder_path="$current_location/YoloModels/YoloV10"
+    if [ -d "$folder_path" ]; then
+        read -p "Folder already exists. Do you want to delete it and clone again? (y/n): " answer
+        if [ "$answer" = "y" ]; then
+            echo "Deleting existing folder..."
+            rm -rf "$folder_path"
+            git clone https://github.com/THU-MIG/yolov10.git
+            name="$current_location/YoloModels/yolov10"
+            rename="$current_location/YoloModels/YoloV10"
+            mv "$name" "$rename"
+            cd "$current_location/YoloModels/YoloV10"
+            pip install -r requirements.txt
+        else
+            echo "Exiting without cloning."
+        fi
+    else
+      git clone https://github.com/THU-MIG/yolov10.git
+      name="$current_location/YoloModels/yolov10"
+      rename="$current_location/YoloModels/YoloV10"
+      mv "$name" "$rename"
+      cd "$current_location/YoloModels/YoloV10"
+      pip install -r requirements.txt
+    fi
 
 else
     echo "Invalid model. Please provide either 'yolov5', 'yolov6', 'yolov7', 'yolov8', 'yolov9' or 'yolonas'."

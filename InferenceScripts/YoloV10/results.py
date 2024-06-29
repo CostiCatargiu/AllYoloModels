@@ -17,7 +17,7 @@ from ultralytics.utils import LOGGER, SimpleClass, ops
 from ultralytics.utils.plotting import Annotator, colors, save_one_box
 from ultralytics.utils.torch_utils import smart_inference_mode
 sys.path.append('../../InferenceScripts/')
-from UtilFunctions import average_conf, yolov8_statisctics, average_precision_classes_yolov8
+from UtilFunctions import average_conf, yolov8_statisctics, average_precision_classes_yolov8, get_class_names
 
 color_label = {
     "green": (0, 255, 0),
@@ -30,11 +30,12 @@ color_label = {
     "roboflow": (255, 117, 26)  # Example specific color (in BGR, not RGB)
 }
 
+namess = get_class_names()
+
 labelColor = os.environ.get('LABEL_COLOR')
 
 class BaseTensor(SimpleClass):
     """Base tensor class with additional methods for easy manipulation and device handling."""
-
     def __init__(self, data, orig_shape) -> None:
         """
         Initialize BaseTensor with data and original shape.
@@ -131,7 +132,7 @@ class Results(SimpleClass):
         self.keypoints = Keypoints(keypoints, self.orig_shape) if keypoints is not None else None
         self.obb = OBB(obb, self.orig_shape) if obb is not None else None
         self.speed = {"preprocess": None, "inference": None, "postprocess": None}  # milliseconds per image
-        self.names = names
+        self.names = namess
         self.path = path
         self.save_dir = None
         self._keys = "boxes", "masks", "probs", "keypoints", "obb"
@@ -285,13 +286,13 @@ class Results(SimpleClass):
                 )
             idx = pred_boxes.cls if pred_boxes else range(len(pred_masks))
             annotator.masks(pred_masks.data, colors=[colors(x, True) for x in idx], im_gpu=im_gpu)
-
         label_list = []
         # Plot Detect results
         if pred_boxes is not None and show_boxes:
             for d in reversed(pred_boxes):
                 c, conf, id = int(d.cls), float(d.conf) if conf else None, None if d.id is None else int(d.id.item())
-                name = ("" if id is None else f"id:{id} ") + names[c]
+                # name = ("" if id is None else f"id:{id} ") + names[c]
+                name = names[c]
                 label = (f"{name} {conf:.2f}" if conf else name) if labels else None
                 box = d.xyxyxyxy.reshape(-1, 4, 2).squeeze() if is_obb else d.xyxy.squeeze()
                 annotator.box_label(box, label, color=colors(c, True), txt_color=color_label[labelColor], rotated=is_obb)
@@ -380,7 +381,7 @@ class Results(SimpleClass):
             # Detect/segment/pose
             for j, d in enumerate(boxes):
                 c, conf, id = int(d.cls), float(d.conf), None if d.id is None else int(d.id.item())
-                line = (c, *(d.xyxyxyxy.view(-1) if is_obb else d.xywhn.view(-1)))
+                line = (c, *(d.xyxyxyxyn.view(-1) if is_obb else d.xywhn.view(-1)))
                 line1 = (c, *(d.xyxyxyxyn.view(-1) if is_obb else d.xyxy.view(-1)))
                 boox_coord.append(line1)
                 if masks:
@@ -394,7 +395,7 @@ class Results(SimpleClass):
             coord_list.append(boox_coord)
         else:
             coord_list.append([])
-            # print(coord_list)
+        # print(coord_list)
         # if texts:
         #     Path(txt_file).parent.mkdir(parents=True, exist_ok=True)  # make directory
         #     with open(txt_file, "a") as f:

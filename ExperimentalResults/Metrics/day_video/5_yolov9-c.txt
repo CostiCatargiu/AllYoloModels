@@ -1,0 +1,64 @@
+Total number of detections: 33847 with a confidence threshold: 0.4.
+Total number of detections for each class and average precision per class using a conf_thr=0.4
+Class      AvgP       NrDet     
+Fire       0.719      12874     
+Other      0.662      769       
+Smoke      0.759      20204     
+
+Total number of detections and average of confidence score between 0.9 and inf for each class.
+Class      AvgP       NrDet     
+Fire       0.910      5         
+Other      0.000      0         
+Smoke      0.913      567       
+
+Total number of detections and average of confidence score between 0.8 and 0.9 for each class.
+Class      AvgP       NrDet     
+Fire       0.842      2728      
+Other      0.830      85        
+Smoke      0.861      9660      
+
+Total number of detections and average of confidence score between 0.7 and 0.8 for each class.
+Class      AvgP       NrDet     
+Fire       0.755      5499      
+Other      0.748      294       
+Smoke      0.760      4117      
+
+Total number of detections and average of confidence score between 0.6 and 0.7 for each class.
+Class      AvgP       NrDet     
+Fire       0.666      2695      
+Other      0.674      137       
+Smoke      0.659      2560      
+
+Total number of detections and average of confidence score between 0.5 and 0.6 for each class.
+Class      AvgP       NrDet     
+Fire       0.559      1144      
+Other      0.547      129       
+Smoke      0.557      1827      
+
+Total number of detections and average of confidence score between 0.4 and 0.5 for each class.
+Class      AvgP       NrDet     
+Fire       0.456      769       
+Other      0.453      118       
+Smoke      0.457      1408      
+
+-------------------------------------------------------------------------------
+
+Number of frames with internal mismatches: 1
+
+Classes fire and other mismatched in 5 frames.
+Class fire was predicted: 2 times in these frames.
+Class other was predicted: 4 times in these frames.
+Classes fire and other were mismatched in the same frame 1 times.
+Frames in which fire were predicted to be other or vice versa: [6790, 6791, 6802, 6804, 6805]
+
+Summary:
+other was confused to be fire for 2 time in frames : [6791, 6802]
+
+Total number of frames affected by confused predictions: 2.
+Total number of error predictions for all classes: 2.
+
+Average FPS: 116
+Average InfTime: 8.73ms per frame.
+Total inference time: 163.08s for 18680 frames.
+Video used for inference: /home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/VideoDayMixt.mp4
+Weights used for inference: /home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV9/train/exp_best/weights/best.pt

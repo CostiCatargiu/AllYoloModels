@@ -214,7 +214,7 @@ elif [[ "$select_model" == *"yolov8"* ]]; then
         data=$datasetPath \
         imgsz=$imgSize \
         conf=$confThr \
-        iou=$iouThr
+        iou=0.9
 
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect
@@ -291,6 +291,43 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
         --project $experimetsPath/YoloV9/evalGelan \
         --name exp \
         --img $imgSize \
+
+    if [[ "$testSplit" == *"test"* ]]; then
+        evalSelect
+        echo "Evaluation performed on <<$testSplit>> images from $datasetPath dataset."
+    else
+        echo "Evaluation performed on <<$testSplit>> images from $datasetPath dataset."
+    fi
+
+elif [[ "$select_model" == *"yolov10"* ]]; then
+    cd "$experimetsPath/YoloV10/weights/"
+    weights_url="https://github.com/jameslahm/yolov10/releases/download/v1.0/$select_model.pt"
+    if [ -f "$select_model.pt" ]; then
+        echo "Weights $select_model.pt exists..."
+    else
+        echo "Download weights $select_model.pt..."
+        curl -L -o "$select_model.pt" "$weights_url"
+    fi
+    if [ -z "$weights" ]; then
+        weight=$experimetsPath/YoloV10/weights/$select_model.pt
+    fi
+    if [[ "$testSplit" == *"test"* ]]; then
+        evalSelect
+    fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV10/train/${weights}/weights/best.pt
+    fi
+    yolo \
+        task=detect \
+        mode=val \
+        model=$weight \
+        project=$experimetsPath/YoloV10/eval \
+        name=exp \
+        data=$datasetPath \
+        imgsz=$imgSize \
+        conf=$confThr \
+        iou=0.9
 
     if [[ "$testSplit" == *"test"* ]]; then
         evalSelect

@@ -13,8 +13,12 @@ fontThickness=4
 ypos=40
 labelTextColor="white"
 labelTextSize=2
-video_index=2
+video_index=1
 initialypos=20
+nrCompareFrames=4
+boxSimilarity=5
+saveConfusedPred=true
+weightsType=pytorch
 
 # Check if the required parameter is provided
 if [ "$#" -eq 0 ]; then
@@ -37,6 +41,7 @@ usage() {
     echo "  required_param: YoloModel that want to use for inference: [yolov5n, yolov5s, yolov5m, yolov5l, yolov5x], [yolov6n, yolov6s, yolov6m, yolov6l]"
     echo "  required_param: YoloModel that want to use for inference: [yolov7, yolov7-x, yolov7-w6, yolov7-d6, yolov7-e6e]"
     echo "  required_param: YoloModel that want to use for inference: [yolov8n, yolov8s, yolov8m, yolov8l, yolov8x], [yolov9-c, yolov9-e, gelan-c, gelan-e]"
+    echo "  required_param: YoloModel that want to use for inference: [yolov10s, yolov10m, yolov10b, yolov10l], [yolonas_s, yolonas_m, yolonas_l]"
     echo "  optional_param1 (-p1 || --weights): default: = /ExperimentalResults/YoloV.../weights/model.pt"
     echo "  optional_param2 (-p2 || --source_video): default: = $source_video or choose one video from the list by it index $listvideos"
     echo "  optional_param3 (-p3 || --video_index): default: = $video_index"
@@ -50,6 +55,12 @@ usage() {
     echo "  optional_param11 (-p11 || --initialypos): default: = $initialypos"
     echo "  optional_param12 (-p12 || --labelTextColor): default: = $labelTextColor. Options: "blue","green", "white", "black", "cyan", "magenta","gray", "roboflow""
     echo "  optional_param13 (-p13 || --labelTextSize): default: = $labelTextSize"
+    echo "  optional_param14 (-p14 || --nrCompareFrames): default: = $nrCompareFrames"
+    echo "  optional_param15 (-p15 || --saveConfusedPred): default: = $saveConfusedPred"
+    echo "  optional_param15 (-p16 || --boxSimilarity): default: = $boxSimilarity"
+    echo "  optional_param15 (-p16 || --weightsType): default: = $weightsType"
+
+
 }
 
 # Parse optional parameters
@@ -108,6 +119,23 @@ while [[ "$#" -gt 0 ]]; do
             labelTextSize="$2"
             shift 2
             ;;
+        -p14|--nrCompareFrames)
+            nrCompareFrames="$2"
+            shift 2
+            ;;
+        -p15|--saveConfusedPred)
+            saveConfusedPred="$2"
+            shift 2
+            ;;
+        -p16|--boxSimilarity)
+            boxSimilarity="$2"
+            shift 2
+            ;;
+        -p17|--weightsType)
+            weightsType="$2"
+            shift 2
+            ;;
+
 
         *)  # Unknown option
             echo "Unknown option: $1"
@@ -143,7 +171,8 @@ export METRIC_THR="$thr_metric"
 export LABEL_SIZE="$labelTextSize"
 export LABEL_COLOR="$labelTextColor"
 export INITIALYPOS="$initialypos"
-
+export NR_COMPARE_FRAMES="$nrCompareFrames"
+export BOX_SIMILARITY="$boxSimilarity"
 
 export FONT_SCALE="$fontSize"
 export FONT_THICKNESS="$fontThickness"
@@ -158,14 +187,45 @@ fi
 export DEVICE_PARAMETER="$device_name"
 
 if [[ "$select_model" == *"yolov5"* ]]; then
-    base_path = "ExperimentalResults/YoloVS/train/"
     if [ -z "$weights" ]; then
         weight=$experimetsPath/YoloV5/weights/$select_model.pt
     fi
 
     if [[ "$weights" == *"exp"* ]]; then
-        weight=${current_location}/ExperimentalResults/YoloV5/train/${weights}/weights/best.pt
+        if [[ "$weightsType" == *"pytorch"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV5/train/${weights}/weights/best.pt
+        elif [[ "$weightsType" == *"onnx"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV5/train/${weights}/weights/best.onnx
+            if [[ -f "$weight" ]]; then
+                echo "ONNX file found: $weight"
+            else
+                read -p "ONNX file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        elif [[ "$weightsType" == *"engine"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV5/train/${weights}/weights/best.engine
+            if [[ -f "$weight" ]]; then
+                echo "Engine file found: $weight"
+            else
+                read -p "Engine file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType engine? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --weights $weights --exportType engine
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        fi
     fi
+
+
+
+    export WEIGHTS_USED="$weight"
 
     source_file="$inferenceScriptsPath/YoloV5/InferenceYoloV5.py"
     destination_directory="$current_location/YoloModels/YoloV5"
@@ -173,6 +233,7 @@ if [[ "$select_model" == *"yolov5"* ]]; then
     destination_directory1="$current_location/YoloModels/YoloV5/utils"
     cp "$source_file" "$destination_directory"
     cp "$source_file1" "$destination_directory1"
+
     cd "$current_location/YoloModels/YoloV5/"
     python3 InferenceYoloV5.py \
         --data $datasetPath \
@@ -184,6 +245,10 @@ if [[ "$select_model" == *"yolov5"* ]]; then
         --device $device \
         --view-img
 
+
+    cd "$inferenceScriptsPath"
+      python3 ExtractFramesDuplicate.py $experimetsPath/YoloV5/infer
+
 elif [[ "$select_model" == *"yolov6"* ]]; then
     if [ -z "$weights" ]; then
         weight=$experimetsPath/YoloV6/weights/$select_model.pt
@@ -192,6 +257,7 @@ elif [[ "$select_model" == *"yolov6"* ]]; then
     if [[ "$weights" == *"exp"* ]]; then
         weight=${current_location}/ExperimentalResults/YoloV6/train/${weights}/weights/best_ckpt.pt
     fi
+    export WEIGHTS_USED="$weight"
 
     source_file="$inferenceScriptsPath/YoloV6/InferenceYoloV6.py"
     destination_directory="$current_location/YoloModels/YoloV6"
@@ -208,7 +274,12 @@ elif [[ "$select_model" == *"yolov6"* ]]; then
         --name exp \
         --view-img \
         --device $device \
-        --yaml /home/constantin/Doctorat/FireDataset/RoboflowDS/yolov6/data.yaml
+        --yaml $datasetPath
+
+        if [ "$saveConfusedPred" = "true" ]; then
+          cd "$inferenceScriptsPath"
+             python3 ExtractFramesDuplicate.py $experimetsPath/YoloV6/infer
+        fi
 
 elif [[ "$select_model" == *"yolov7"* ]]; then
     source_file="$inferenceScriptsPath/YoloV7/InferenceYoloV7.py"
@@ -230,8 +301,9 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
     fi
 
     if [[ "$weights" == *"exp"* ]]; then
-        weight=${current_location}/ExperimentalResults/YoloV7/train/${weights}/weights/best.pt
+        weight=${current_location}/ExperimentalResults/YoloV7/train/${weights}/weights/best.engine
     fi
+    export WEIGHTS_USED="$weight"
 
     cd "$current_location/YoloModels/YoloV7/"
     python3 InferenceYoloV7.py \
@@ -242,16 +314,83 @@ elif [[ "$select_model" == *"yolov7"* ]]; then
         --view-img \
         --conf-thres $conf_thr\
         --device $device
+#        python3 export.py --weights /home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV7/train/exp_best/weights/best.pt \
+#         --grid --end2end --simplify --topk-all 100 --iou-thres 0.65 --conf-thres 0.35 --img-size 640 640
 
+        if [ "$saveConfusedPred" = "true" ]; then
+        cd "$inferenceScriptsPath"
+           python3 ExtractFramesDuplicate.py $experimetsPath/YoloV7/infer
+        fi
 
 elif [[ "$select_model" == *"yolov8"* ]]; then
     if [ -z "$weights" ]; then
         weight=$experimetsPath/YoloV8/weights/$select_model.pt
+        if [[ "$weightsType" == *"pytorch"* ]]; then
+            weight=$experimetsPath/YoloV8/weights/$select_model.pt
+        elif [[ "$weightsType" == *"onnx"* ]]; then
+            weight=$experimetsPath/YoloV8/weights/$select_model.onnx
+            if [[ -f "$weight" ]]; then
+                echo "ONNX file found: $weight"
+            else
+                read -p "ONNX file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --exportType onnx
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        elif [[ "$weightsType" == *"engine"* ]]; then
+            weight=$experimetsPath/YoloV8/weights/$select_model.engine
+            if [[ -f "$weight" ]]; then
+                echo "Engine file found: $weight"
+            else
+                read -p "Engine file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType engine? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --exportType engine
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        fi
     fi
 
     if [[ "$weights" == *"exp"* ]]; then
         weight=${current_location}/ExperimentalResults/YoloV8/train/${weights}/weights/best.pt
+        if [[ "$weightsType" == *"pytorch"* ]]; then
+        weight=${current_location}/ExperimentalResults/YoloV8/train/${weights}/weights/best.pt
+        elif [[ "$weightsType" == *"onnx"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV8/train/${weights}/weights/best.onnx
+            if [[ -f "$weight" ]]; then
+                echo "ONNX file found: $weight"
+            else
+                read -p "ONNX file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        elif [[ "$weightsType" == *"engine"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV8/train/${weights}/weights/best.engine
+            if [[ -f "$weight" ]]; then
+                echo "Engine file found: $weight"
+            else
+                read -p "Engine file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType engine? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --weights $weights --exportType engine
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        fi
+
+
     fi
+    export WEIGHTS_USED="$weight"
 
     source_file1="$inferenceScriptsPath/YoloV8/InferenceYoloV8.py"
     source_file="$inferenceScriptsPath/YoloV8/predictor.py"
@@ -271,6 +410,12 @@ elif [[ "$select_model" == *"yolov8"* ]]; then
         --name exp \
         --device $device
 
+    if [ "$saveConfusedPred" = "true" ]; then
+        cd "$inferenceScriptsPath"
+           python3 ExtractFramesDuplicate.py $experimetsPath/YoloV8/infer
+    fi
+
+
 elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; then    # Source file path
     source_file="$inferenceScriptsPath/YoloV9/InferenceYoloV9dual.py"
     destination_directory="$current_location/YoloModels/YoloV9"
@@ -286,17 +431,76 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
         echo "Download weights $select_model.pt..."
         curl -L -o "$select_model.pt" "$weights_url"
     fi
+
+    cd "$current_location/"
     if [ -z "$weights" ]; then
         weight=$experimetsPath/YoloV9/weights/$select_model.pt
+        if [[ "$weightsType" == *"pytorch"* ]]; then
+            weight=$experimetsPath/YoloV9/weights/$select_model.pt
+        elif [[ "$weightsType" == *"onnx"* ]]; then
+            weight=$experimetsPath/YoloV9/weights/$select_model.onnx
+            if [[ -f "$weight" ]]; then
+                echo "ONNX file found: $weight"
+            else
+                read -p "ONNX file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --exportType onnx
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        elif [[ "$weightsType" == *"engine"* ]]; then
+            weight=$experimetsPath/YoloV9/weights/$select_model.engine
+            if [[ -f "$weight" ]]; then
+                echo "Engine file found: $weight"
+            else
+                read -p "Engine file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType engine? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --exportType engine
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        fi
     fi
 
     if [[ "$weights" == *"exp"* ]]; then
-        weight=${current_location}/ExperimentalResults/YoloV9/train/${weights}/weights/best.pt
+        if [[ "$weightsType" == *"pytorch"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV9/train/${weights}/weights/best.pt
+        elif [[ "$weightsType" == *"onnx"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV9/train/${weights}/weights/best.onnx
+            if [[ -f "$weight" ]]; then
+                echo "ONNX file found: $weight"
+            else
+                read -p "ONNX file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        elif [[ "$weightsType" == *"engine"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV9/train/${weights}/weights/best.engine
+            if [[ -f "$weight" ]]; then
+                echo "Engine file found: $weight"
+            else
+                read -p "Engine file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType engine? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --weights $weights --exportType engine
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        fi
     fi
-
+    export WEIGHTS_USED="$weight"
     cd "$current_location/YoloModels/YoloV9/"
     python3 InferenceYoloV9dual.py \
-        --data /home/constantin/Doctorat/FireDataset/RoboflowDS/Yolov5/DSall/data.yaml \
+        --data $datasetPath \
         --weights $weight \
         --source $source_video \
         --conf-thres $conf_thr \
@@ -305,6 +509,11 @@ elif [[ "$select_model" == *"yolov9"* && "$select_model" != *"converted"* ]]; th
         --view-img \
         --device $device
 
+    if [ "$saveConfusedPred" = "true" ]; then
+      cd "$inferenceScriptsPath"
+         python3 ExtractFramesDuplicate.py $experimetsPath/YoloV9/infer
+    fi
+
 elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; then    # Source file path
     source_file="$inferenceScriptsPath/YoloV9/InferenceYoloV9gelan.py"
     destination_directory="$current_location/YoloModels/YoloV9"
@@ -312,6 +521,7 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
     destination_directory1="$current_location/YoloModels/YoloV9/utils"
     cp "$source_file" "$destination_directory"
     cp "$source_file1" "$destination_directory1"
+
     cd "$experimetsPath/YoloV9/weightsGelan/"
     weights_url="https://github.com/WongKinYiu/yolov9/releases/download/v0.1/$select_model.pt"
     if [ -f "$select_model.pt" ]; then
@@ -320,24 +530,199 @@ elif [[ "$select_model" == *"gelan"* || "$select_model" == *"converted"* ]]; the
         echo "Download weights $select_model.pt..."
         curl -L -o "$select_model.pt" "$weights_url"
     fi
+
+    cd "$current_location/"
     if [ -z "$weights" ]; then
         weight=$experimetsPath/YoloV9/weightsGelan/$select_model.pt
-    fi
-    if [[ "$weights" == *"exp"* ]]; then
-        weight=${current_location}/ExperimentalResults/YoloV9/trainGelan/${weights}/weights/best.pt
+        if [[ "$weightsType" == *"pytorch"* ]]; then
+            weight=$experimetsPath/YoloV9/weightsGelan/$select_model.pt
+        elif [[ "$weightsType" == *"onnx"* ]]; then
+            weight=$experimetsPath/YoloV9/weightsGelan/$select_model.onnx
+            if [[ -f "$weight" ]]; then
+                echo "ONNX file found: $weight"
+            else
+                read -p "ONNX file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --exportType onnx
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        elif [[ "$weightsType" == *"engine"* ]]; then
+            weight=$experimetsPath/YoloV9/weightsGelan/$select_model.engine
+            if [[ -f "$weight" ]]; then
+                echo "Engine file found: $weight"
+            else
+                read -p "Engine file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType engine? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --exportType engine
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        fi
     fi
 
+    if [[ "$weights" == *"exp"* ]]; then
+        if [[ "$weightsType" == *"pytorch"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV9/trainGelan/${weights}/weights/best.pt
+        elif [[ "$weightsType" == *"onnx"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV9/trainGelan/${weights}/weights/best.onnx
+            if [[ -f "$weight" ]]; then
+                echo "ONNX file found: $weight"
+            else
+                read -p "ONNX file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        elif [[ "$weightsType" == *"engine"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV9/trainGelan/${weights}/weights/best.engine
+            if [[ -f "$weight" ]]; then
+                echo "Engine file found: $weight"
+            else
+                read -p "Engine file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType engine? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --weights $weights --exportType engine
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        fi
+    fi
+    export WEIGHTS_USED="$weight"
     cd "$current_location/YoloModels/YoloV9/"
     python3 InferenceYoloV9gelan.py \
-        --data /home/constantin/Doctorat/FireDataset/RoboflowDS/Yolov5/DSall/data.yaml \
+        --data $datasetPath \
         --weights $weight \
         --source $source_video \
         --conf-thres $conf_thr \
         --project $experimetsPath/YoloV9/inferGelan \
         --name exp \
         --view-img \
+        --imgsz 640 \
         --device $device
 
+    if [ "$saveConfusedPred" = "true" ]; then
+        cd "$inferenceScriptsPath"
+           python3 ExtractFramesDuplicate.py $experimetsPath/YoloV9/inferGelan
+    fi
+
+elif [[ "$select_model" == *"yolov10"* ]]; then
+    # shellcheck disable=SC2164
+    cd "$experimetsPath/YoloV10/weights/"
+    weights_url="https://github.com/jameslahm/yolov10/releases/download/v1.0/$select_model.pt"
+    if [ -f "$select_model.pt" ]; then
+          echo "Weights $select_model.pt exists..."
+      else
+          echo "Download weights $select_model.pt..."
+          curl -L -o "$select_model.pt" "$weights_url"
+    fi
+
+    # shellcheck disable=SC2164
+    cd "$current_location/"
+    if [ -z "$weights" ]; then
+      weight=$experimetsPath/YoloV10/weights/$select_model.pt
+      if [[ "$weightsType" == *"pytorch"* ]]; then
+            weight=$experimetsPath/YoloV10/weights/$select_model.pt
+        elif [[ "$weightsType" == *"onnx"* ]]; then
+            weight=$experimetsPath/YoloV10/weights/$select_model.onnx
+            if [[ -f "$weight" ]]; then
+                echo "ONNX file found: $weight"
+            else
+                read -p "ONNX file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --exportType onnx
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        elif [[ "$weightsType" == *"engine"* ]]; then
+            weight=$experimetsPath/YoloV10/weights/$select_model.engine
+            if [[ -f "$weight" ]]; then
+                echo "Engine file found: $weight"
+            else
+                # shellcheck disable=SC2162
+                read -p "Engine file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType engine? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --exportType engine
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        fi
+    fi
+
+    if [[ "$weights" == *"exp"* ]]; then
+        if [[ "$weightsType" == *"pytorch"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV10/train/${weights}/weights/best.pt
+        elif [[ "$weightsType" == *"onnx"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV10/train/${weights}/weights/best.onnx
+            if [[ -f "$weight" ]]; then
+                echo "ONNX file found: $weight"
+            else
+                read -p "ONNX file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --weights $weights --exportType onnx
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        elif [[ "$weightsType" == *"engine"* ]]; then
+            weight=${current_location}/ExperimentalResults/YoloV10/train/${weights}/weights/best.engine
+            if [[ -f "$weight" ]]; then
+                echo "Engine file found: $weight"
+            else
+                read -p "Engine file not found. Do you want to execute ./YoloModelsExport.sh $select_model --weights $weights --exportType engine? (y/n): " response
+                if [[ "$response" == "y" || "$response" == "Y" ]]; then
+                    ./YoloModelsExport.sh $select_model --weights $weights --exportType engine
+                else
+                    echo "Command execution cancelled."
+                    exit 1
+                fi
+            fi
+        fi
+    fi
+
+    export WEIGHTS_USED="$weight"
+
+    source_file1="$inferenceScriptsPath/YoloV10/InferenceYoloV10.py"
+    source_file="$inferenceScriptsPath/YoloV10/predictor.py"
+    source_file3="$inferenceScriptsPath/YoloV10/results.py"
+    destination_directory="$current_location/YoloModels/YoloV10/ultralytics/engine/"
+    destination_directory1="$current_location/YoloModels/YoloV10/"
+    cp "$source_file" "$destination_directory"
+    cp "$source_file1" "$destination_directory1"
+    cp "$source_file2" "$destination_directory2"
+    cp "$source_file3" "$destination_directory"
+
+    cd "$current_location/YoloModels/YoloV10/"
+    python3 InferenceYoloV10.py \
+        --weights $weight \
+        --datasetpath $datasetPath \
+        --source $source_video \
+        --conf-thres $conf_thr \
+        --project $experimetsPath/YoloV10/infer \
+        --name exp \
+        --device $device
+
+    if [ "$saveConfusedPred" = "true" ]; then
+        cd "$inferenceScriptsPath"
+           python3 ExtractFramesDuplicate.py $experimetsPath/YoloV10/infer
+    fi
+
+elif [[ "$select_model" == *"yolonas"* ]]; then
+    cd "$current_location/InferenceScripts/YoloNAS/"
+    python3 InferenceYoloNAS.py
 
 else
     echo "Invalid model. Please provide either 'yolov5', 'yolov6', 'yolov7', 'yolov8', 'yolov9' or 'yolonas'."

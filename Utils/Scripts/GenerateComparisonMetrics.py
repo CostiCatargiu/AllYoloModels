@@ -1,5 +1,7 @@
 import os
 import re
+import pandas as pd
+from tabulate import tabulate
 
 def extract_table_data(filename):
     with open(filename, 'r') as file:
@@ -29,11 +31,9 @@ def extract_table_data(filename):
                 nrdet = parts[-1]
                 table_dict[class_name] = {'AvgP': avgp, 'NrDet': nrdet}
         tables_data.append(table_dict)
-
     return tables_data
 
 def reformat_and_compare_tables(dict_list, headers, file):
-    num_files = len(dict_list)
     all_classes = set()
 
     for d in dict_list:
@@ -41,6 +41,19 @@ def reformat_and_compare_tables(dict_list, headers, file):
             all_classes.update(table.keys())
     all_classes.discard('name')
     all_classes = sorted(all_classes)
+
+    sort_det = []
+    for table_index in range(len(dict_list[0])):
+        for idx, d in enumerate(dict_list):
+            for class_name in all_classes:
+                nrdet = d[table_index].get(class_name, {}).get('NrDet', 'N/A')
+                sort_det.append(nrdet)
+        break
+    list1_int = [int(x) if x != 'N/A' else float('-inf') for x in sort_det]
+    combined = list(zip(list1_int, all_classes))
+    sorted_combined = sorted(combined, key=lambda x: x[0], reverse=True)
+    sorted_list1_int, sorted_list2 = zip(*sorted_combined)
+    all_classes = sorted_list2
 
     max_class_name_length = max(len(class_name) for class_name in all_classes)
     class_width = max(4, max_class_name_length + 2)
@@ -92,38 +105,130 @@ def extract_additional_data(filename):
             additional_data['Conf_thr'] = match.group(1)
     return additional_data
 
+
 def compare_additional_metrics(all_additional_data, headers, file):
     print("\nComparison of Additional Metrics", file=file)
+    # Prepare the data
     metrics = sorted(set().union(*(d.keys() for d in all_additional_data)))
-    metric_width = max(len(metric) for metric in metrics) + 2
-    print("{:<15}".format(""), end="", file=file)
-    for header in headers:
-        print(f"{header:<12}", end="", file=file)
-    print(file=file)
-    print("-" * (15 + 12 * len(headers)), file=file)
+    data_dict = {header: [] for header in headers}
+    data_dict["Metric"] = metrics
 
     for metric in metrics:
-        print(f"{metric:<{metric_width}}", end="", file=file)
-        for data in all_additional_data:
-            print(f"{data.get(metric, 'N/A'):<12}", end="", file=file)
-        print(file=file)
-    print("-" * (15 + 12 * len(headers)), file=file)
+        for i, data in enumerate(all_additional_data):
+            data_dict[headers[i]].append(data.get(metric, 'N/A'))
+
+    # Create a DataFrame
+    df = pd.DataFrame(data_dict)
+    df = df[["Metric"] + headers]  # Ensure the correct order of columns
+
+    # Use tabulate to format the DataFrame with borders
+    table = tabulate(df, headers='keys', tablefmt='grid')
+
+    # Print the table
+    print(table, file=file)
+    print("\n*************************************More Informations**************************************", file=file)
+
+
 
 def read_last_line(filename):
     with open(filename, 'r') as file:
         lines = file.readlines()
-    return lines[-1] if lines else None
+    return lines[-1], lines[-2] if lines else None
 def print_last_lines_from_files(file_list,file):
     for filename in file_list:
         base_filename = os.path.splitext(os.path.basename(filename))[0]
-        last_line = read_last_line(filename)
+        last_line, lastt_line = read_last_line(filename)
         print(f"{base_filename}: {last_line}",file=file)
+        print(f"{base_filename}: {lastt_line}",file=file)
+
 
 # Print the last line from each file
 
+class ConfusionMatrixAnalyzer:
+    def __init__(self, input_directory, output_file):
+        self.input_directory = input_directory
+        self.output_file = output_file
+        self.confusion_data = {}
+
+    def parse_file(self, filename):
+        model_name = filename.split('.')[0]
+        self.confusion_data[model_name] = {}
+
+        pattern = re.compile(
+            r'Classes (?P<class1>\w+) and (?P<class2>\w+) mismatched in (?P<frames>\d+) frames\.\n'
+            r'Class (?P<class1_repeat>\w+) was predicted: (?P<class1_count>\d+) times in these frames\.\n'
+            r'Class (?P<class2_repeat>\w+) was predicted: (?P<class2_count>\d+) times in these frames\.\n'
+        )
+
+        with open(os.path.join(self.input_directory, filename), 'r') as file:
+            content = file.read()
+            matches = pattern.finditer(content)
+            for match in matches:
+                class1 = match.group('class1')
+                class2 = match.group('class2')
+                frames = match.group('frames')
+                class1_count = match.group('class1_count')
+                class2_count = match.group('class2_count')
+
+                class_pair = f"{class1} - {class2}"
+                self.confusion_data[model_name][class_pair] = f"{class1_count} - {class2_count} ({frames})"
+
+    def read_files(self):
+        for filename in os.listdir(self.input_directory):
+            if filename.endswith('.txt'):
+                self.parse_file(filename)
+
+    def create_dataframe(self):
+        # Get all unique confusion pairs
+        all_pairs = set()
+        for model, data in self.confusion_data.items():
+            all_pairs.update(data.keys())
+
+        # Ensure consistent order of columns
+        all_pairs = sorted(all_pairs)
+
+        # Sort models alphabetically
+        sorted_models = sorted(self.confusion_data.keys())
+
+        # Create a list to store the DataFrame rows
+        rows = []
+
+        # Populate the rows list with confusion data
+        for model in sorted_models:
+            data = self.confusion_data[model]
+            row = {'Model': model}
+            for pair in all_pairs:
+                row[pair] = data.get(pair, 'N/A')
+            rows.append(row)
+
+        # Convert the list of rows into a DataFrame
+        self.df = pd.DataFrame(rows, columns=['Model'] + all_pairs)
+
+    def generate_table(self):
+        # Center align values
+        for col in self.df.columns:
+            self.df[col] = self.df[col].astype(str).apply(lambda x: x.center(20))
+
+        # Format the DataFrame as a table
+        self.table = tabulate(self.df, headers='keys', tablefmt='grid')
+
+    def save_to_file(self):
+        # Write the formatted table to a text file
+        with open(self.output_file, 'a') as f:
+            f.write("\n\nTable that contains an overview of the Confused Classes that were predicted for each model\n")
+            f.write(self.table)
+            f.write("\n\n")
+
+    def run(self):
+        self.read_files()
+        self.create_dataframe()
+        self.generate_table()
+        self.save_to_file()
+
+
 
 def main():
-    directory_path = '../../ExperimentalResults/Metrics/'
+    directory_path = '../../ExperimentalResults/Metrics/day_video'
     filenames = [os.path.join(directory_path, f) for f in os.listdir(directory_path) if f.endswith('.txt')]
     filenames.sort()
     headers = [os.path.basename(file).split('.')[0] for file in filenames]
@@ -133,9 +238,14 @@ def main():
         all_table_data = [extract_table_data(file_name) for file_name in filenames]
         reformat_and_compare_tables(all_table_data, headers, file)
 
+    analyzer = ConfusionMatrixAnalyzer(directory_path, output_file)
+    analyzer.run()
+
+    with open(output_file, 'a') as file:
         all_additional_data = [extract_additional_data(file_name) for file_name in filenames]
         compare_additional_metrics(all_additional_data, headers, file)
         print_last_lines_from_files(filenames, file)
+
 
 
 if __name__ == "__main__":

@@ -1,21 +1,19 @@
+import time
 from typing import List, Optional, Tuple, Iterable, Iterator
-import cv2, sys
+import cv2
 import PIL
 
 import numpy as np
 
+import sys
+import os
+
+# Add the project directory to sys.path
+project_path = '/home/constantin/Doctorat/YoloModels/YoloLib2/InferenceScripts/'
+sys.path.append(project_path)
+from UtilFunctions import show_detailsNAS
 
 from super_gradients.common.abstractions.abstract_logger import get_logger
-
-import supervision as sv
-from supervision.geometry.core import Point
-from supervision.draw.utils import draw_text
-import os, cv2
-from collections import deque
-import numpy as np
-
-sys.path.append('../../InferenceScripts')
-from UtilFunctions import CalcFPS, set_parameters
 
 logger = get_logger(__name__)
 
@@ -214,101 +212,12 @@ def show_video_from_frames(frames: List[np.ndarray], fps: float, window_name: st
     """Display a video from a list of frames using OpenCV.
 
     :param frames:      Frames representing the video, each in (H, W, C), RGB. Note that all the frames are expected to have the same shape.
-    :param fps:         Frames per secondqqqqqqqqqqqqqqq
+    :param fps:         Frames per second
     :param window_name:  Name of the window to display the video
     """
-    text_anchor6, text_anchor7, text_overlay7, anchor_list1, anchor_list, classesCount, text_anchor, text_anchor1, text_anchor2, text_anchor3, text_anchor5, text_anchor4, text_overlay5, text_overlay6, text_overlay, text_overlay2, text_overlay4, text_color, text_scale, text_thickness, background_color = set_parameters()
     for frame in frames:
-        with open("/home/constantin/Doctorat/YoloModels/YoloLib2/InferenceScripts/infos.txt", 'r') as f:
-            line1 = f.readline().strip()  # Read and strip whitespace
-            value1 = float(line1)
-            line2 = f.readline().strip()  # Read and strip whitespace
-            value2 = float(line2)
-            line3 = f.readline().strip()
-
-        elements = line3.split(',')
-        element_counts = {}
-        for element in elements:
-            if element in element_counts:
-                element_counts[element] += 1
-            else:
-                element_counts[element] = 1
-        result_list = []
-        for element, count in element_counts.items():
-            result_list.extend([str(count), element])
-
-        inference_time = value1
-        avg_fps = value2
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-        frame = cv2.resize(frame, (1200, 800))  # Resize the frame
-
-        inference_time_ms = inference_time * 1000
-        text_overlay3 = f'{avg_fps:.2f}'
-        text_overlay1 = f'{inference_time_ms:.2f}'
-
-        annotated_frame = draw_text(scene=frame, text=text_overlay, text_anchor=text_anchor,
-                                    text_color=text_color, background_color=background_color,
-                                    text_thickness=text_thickness, text_scale=text_scale)
-        annotated_frame = draw_text(scene=annotated_frame, text=text_overlay1, text_anchor=text_anchor1,
-                                    text_color=text_color, background_color=background_color,
-                                    text_thickness=text_thickness, text_scale=text_scale)
-        annotated_frame = draw_text(scene=annotated_frame, text=text_overlay2, text_anchor=text_anchor2,
-                                    text_color=text_color, background_color=background_color,
-                                    text_thickness=text_thickness, text_scale=text_scale)
-        annotated_frame = draw_text(scene=annotated_frame, text=text_overlay3, text_anchor=text_anchor3,
-                                    text_color=text_color, background_color=background_color,
-                                    text_thickness=text_thickness, text_scale=text_scale)
-        annotated_frame = draw_text(scene=annotated_frame, text=text_overlay4, text_anchor=text_anchor4,
-                                    text_color=sv.Color.RED, background_color=background_color,
-                                    text_thickness=1, text_scale=0.5)
-        annotated_frame = draw_text(scene=annotated_frame, text=text_overlay5, text_anchor=text_anchor5,
-                                    text_color=sv.Color.RED, background_color=background_color,
-                                    text_thickness=1, text_scale=0.4)
-
-        countFlag = os.environ.get('COOUNT_FLAG')
-        countFlag = 'ok'
-        classesCount =['car','person','traffic light']
-        if countFlag == 'ok':
-            nr_dets = []
-            for i in range(0, len(classesCount)):
-                ok = 0
-                for j in range(0, (len(result_list))):
-                    if result_list[j] == classesCount[i] or str(result_list[j])[:-1] == classesCount[i]:
-                        nr_dets.append(str(result_list[j - 1]))
-                        ok = 1
-                if ok == 0:
-                    nr_dets.append('0')
-
-            # print(nr_dets)
-            # res = [eval(i) for i in nr_dets]
-
-            # total_det=sum(nr_dets)
-            total_det = sum([int(i) for i in nr_dets if type(i) == int or i.isdigit()])
-            total_det = str(total_det)
-            for i in range(0, len(classesCount)):
-                annotated_frame = draw_text(scene=annotated_frame, text=classesCount[i] + ':',
-                                            text_anchor=anchor_list[i],
-                                            text_color=sv.Color.RED, background_color=background_color,
-                                            text_thickness=2, text_scale=0.6)
-
-            for i in range(0, len(classesCount)):
-                annotated_frame = draw_text(scene=annotated_frame, text=nr_dets[i], text_anchor=anchor_list1[i],
-                                            text_color=sv.Color.RED, background_color=background_color,
-                                            text_thickness=2, text_scale=0.6)
-
-            annotated_frame = draw_text(scene=annotated_frame, text=text_overlay7, text_anchor=text_anchor6,
-                                        text_color=sv.Color.RED, background_color=background_color,
-                                        text_thickness=2, text_scale=0.6)
-
-            annotated_frame = draw_text(scene=annotated_frame, text=total_det, text_anchor=text_anchor7,
-                                        text_color=sv.Color.RED, background_color=background_color,
-                                        text_thickness=2, text_scale=0.6)
-
-        # cv2.imshow("Image", annotated_frame)
-        cv2.imshow(window_name, annotated_frame)
-        if cv2.waitKey(int(1000 / fps)) & 0XFF == ord('q'):
-            exit(1)
-
+        show_detailsNAS(frame)
 
 def includes_video_extension(file_path: str) -> bool:
     """Check if a file includes a video extension.

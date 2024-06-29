@@ -1,0 +1,71 @@
+Total number of detections: 32944 with a confidence threshold: 0.4.
+Total number of detections for each class and average precision per class using a conf_thr=0.4
+Class      AvgP       NrDet     
+Fire       0.778      6358      
+Other      0.665      21405     
+Smoke      0.721      5181      
+
+Total number of detections and average of confidence score between 0.9 and inf for each class.
+Class      AvgP       NrDet     
+Fire       0.915      105       
+Other      0.000      0         
+Smoke      0.920      332       
+
+Total number of detections and average of confidence score between 0.8 and 0.9 for each class.
+Class      AvgP       NrDet     
+Fire       0.851      3611      
+Other      0.828      3197      
+Smoke      0.867      1775      
+
+Total number of detections and average of confidence score between 0.7 and 0.8 for each class.
+Class      AvgP       NrDet     
+Fire       0.756      1301      
+Other      0.761      6712      
+Smoke      0.757      888       
+
+Total number of detections and average of confidence score between 0.6 and 0.7 for each class.
+Class      AvgP       NrDet     
+Fire       0.666      667       
+Other      0.657      4339      
+Smoke      0.655      754       
+
+Total number of detections and average of confidence score between 0.5 and 0.6 for each class.
+Class      AvgP       NrDet     
+Fire       0.560      379       
+Other      0.556      3733      
+Smoke      0.554      730       
+
+Total number of detections and average of confidence score between 0.4 and 0.5 for each class.
+Class      AvgP       NrDet     
+Fire       0.453      280       
+Other      0.455      3247      
+Smoke      0.455      665       
+
+-------------------------------------------------------------------------------
+
+Number of frames with internal mismatches: 45
+
+Classes fire and other mismatched in 211 frames.
+Class fire was predicted: 120 times in these frames.
+Class other was predicted: 134 times in these frames.
+Classes fire and other were mismatched in the same frame 43 times.
+Frames in which fire were predicted to be other or vice versa: [801, 802, 803, 805, 806, 807, 808, 809, 810, 812, 813, 814, 834, 835, 836, 837, 838, 839, 840, 841, 842, 843, 844, 845, 846, 847, 848, 849, 850, 851, 852, 856, 857, 858, 859, 860, 861, 862, 863, 864, 865, 866, 867, 960, 961, 970, 971, 972, 974, 975, 976, 977, 986, 987, 988, 989, 1027, 1028, 1044, 1045, 1068, 1069, 1072, 1073, 1074, 1075, 1076, 1077, 1078, 1079, 1080, 1758, 1761, 1762, 1763, 1771, 1772, 1773, 1774, 2722, 2726, 2768, 2769, 2819, 2820, 2923, 2924, 2925, 2926, 2927, 2928, 2931, 3002, 3003, 3016, 3017, 3018, 3019, 3020, 3021, 3022, 3144, 3145, 3480, 3482, 4767, 4768, 4769, 4770, 4771, 4797, 4800, 4821, 4822, 4824, 4825, 4879, 4880, 4883, 4884, 4885, 4886, 4888, 4908, 4911, 4998, 5002, 5021, 5022, 5024, 5025, 5026, 5035, 5037, 5061, 5062, 5063, 5064, 5065, 5066, 5067, 5068, 5069, 5072, 5089, 5090, 5092, 5093, 5094, 5113, 5117, 5200, 5201, 5224, 5226, 5247, 5251, 5254, 5257, 5279, 5280, 5282, 5283, 5325, 5326, 5328, 7744, 7751, 7752, 8692, 8693, 8694, 8695, 8696, 8697, 8779, 8780, 8781, 8782, 9023, 9027, 9030, 9031, 9032, 9033, 9034, 9035, 9036, 9037, 9038, 9484, 9485, 9486, 9487, 9488, 9586, 9587, 9588, 10339, 10346, 10347, 10348, 10349, 10350, 10351, 10358, 10359, 10361, 10362, 10363, 10453]
+
+Classes fire and smoke mismatched in 2 frames.
+Class fire was predicted: 2 times in these frames.
+Class smoke was predicted: 2 times in these frames.
+Classes fire and smoke were mismatched in the same frame 2 times.
+Frames in which fire were predicted to be smoke or vice versa: [628, 639]
+
+Summary:
+other was confused to be fire for 120 time in frames : [805, 806, 807, 808, 809, 810, 836, 838, 839, 840, 847, 848, 860, 861, 862, 863, 864, 865, 866, 867, 961, 970, 971, 972, 974, 975, 976, 977, 986, 987, 988, 989, 1027, 1045, 1068, 1075, 1076, 1077, 1758, 1761, 1762, 1763, 1771, 1772, 1773, 1774, 2722, 2768, 2820, 2927, 2931, 3003, 3020, 3021, 3144, 3482, 4767, 4800, 4824, 4825, 4883, 4884, 4885, 4908, 4998, 5021, 5022, 5037, 5064, 5067, 5068, 5069, 5092, 5093, 5094, 5117, 5201, 5226, 5251, 5254, 5279, 5280, 5325, 5326, 7744, 7751, 7752, 8692, 8693, 8694, 8695, 8697, 8779, 8780, 8781, 8782, 9023, 9027, 9030, 9031, 9032, 9033, 9034, 9035, 9036, 9037, 9038, 9486, 9487, 9488, 9586, 10339, 10349, 10350, 10351, 10358, 10359, 10362, 10363, 10453]
+fire was confused to be smoke for 2 time in frames : [628, 639]
+
+Total number of frames affected by confused predictions: 122.
+Total number of error predictions for all classes: 122.
+
+Average FPS: 114
+Average InfTime: 8.98ms per frame.
+Total inference time: 95.59s for 10645 frames.
+Video used for inference: /home/constantin/Doctorat/FireDataset/VideoTestFire/FireDay/VideoNightMixt.mp4
+Weights used for inference: /home/constantin/Doctorat/YoloModels/YoloLib2/ExperimentalResults/YoloV9/train/exp_best/weights/best.pt

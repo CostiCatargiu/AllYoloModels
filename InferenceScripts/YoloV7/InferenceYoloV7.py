@@ -71,9 +71,8 @@ def detect(save_img=False):
     t0 = time.time()
     fps_calculator = CalcFPS()
     classesFilter = os.environ.get('FILTER_LIST', '').split(',')
-    dets_list = []
     conf_list = []
-    cls_list = []
+    coord_list = []
     for path, img, im0s, vid_cap in dataset:
         img = torch.from_numpy(img).to(device)
         img = img.half() if half else img.float()  # uint8 to fp16/32
@@ -131,8 +130,7 @@ def detect(save_img=False):
                     dets.append(names[int(c)])
 
                 confidence_list = []
-                name_list = []
-
+                box_coord = []
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
                     if save_txt:  # Write to file
@@ -141,6 +139,7 @@ def detect(save_img=False):
                         with open(txt_path + '.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
                     confidence_str = f"{conf.item():.2f}"
+                    confidence_list.append(int(cls.item()))
                     confidence_list.append(float(confidence_str))
 
                     # print(confidence_list)
@@ -149,8 +148,14 @@ def detect(save_img=False):
                         for i in range(0, len(classesFilter)):
                             if classesFilter[i] != names[int(cls)]:
                                 plot_one_box(xyxy, im0, label=label, color=colors[int(cls)])
-                reversed_list = confidence_list[::-1]
-                conf_list.append(reversed_list)
+                                line1 = (int(cls.item()), *xyxy)
+                                box_coord.append(line1)
+
+                # reversed_list = confidence_list[::-1]
+                conf_list.append(confidence_list)
+                coord_list.append(box_coord)
+            else:
+                coord_list.append([])
 
 
             # Print time (inference + NMS)
@@ -163,7 +168,6 @@ def detect(save_img=False):
                     cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
                 show_details(p, im0, dets, inference_time, avg_fps)
 
-                dets_list.append(dets)
                 # print(conf_list)
                 # print(dets_list)
             # Save results (image with detections)
@@ -186,6 +190,7 @@ def detect(save_img=False):
                         vid_writer = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
                     vid_writer.write(im0)
 
+
     if save_txt or save_img:
         s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
         #print(f"Results saved to {save_dir}{s}")
@@ -193,8 +198,9 @@ def detect(save_img=False):
     path_parts = save_path.strip("/").split("/")
     path_parts.pop()
     new_path = "/".join(path_parts) + "/"
-    average_conf(dets_list, conf_list, new_path)
+    average_conf(conf_list, coord_list, new_path)
     avg_time(new_path)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

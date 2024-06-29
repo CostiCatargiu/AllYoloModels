@@ -134,8 +134,8 @@ def run(
     # Run inference
     fps_calculator = CalcFPS()
     classesFilter = os.environ.get('FILTER_LIST', '').split(',')
-    dets_list = []
     conf_list = []
+    coord_list = []
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(device=device), Profile(device=device), Profile(device=device))
     for path, im, im0s, vid_cap, s in dataset:
@@ -215,16 +215,17 @@ def run(
                     dets.append(names[int(c)])
 
                 confidence_list = []
+                box_coord = []
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
                     c = int(cls)  # integer class
                     label = names[c] if hide_conf else f"{names[c]}"
                     confidence = float(conf)
                     confidence_str = f"{confidence:.2f}"
+                    confidence_list.append(int(cls.item()))
                     confidence_list.append(confidence_str)
                     if save_csv:
                         write_to_csv(p.name, label, confidence_str)
-
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                         line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
@@ -237,12 +238,19 @@ def run(
                         for i in range(0, len(classesFilter)):
                             if classesFilter[i] != names[c]:
                                 annotator.box_label(xyxy, label, color=colors(c, True))
+                                # line1 = (int(cls.item()), *xyxy, float(confidence_str))
+                                line1 = (int(cls.item()), *xyxy)
+                                box_coord.append(line1)
+
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / "crops" / names[c] / f"{p.stem}.jpg", BGR=True)
-                dets_list.append(dets)
-                reversed_list = confidence_list[::-1]
-                conf_list.append(reversed_list)
-                # print("confidence_list:", confidence_list)
+
+                conf_list.append(confidence_list)
+                coord_list.append(box_coord)
+            else:
+                coord_list.append([])
+
+                # print(coord_list)
             print(s)
            # Stream results
             im0 = annotator.result()
@@ -289,8 +297,8 @@ def run(
 
     path_parts = save_path.strip("/").split("/")
     path_parts.pop()
-    new_path = "/".join(path_parts) + "/"
-    average_conf(dets_list, conf_list, new_path)
+    new_path = "/" + "/".join(path_parts) + "/"
+    average_conf(conf_list, coord_list, new_path)
     avg_time(new_path)
 
 def parse_opt():
