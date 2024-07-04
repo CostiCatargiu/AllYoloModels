@@ -769,7 +769,7 @@ To generate this new metric we need to follow 2 steps:
 #engine weights
 ./YoloModelsInference.sh yolov7 --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/45b842e3-758b-4afe-9ae3-36125846cb7b)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/7f851c87-c7f3-4583-9ffc-fb5eaa28b142)
 
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/36951eb1-cb46-4308-99b8-f93c3a7e4fd2)
@@ -779,7 +779,7 @@ To generate this new metric we need to follow 2 steps:
  ./YoloModelsInference.sh yolov7 --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
  ```
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/79ad0b6d-8484-401b-9185-5dd2554104a3)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f9fa971f-a28e-4c98-885b-19890cc471b0)
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/a9ff4153-b846-4866-88b2-160b7cacd8bc)
 
@@ -792,8 +792,7 @@ To generate this new metric we need to follow 2 steps:
 #engine weights
 ./YoloModelsInference.sh yolov8m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/45b842e3-758b-4afe-9ae3-36125846cb7b)
-
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8d37da0d-a60c-4f1c-ae91-7ef350c76151)
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/067de1c9-2dc6-454e-8529-141e8c182323)
 
@@ -802,7 +801,7 @@ To generate this new metric we need to follow 2 steps:
  ./YoloModelsInference.sh yolov8m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
  ```
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/79ad0b6d-8484-401b-9185-5dd2554104a3)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ee8e3011-c189-47d9-ae71-2181373ccc4b)
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/191d3a7f-0a39-4983-adf6-22a8de5ed9b6)
 
