@@ -352,21 +352,23 @@ $\color{darkorange}{\textsf{Advantages of this implementation:}}$
 These metrics are saved in TXT format and are automatically stored after each inference task at the following path: egg. $\color{darkorange}{\textsf{ExperimentalRresults/YoloV9/inferGelan/exp28/gelan-c.txt}}$
 
   <details>
-  <summary> gelan-c.txt </summary>
+  <summary> gelan-m.txt </summary>
     
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b054d0c3-ef28-47d5-a58a-ac82757db83b)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/0dab65ca-873a-490c-9e65-b273d0ea7b97)
   </details>
   
   <details>
-  <summary> yolov9-c.txt </summary>
+  <summary> yolov8m.txt </summary>
     
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/6e551a20-267b-41a2-9514-ffd48862ae26)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f87050e1-6e49-4376-abe2-aa3a1aecdf16)
+
+    
   </details>
 
   <details>
-  <summary>yolov8l.txt </summary>
+  <summary>yolov10b.txt </summary>
     
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/52ba1563-b2be-457e-b34b-81ebe03b9c05)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/c5bc660a-034c-48b6-af20-bc4e178e9eb0)
   </details>
 
 
@@ -376,11 +378,10 @@ To generate this new metric we need to follow 2 steps:
 1. Put the .txt files that you want to compare at the following path: $\color{darkorange}{\textsf{ExperimentalResults/Metrics/}}$
 2. Execute the .py script:  $\color{darkorange}{\textsf{Utils/Scripts/generatemetric.py}}$. The script will generate a $\color{darkorange}{\textsf{Utils/Scripts/metric.txt}}$ file that contains the compared data for the models selected. 
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/53e29bad-6973-4a1b-b2a8-42ce2cbcec6d)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b24d2eb6-a96e-4e34-ba1a-6bb5d1246747)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/c2c9ef05-6995-4f2e-b367-81746292b071)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/e26c6719-186e-4c3f-9c54-0711828111f0)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b763f625-ee66-4279-853f-c3178e562459)
 
 
 </details>
@@ -714,23 +715,24 @@ To generate this new metric we need to follow 2 steps:
 </details>
 
 <details>
-  <summary> Inference on video using yolov5l </summary>
+  <summary> Inference on video using yolov5m engine and pytorch weights </summary>
 
   ```bash
-./YoloModelsInference.sh yolov5l --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
+#engine weights
+./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8c4fd189-b7a0-46ad-8347-f3fc6290f143)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/54e9df06-f6c9-401b-9efe-6ce78c932e4f)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/7987c937-5777-46e4-922d-d1090858f72a)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/45b842e3-758b-4afe-9ae3-36125846cb7b)
 
-</details>
+  ```bash
+#pytorch weights
+ ./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ```
 
-<details>
-  <summary> Inference on video using yolov6l </summary>
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/79ad0b6d-8484-401b-9185-5dd2554104a3)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/852b5c97-a75a-45c6-afe4-a7cf4332f957)
-
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/366bc296-1545-4b22-a08c-9a748a139ee7)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d862cf11-e130-4653-bd95-6d8b1bcb17af)
 
 </details>
 
