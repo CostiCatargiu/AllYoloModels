@@ -721,9 +721,10 @@ To generate this new metric we need to follow 2 steps:
 #engine weights
 ./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/54e9df06-f6c9-401b-9efe-6ce78c932e4f)
-
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/45b842e3-758b-4afe-9ae3-36125846cb7b)
+
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/54e9df06-f6c9-401b-9efe-6ce78c932e4f)
 
   ```bash
 #pytorch weights
@@ -738,50 +739,143 @@ To generate this new metric we need to follow 2 steps:
 
 
 <details>
-  <summary> Inference on video using yolov7 </summary>
+  <summary> Inference on video using yolov6s engine and pytorch weights </summary>
 
   ```bash
-./YoloModelsInference.sh yolov7 --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
+#engine weights
+./YoloModelsInference.sh yolov6s --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d2c5609b-e5ea-468b-b369-86ef17f6b40d)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/45b842e3-758b-4afe-9ae3-36125846cb7b)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/659e6103-d94d-41b8-a209-1db8cdbf985e)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/344845ae-bd2b-42d3-a297-d34050492367)
+
+  ```bash
+#pytorch weights
+ ./YoloModelsInference.sh yolov6m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ```
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/79ad0b6d-8484-401b-9185-5dd2554104a3)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/82f32130-cbbd-438f-be8e-0f65145e5f95)
+
+</details>
+
+
+<details>
+  <summary> Inference on video using yolov7 engine and pytorch weights </summary>
+
+  ```bash
+#engine weights
+./YoloModelsInference.sh yolov7 --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+ ```
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/45b842e3-758b-4afe-9ae3-36125846cb7b)
+
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/36951eb1-cb46-4308-99b8-f93c3a7e4fd2)
+
+  ```bash
+#pytorch weights
+ ./YoloModelsInference.sh yolov7 --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ```
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/79ad0b6d-8484-401b-9185-5dd2554104a3)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/a9ff4153-b846-4866-88b2-160b7cacd8bc)
 
 </details>
 
 <details>
-  <summary> Inference on video using yolov8l </summary>
+  <summary> Inference on video using yolov8m engine and pytorch weights </summary>
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/079c2685-8089-4ad4-8a1b-39047a52ac6c)
+  ```bash
+#engine weights
+./YoloModelsInference.sh yolov8m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+ ```
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/45b842e3-758b-4afe-9ae3-36125846cb7b)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/cbe0c65a-0299-4eda-83f1-d10af1b5c34f)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/067de1c9-2dc6-454e-8529-141e8c182323)
+
+  ```bash
+#pytorch weights
+ ./YoloModelsInference.sh yolov8m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ```
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/79ad0b6d-8484-401b-9185-5dd2554104a3)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/191d3a7f-0a39-4983-adf6-22a8de5ed9b6)
+
+</details>
+
+<details>
+  <summary> Inference on video using yolov9-m engine and pytorch weights </summary>
+
+  ```bash
+#engine weights
+./YoloModelsInference.sh yolov9-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+ ```
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/90061c46-6542-4bec-bd44-3db13ad46838)
+
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/df46363a-7699-4546-90a8-e8f06b8fe671)
+
+  ```bash
+#pytorch weights
+ ./YoloModelsInference.sh yolov9-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ```
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/2cae4226-9725-49b6-9c92-1f616ee5f146)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/df916696-7233-4e46-97d0-50f13b0f6a1a)
+
+</details>
+
+<details>
+  <summary> Inference on video using gelan-m engine and pytorch weights </summary>
+
+  ```bash
+#engine weights
+./YoloModelsInference.sh gelan-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+ ```
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/85338f36-725e-4a94-bfc9-c00ee65ff2a5)
+
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/97c1ceb7-5716-4469-ab5e-cdb4a16f5b49)
+
+  ```bash
+#pytorch weights
+ ./YoloModelsInference.sh gelan-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ```
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/a3a06584-9ab3-4aed-ae41-81ed4f2056be)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/247261c8-5002-4892-b705-66a5027665f4)
 
 </details>
 
 
 <details>
-  <summary> Inference on video using yolov9-c </summary>
+  <summary> Inference on video using yolov10b engine and pytorch weights </summary>
 
   ```bash
-./YoloModelsInference.sh yolov9-c --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
+#engine weights
+./YoloModelsInference.sh yolov10b --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f86b3693-2563-4b87-95b1-9086237869af)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b0ca25e4-dd37-44ef-8274-7366216f16e8)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/119a4c23-54ea-44ee-9602-dd55864649d4)
 
-</details>
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/227eb041-ec3f-41fd-8a63-9108867ed41f)
 
-<details>
-  <summary> Inference on video using yolov9-gelan-c </summary>
-  
   ```bash
-./YoloModelsInference.sh gelan-c --conf_thr 0.05 --count "car,person,bus,truck,traffic light"  --labelTextColor "black" --fontSize 2 --fontThickness 3 --ypos 60 --video_index 15 --labelTextSize 3 --thr_metric 0.5
+#pytorch weights
+ ./YoloModelsInference.sh yolov10b --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
  ```
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/7a3e4200-a014-493b-8b2b-f0a22bd38142)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f01a5ace-b914-449c-87c4-b65abf959dbc)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/20fa6841-c21c-4997-9877-d20a427bddc3)
 
-</details>
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/285a6aab-8eba-4cc2-b3ca-16f623262602)
+
 </details>
 
 The results are also stored in [GoodleDrive](https://drive.google.com/drive/folders/1Owg6Gd3stiNBYRch9avVK_r4GuGfNJOk?usp=sharing).
