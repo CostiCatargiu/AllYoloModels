@@ -77,7 +77,7 @@ Usage example:
 Parameters: 
  << >> = required parameter; [ ]=optional parameter
  --testSplit parameter allows us to select between "train" and "valid" dataset for evaluate the model.
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8e21d24a-c73b-4d63-ad9f-265fa56b8686)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/21b5c193-4ea4-4a68-90ad-cb7bc995980d)
 
 If you want to add more parameters to evaluation task please edit $\color{red}{\textsf{YoloModelsEval.sh}}$ for the desired model. In the table above are presented the results obtained after evaluting the models on COCO2017 dataset.  
 
@@ -264,8 +264,10 @@ or
 
 ```
 Parameters: 
+
  << >> = required parameter; [ ]=optional parameter
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/d9df86a7-8ced-4f9c-acb5-3ca25d144793)
+ 
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/c67eaced-bf55-413e-9ad3-b2e68eba63f4)
 
 If you want to add more parameters to inference task please edit the $\color{red}{\textsf{YoloModelsInference.sh}}$ for the desired model.
 
