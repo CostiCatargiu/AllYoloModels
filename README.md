@@ -366,9 +366,9 @@ In this example the model is making a missmatch between bycile and motorcycle.
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b41465e0-1e6b-4bbc-b100-062bb1176943)
 
-In this example the model is making a missmatch between bus and airplane.
-
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/0c62f06b-3c2f-423e-be55-1d6e4d828640)
+
+In this example the model is making a missmatch between bus and airplane.
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/5422b26b-0cf1-4450-8f7a-0c1be28dca6f)
 
