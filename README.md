@@ -76,8 +76,10 @@ Usage example:
 ```
 Parameters: 
  << >> = required parameter; [ ]=optional parameter
+
+ ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/2cf3f3c5-df09-402a-9194-ace8c400eb05)
+
  --testSplit parameter allows us to select between "train" and "valid" dataset for evaluate the model.
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/21b5c193-4ea4-4a68-90ad-cb7bc995980d)
 
 If you want to add more parameters to evaluation task please edit $\color{red}{\textsf{YoloModelsEval.sh}}$ for the desired model. In the table above are presented the results obtained after evaluting the models on COCO2017 dataset.  
 
@@ -313,14 +315,9 @@ $\color{darkorange}{\textsf{Advantages of this implementation:}}$
   <summary> -💻 During inference, details such as the device used, model, number of frames, FPS, and inference time are displayed on the output video. These details help monitor and assess the performance of the inference process. Additionally, there are customization options available to better fit the data on the video, such as adjusting the text size, thickness, and vertical positioning. </summary>
 
   ```bash
-./YoloModelsInference.sh yolov8m --conf_thr 0.45 --count "car,person,bus,bicycle"  --labelTextColor "black" --fontSize 2 --fontThickness 2 --ypos 60 --video_index 15 --labelTextSize 2  --thr_metric 0.6
+./YoloModelsInference.sh yolov8m --conf_thr 0.45 --count "car,person,bus,bicycle"  --labelTextColor "white" --fontSize 2 --fontThickness 2 --ypos 60 --video_index 15 --labelTextSize 2  --thr_metric 0.6
   ```
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/cb0cc011-6ceb-4e74-87ee-90d2098981f1)
-
-  ```bash
-./YoloModelsInference.sh yolov8m --conf_thr 0.45 --count "car,person,bus,bicycle"  --labelTextColor "white" --fontSize 1 --fontThickness 2 --ypos 40 --video_index 15 --labelTextSize 5  --thr_metric 0.6
-  ```
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/24b5c096-174d-4c6a-ae24-a972a2ce1ba7)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/ba75d996-1c6e-41bd-80de-42c3d3b9e0fd)
 
 </details>
 
@@ -328,7 +325,7 @@ $\color{darkorange}{\textsf{Advantages of this implementation:}}$
 <details>
   <summary> - 👁️‍🗨️ We can monitor the number of appearances of a certain object class across the frames. </summary>
   
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/794b4565-5737-4563-aa48-a4592150f248)
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/a8d2612f-b584-48ff-8bc7-fb2da7ff501a)
 
 </details>
 
@@ -338,7 +335,40 @@ $\color{darkorange}{\textsf{Advantages of this implementation:}}$
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/22e8d381-8147-442e-a5b2-d47521270cc2)
 
 </details>
+  <details>
+  <summary> - 🚀 Switching between PyTorch and Engine weights made  very easy modifying a single parameter ( --weightsType)  </summary>
 
+  ```bash
+#engine weights
+./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+ ```
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/920384ff-3cab-4384-8bc7-3b82b62e5ec5)
+
+  ```bash
+#engine weights
+./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ```
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/90b160c8-b631-48f5-935a-06eb5afaae64)
+
+</details>
+
+  <details>
+  <summary> - 💡 We can monitor if the model is making incorrect predictions by checking if it assigns different class labels to the same object . . </summary>
+
+Parameters:
+ --nrCompareFrames=4 (default) 
+ --boxSimilarity=5 (default)
+ 
+In this example the model is making a missmatch between bycile and motorcycle.
+  
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/017ecffd-888c-417f-9743-0a8688b149b3)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b41465e0-1e6b-4bbc-b100-062bb1176943)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/0c62f06b-3c2f-423e-be55-1d6e4d828640)
+
+</details>
   <details>
   <summary>  - 📈 After the inference ends, some useful metrics will be outputted indicating the performance of the model. These metrics include: </summary>
     
@@ -879,5 +909,24 @@ To generate this new metric we need to follow 2 steps:
 
 </details>
 
+## Comparison Evaluation Metrics
+
+<details>
+  <summary> Total number of detections for each class and average score precision using engine weights  </summary>
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/4f5542b2-06d7-4f4e-8f53-7dcb92c7c5bd)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/e2acb2e5-ac71-42eb-b642-545e79f1d6ee)
+
+</details>
+<details>
+  <summary> Total number of detections for each class and average score precision using pytorch weights  </summary>
+  
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/76345c84-b146-4f56-9e24-44e5189eed4a)
+
+![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/24b4b8b8-2cb5-499e-8a9b-ca9013e98daf)
+
+</details>
+
 The results are also stored in [GoodleDrive](https://drive.google.com/drive/folders/1Owg6Gd3stiNBYRch9avVK_r4GuGfNJOk?usp=sharing).
-Another inference comparison results can be found [HERE](https://drive.google.com/drive/folders/1F9LV1SrrWWoDGudmJ9vG4nEMXtpkilCo?usp=drive_link)
+
