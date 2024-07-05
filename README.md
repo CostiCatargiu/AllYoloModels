@@ -908,6 +908,7 @@ To generate this new metric we need to follow 2 steps:
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/285a6aab-8eba-4cc2-b3ca-16f623262602)
 
 </details>
+</details>
 
 ## Comparison Evaluation Metrics
 
