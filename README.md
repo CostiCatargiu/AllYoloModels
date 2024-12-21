@@ -20,6 +20,7 @@ During my experiments, I gained experience with the scripts provided in the orig
 
 - ⬇️ Clone/Reclone and prepare the setup for which model you want in just a line of code using $\color{yellow}{\textsf{DownloadModel.sh}}$.
 - 🔧 $\color{green}{\textsf{YoloModelsEval.sh}}$, $\color{orange}{\textsf{YoloModelsInference.sh}}$ and $\color{magenta}{\textsf{YoloModelsTrain.sh}}$ offer the possibility to perform training, inference, or evaluation tasks in just a line of code using a selected model.
+- 📤 $\color{red}{\textsf{YoloModelsExport.sh}}$ help us to export a specific model to ONNX or TensorRT.
 - 📈  Experimental results that were obtained during my experiments using all the models mentioned here.
 
 <details>
@@ -40,6 +41,7 @@ After this repository is cloned the structure of the project will look like in t
   chmod +X YoloModelsEval.sh
   chmod +X YoloModelsInference.sh
   chmod +X YoloModelsTrain.sh
+  chmod +X YoloModelsExport.sh
 
   ```
 
@@ -48,7 +50,7 @@ After this repository is cloned the structure of the project will look like in t
 <details>
   <summary>Clone specific YOLO model</summary>
   
-  To clone a specifi yolo model $\color{magenta}{\textsf{DownloadModel.sh}}$ is used that requires on parameter from the list  $\color{orange}{\textsf{(yolov5, yolov6, yolov7, yolov8, yolov9)}}$.
+  To clone a specifi yolo model $\color{magenta}{\textsf{DownloadModel.sh}}$ is used that requires on parameter from the list  $\color{orange}{\textsf{(yolov5, yolov6, yolov7, yolov8, yolov9, yolov10, yolo11)}}$.
   
   ```bash
   ./DownloadModel.sh yolov5
