@@ -350,9 +350,9 @@ The image above shows a variety of parameters available for selection, depending
 
 18. $\color{orange}{\textsf{-p17 || --weightsType}}$: This parameter allows us to choose between Pytorch weights type or Engine weights type.
 
-19. $\color{orange}{\textsf{-p18 || --display_info}}$: This parameter allows us to display or not the text during Inference task
+19. $\color{orange}{\textsf{-p18 || --display info}}$: This parameter allows us to display or not the text during Inference task
 
-20. $\color{orange}{\textsf{-p19 || --thr_metric}}$: This parameter sets a threshold for the metrics calculated after the inference process, based on the number of predictions per class and their confidence levels. Upon completion of the inference, a txt file with two tables will be generated: one displaying the number of predictions and their average precision for each class with a confidence greater than this threshold, and a second table with the same information for predictions with a confidence below this threshold.
+20. $\color{orange}{\textsf{-p19 || --thr metric}}$: This parameter sets a threshold for the metrics calculated after the inference process, based on the number of predictions per class and their confidence levels. Upon completion of the inference, a txt file with two tables will be generated: one displaying the number of predictions and their average precision for each class with a confidence greater than this threshold, and a second table with the same information for predictions with a confidence below this threshold.
 </details>
 
 $\color{darkorange}{\textsf{Advantages of this implementation:}}$
