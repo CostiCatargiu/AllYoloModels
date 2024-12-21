@@ -304,7 +304,7 @@ Parameters:
 
  << >> = required parameter; [ ]=optional parameter
  
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/c67eaced-bf55-413e-9ad3-b2e68eba63f4)
+![image](https://github.com/user-attachments/assets/64e4ed3a-af57-40d6-ae22-299ec122eedc)
 
 If you want to add more parameters to inference task please edit the $\color{red}{\textsf{YoloModelsInference.sh}}$ for the desired model.
 
