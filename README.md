@@ -18,8 +18,8 @@ During my experiments, I gained experience with the scripts provided in the orig
 
 ## Features
 
-- ⬇️ Clone/Reclone and prepare the setup for which model you want in just a line of code using $\color{blue}{\textsf{DownloadModel.sh}}$.
-- 🔧 $\color{green}{\textsf{YoloModelsEval.sh}}$, **YoloModelsInference.sh** and **YoloModelsTrain.sh** offer the possibility to perform training, inference, or evaluation tasks in just a line of code using a selected model.
+- ⬇️ Clone/Reclone and prepare the setup for which model you want in just a line of code using $\color{yellow}{\textsf{DownloadModel.sh}}$.
+- 🔧 $\color{green}{\textsf{YoloModelsEval.sh}}$, $\color{orange}{\textsf{YoloModelsInference.sh}}$ and $\color{magenta}{\textsf{YoloModelsTrain.sh}}$ offer the possibility to perform training, inference, or evaluation tasks in just a line of code using a selected model.
 - 📈  Experimental results that were obtained during my experiments using all the models mentioned here.
 
 <details>
