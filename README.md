@@ -966,7 +966,7 @@ PYTORCH weights
 
 </details>
 <details>
-  <summary> Inference on video using yolo11L engine and pytorch weights </summary>
+  <summary> Inference on video using yolo11x engine and pytorch weights </summary>
 
   ```bash
 #engine weights
@@ -977,7 +977,7 @@ PYTORCH weights
 ![image](https://github.com/user-attachments/assets/6b963ceb-61bf-49f7-b850-9a6238cf919d)
 
   ```bash
-#engine weights
+#pytorch weights
 ./YoloModelsInference.sh yolo11x --video_index 2 --fontSize 1.2 --fontThickness 3 --ypos 36 --initialypos 20 --labelTextSize 4 --weightsType pytorch  --count "car,person,bicycle,bus,truck,train,traffic light"
  ```
 ![image](https://github.com/user-attachments/assets/436389d8-7666-486d-b68d-b212bf511821)
