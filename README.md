@@ -262,8 +262,8 @@ or
 ./YoloModelsInference.sh yolov9-c -p3 0.6 -p5 "person,car" -p6 "bus" -p7 1 -p8 3 -p9 50
 
 #in this command lines we can choose between engine and pytorch weights to use for inference
-./YoloModelsInference.sh yolov7x --video_index 1 --fontSize 1.2 --fontThickness 2 --ypos 34 --initialypos 20 --labelTextSize 2 --weightsType engine  --count "car,person"
-./YoloModelsInference.sh yolov9-c --video_index 2 --fontSize 1.2 --fontThickness 3 --ypos 36 --initialypos 20 --labelTextSize 4 --weightsType pytorch  --count "bus,truck,train"
+./YoloModelsInference.sh yolo11x --video_index 1 --fontSize 1.2 --fontThickness 2 --ypos 34 --initialypos 20 --labelTextSize 2 --weightsType engine  --count "car,person"
+./YoloModelsInference.sh yolov10b --video_index 2 --fontSize 1.2 --fontThickness 3 --ypos 36 --initialypos 20 --labelTextSize 4 --weightsType pytorch  --count "bus,truck,train"
 
 ```
 Parameters: 
@@ -282,7 +282,7 @@ If you want to add more parameters to inference task please edit the $\color{red
 The image above shows a variety of parameters available for selection, depending on what we aim to achieve in the inference task.
 1. $\color{orange}{\textsf{model}}$: the only mandatory parameter required to initiate the inference process. It specifies the version of the YOLO model to be used for the inference task. The available options for this parameter are shown in the image above. All subsequent parameters are optional, and default values will be used if they are not provided.
    
-2. $\color{orange}{\textsf{-p1 || --weights}}$: This parameter specifies the path to the weights that wiil be used for the inference. Default value for this:  $\color{blue}{\textsf{/ExperimentalResults/YoloV.../weights/<model>.pt}}$.
+2. $\color{orange}{\textsf{-p1 || --weights}}$: This parameter specifies the path to the weights that wiil be used for the inference. Default value for this:  $\color{gray}{\textsf{/ExperimentalResults/YoloV.../weights/<model>.pt}}$.
 
 3. $\color{orange}{\textsf{p2 || --source video}}$: This parameter specifies the path to the video that will be used for inference. To simplify the selection of the desired video for inference, all files have been placed in a specific directory. From there, one can choose a video by indicating its index in the list (the image above displays all my test videos along with their respective indexes). The index of the video is specified using the next parameter.
 
@@ -302,12 +302,23 @@ The image above shows a variety of parameters available for selection, depending
 
 11.  $\color{orange}{\textsf{-p10 || --ypos}}$: This parameter is related to -p8 and -p9 and allows you to modify the distance between lines of displayed information to better fit within the image.
 
-12. $\color{orange}{\textsf{-p11 || --thr metric}}$: This parameter sets a threshold for the metrics calculated after the inference process, based on the number of predictions per class and their confidence levels. Upon completion of the inference, a txt file with two tables will be generated: one displaying the number of predictions and their average precision for each class with a confidence greater than this threshold, and a second table with the same information for predictions with a confidence below this threshold.
+12. $\color{orange}{\textsf{-p11 || --initialypos}}$: Initial position of text on y axis.
 
 13. $\color{orange}{\textsf{-p12 || --labelTextColor}}$: This parameter allows you to change the label text color, which can be useful when the text color is hard to distinguish from the background.
 
 14. $\color{orange}{\textsf{-p13 || --labelTextSize}}$: This parameter allows you to adjust the label text size, which can be useful for different video resolutions where the text on certain labels may not be clearly visible.
 
+15. $\color{orange}{\textsf{-p14 || --nrCompareFrames}}$: This parameter set the number of consecutive frames that will be compared to see if we had false positive or wrong predictions.
+
+16. $\color{orange}{\textsf{-p15 || --saveConfusedPred}}$: This parameter allow us to save the frames in wich we had wrong predictons, that can help to make a short analysis and see were the model is not so good.
+
+17. $\color{orange}{\textsf{-p16 || --boxSimilarity}}$: This parameter dynamically defines the pixel threshold to determine whether two detections are considered mismatched.
+
+18. $\color{orange}{\textsf{-p17 || --weightsType}}$: This parameter allows us to choose between Pytorch weights type or Engine weights type.
+
+19. $\color{orange}{\textsf{-p18 || --display_info}}$: This parameter allows us to display or not the text during Inference task
+
+20. $\color{orange}{\textsf{-p19 || --thr_metric}}$: This parameter sets a threshold for the metrics calculated after the inference process, based on the number of predictions per class and their confidence levels. Upon completion of the inference, a txt file with two tables will be generated: one displaying the number of predictions and their average precision for each class with a confidence greater than this threshold, and a second table with the same information for predictions with a confidence below this threshold.
 </details>
 
 $\color{darkorange}{\textsf{Advantages of this implementation:}}$
