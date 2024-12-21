@@ -94,7 +94,9 @@ If you want to add more parameters to evaluation task please edit $\color{red}{\
     <th align="center">$\color{red}{\textsf{YoloV8l}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV9-e}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV9-gelan-e}}$</th>
-
+    <th align="center">$\color{red}{\textsf{YoloV10l}}$</th>
+    <th align="center">$\color{red}{\textsf{Yolo11ll}}$</th>
+    
   </tr>
   <tr>
     <td>$\color{orange}{\textsf{maP@0.50}}$</td>
@@ -104,6 +106,8 @@ If you want to add more parameters to evaluation task please edit $\color{red}{\
     <td align="center">0.71</td>
     <td align="center">0.73</td>
     <td align="center">0.72</td>
+    <td align="center">0.70</td>
+    <td align="center">0.68</td>
 
   </tr>
     <tr>
@@ -114,11 +118,15 @@ If you want to add more parameters to evaluation task please edit $\color{red}{\
     <td align="center">0.57</td>
     <td align="center">0.56</td>
     <td align="center">0.55</td>
+    <td align="center">0.54</td>
+    <td align="center">0.53</td>
     
   </tr>
   
   <tr>
     <td>$\color{orange}{\textsf{confThr}}$</td>
+    <td align="center">0.001</td>
+    <td align="center">0.001</td>
     <td align="center">0.001</td>
     <td align="center">0.001</td>
     <td align="center">0.001</td>
@@ -135,9 +143,13 @@ If you want to add more parameters to evaluation task please edit $\color{red}{\
     <td align="center">65</td>
     <td align="center">65</td>
     <td align="center">65</td>
+    <td align="center">65</td>
+    <td align="center">65</td>
   </tr>
     <tr>
     <td>$\color{orange}{\textsf{batchSize}}$</td>
+    <td align="center">32</td>
+    <td align="center">32</td>
     <td align="center">32</td>
     <td align="center">32</td>
     <td align="center">32</td>
@@ -152,6 +164,8 @@ If you want to add more parameters to evaluation task please edit $\color{red}{\
     <td align="center">4.4</td>
     <td align="center">4</td>
     <td align="center">9.2</td>
+    <td align="center">8</td>
+    <td align="center">8</td>
     <td align="center">8</td>
 
   </tr>
