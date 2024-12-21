@@ -177,7 +177,7 @@ If you want to add more parameters to evaluation task please edit $\color{red}{\
 </table>
 
 <details>
-  <summary>Dowmload COCO dataset</summary>
+  <summary>$\color{magenta}{\textsf{Dowmload COCO dataset}}$</summary>
 
 To download COCO dataset you can use $\color{red}{\textsf{Utility/DatasetDownloadScripts/getcoco.sh}}$ .
 
@@ -193,7 +193,7 @@ Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 
 </details>
 
 <details>
-  <summary>To see more detailed results obtained on evaluation task please see above.</summary>
+  <summary>⬇️ $\color{magenta}{\textsf{To see more detailed results obtained on evaluation task please see above.}}$⬇️</summary>
 
 
 <details>
