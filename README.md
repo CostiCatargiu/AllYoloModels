@@ -177,7 +177,7 @@ If you want to add more parameters to evaluation task please edit $\color{red}{\
 </table>
 
 <details>
-  <summary>$\color{magenta}{\textsf{Dowmload COCO dataset}}$</summary>
+  <summary>📥$\color{magenta}{\textsf{Dowmload COCO dataset}}$📥</summary>
 
 To download COCO dataset you can use $\color{red}{\textsf{Utility/DatasetDownloadScripts/getcoco.sh}}$ .
 
