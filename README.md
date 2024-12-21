@@ -276,7 +276,7 @@ Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 
 
 Syntax:
 
-$\color{orange}{\textsf{./YoloModelsInference.sh}}$   <<select_model>> --[weights] val --[source_video] val --[conf_thr] val --[device] "val" --[count] "class1,class2..." -[filter] "class1,class2..."
+$\color{orange}{\textsf{./YoloModelsInference.sh}}$   <<select_model>> --[weights] val --[source_video] val --[conf_thr] val --[device] "val" --[count] "class1,class2..." -[filter] "class1,class2..." and other parameters can be added; they are listed and explained in the content bellow.
 
 Usage example:
   ```bash
@@ -386,13 +386,13 @@ $\color{darkorange}{\textsf{Advantages of this implementation:}}$
 
   ```bash
 #engine weights
-./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/920384ff-3cab-4384-8bc7-3b82b62e5ec5)
 
   ```bash
-#engine weights
-./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+#pytorch weights
+./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
  ```
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/90b160c8-b631-48f5-935a-06eb5afaae64)
@@ -462,11 +462,17 @@ To generate this new metric we need to follow 2 steps:
 1. Put the .txt files that you want to compare at the following path: $\color{darkorange}{\textsf{ExperimentalResults/Metrics/}}$
 2. Execute the .py script:  $\color{darkorange}{\textsf{Utils/Scripts/generatemetric.py}}$. The script will generate a $\color{darkorange}{\textsf{Utils/Scripts/metric.txt}}$ file that contains the compared data for the models selected. 
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b24d2eb6-a96e-4e34-ba1a-6bb5d1246747)
+ENGINE weights
 
+![image](https://github.com/user-attachments/assets/8e13dadb-d0ac-489a-9323-62dc48e136e1)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b763f625-ee66-4279-853f-c3178e562459)
+![image](https://github.com/user-attachments/assets/dc53173d-e6ef-43d4-9a9a-3f9ee2341ad7)
 
+PYTORCH weights
+
+![image](https://github.com/user-attachments/assets/356cd440-5ca3-4f06-a295-6cb357d6332d)
+
+![image](https://github.com/user-attachments/assets/6eb62e7b-0fbf-4ee6-a632-618b2e04897a)
 
 </details>
 
@@ -803,7 +809,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #engine weights
-./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/45b842e3-758b-4afe-9ae3-36125846cb7b)
 
@@ -812,7 +818,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #pytorch weights
- ./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ./YoloModelsInference.sh yolov5m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
  ```
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/79ad0b6d-8484-401b-9185-5dd2554104a3)
@@ -827,7 +833,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #engine weights
-./YoloModelsInference.sh yolov6s --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+./YoloModelsInference.sh yolov6s --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/45b842e3-758b-4afe-9ae3-36125846cb7b)
 
@@ -836,7 +842,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #pytorch weights
- ./YoloModelsInference.sh yolov6m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ./YoloModelsInference.sh yolov6m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
  ```
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/79ad0b6d-8484-401b-9185-5dd2554104a3)
@@ -851,7 +857,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #engine weights
-./YoloModelsInference.sh yolov7 --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+./YoloModelsInference.sh yolov7 --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/7f851c87-c7f3-4583-9ffc-fb5eaa28b142)
 
@@ -860,7 +866,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #pytorch weights
- ./YoloModelsInference.sh yolov7 --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ./YoloModelsInference.sh yolov7 --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
  ```
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/f9fa971f-a28e-4c98-885b-19890cc471b0)
@@ -874,7 +880,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #engine weights
-./YoloModelsInference.sh yolov8m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+./YoloModelsInference.sh yolov8m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/8d37da0d-a60c-4f1c-ae91-7ef350c76151)
 
@@ -896,7 +902,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #engine weights
-./YoloModelsInference.sh yolov9-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+./YoloModelsInference.sh yolov9-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/90061c46-6542-4bec-bd44-3db13ad46838)
 
@@ -905,7 +911,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #pytorch weights
- ./YoloModelsInference.sh yolov9-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ./YoloModelsInference.sh yolov9-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
  ```
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/2cae4226-9725-49b6-9c92-1f616ee5f146)
@@ -919,7 +925,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #engine weights
-./YoloModelsInference.sh gelan-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+./YoloModelsInference.sh gelan-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/85338f36-725e-4a94-bfc9-c00ee65ff2a5)
 
@@ -928,7 +934,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #pytorch weights
- ./YoloModelsInference.sh gelan-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ./YoloModelsInference.sh gelan-m --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
  ```
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/a3a06584-9ab3-4aed-ae41-81ed4f2056be)
@@ -943,7 +949,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #engine weights
-./YoloModelsInference.sh yolov10b --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
+./YoloModelsInference.sh yolov10b --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType engine  --count "car,person,bicycle,bus,traffic light" 
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b0ca25e4-dd37-44ef-8274-7366216f16e8)
 
@@ -952,7 +958,7 @@ To generate this new metric we need to follow 2 steps:
 
   ```bash
 #pytorch weights
- ./YoloModelsInference.sh yolov10b --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextColor "white" --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
+ ./YoloModelsInference.sh yolov10b --video_index 1 --fontSize 1.8 --fontThickness 3 --ypos 50 --initialypos 20 --labelTextSize 6 --weightsType pytorch  --count "car,person,bicycle,bus,traffic light" 
  ```
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/20fa6841-c21c-4997-9877-d20a427bddc3)
@@ -967,19 +973,20 @@ To generate this new metric we need to follow 2 steps:
 <details>
   <summary> Total number of detections for each class and average score precision using engine weights  </summary>
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/4f5542b2-06d7-4f4e-8f53-7dcb92c7c5bd)
+![image](https://github.com/user-attachments/assets/8e13dadb-d0ac-489a-9323-62dc48e136e1)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/e2acb2e5-ac71-42eb-b642-545e79f1d6ee)
+![image](https://github.com/user-attachments/assets/dc53173d-e6ef-43d4-9a9a-3f9ee2341ad7)
 
 </details>
 <details>
   <summary> Total number of detections for each class and average score precision using pytorch weights  </summary>
   
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/76345c84-b146-4f56-9e24-44e5189eed4a)
+![image](https://github.com/user-attachments/assets/356cd440-5ca3-4f06-a295-6cb357d6332d)
 
-![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/24b4b8b8-2cb5-499e-8a9b-ca9013e98daf)
+![image](https://github.com/user-attachments/assets/6eb62e7b-0fbf-4ee6-a632-618b2e04897a)
 
 </details>
+
 
 The results are also stored in [GoodleDrive](https://drive.google.com/drive/folders/1Owg6Gd3stiNBYRch9avVK_r4GuGfNJOk?usp=sharing).
 
