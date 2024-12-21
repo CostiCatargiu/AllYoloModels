@@ -179,7 +179,7 @@ Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 
 </details>
 
 <details>
-  <summary>$\color{red}{\textsf{To see more detailed results obtained on evaluation task please see above.}}$ </summary>
+  <summary>To see more detailed results obtained on evaluation task please see above.</summary>
 
 
 <details>
@@ -238,11 +238,11 @@ Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 
 
 ## Inference task
 
- $\color{red}{\textsf{YoloModelsInference.sh}}$ file shall be used for this task. This file will trigger the inference script for the selected model.
+ $\color{yellow}{\textsf{YoloModelsInference.sh}}$ file shall be used for this task. This file will trigger the inference script for the selected model.
 
 Syntax:
 
-./YoloModelsInference.sh  <<select_model>> --[weights] val --[source_video] val --[conf_thr] val --[device] "val" --[count] "class1,class2..." -[filter] "class1,class2..."
+$\color{orange}{\textsf{./YoloModelsInference.sh}}$   <<select_model>> --[weights] val --[source_video] val --[conf_thr] val --[device] "val" --[count] "class1,class2..." -[filter] "class1,class2..."
 
 Usage example:
   ```bash
@@ -261,10 +261,9 @@ Usage example:
 or
 ./YoloModelsInference.sh yolov9-c -p3 0.6 -p5 "person,car" -p6 "bus" -p7 1 -p8 3 -p9 50
 
-#modify the labelTextColor, labelTextSize and video_index(choose another video for inference from the list)
-./YoloModelsInference.sh gelan-c --conf_thr 0.2 --labelTextColor "blue" --labelTextSize 3 --video_index 4
-or
-./YoloModelsInference.sh gelan-c --conf_thr 0.2 -p11 "blue" -p12 3 -p13 4
+#in this command lines we can choose between engine and pytorch weights to use for inference
+./YoloModelsInference.sh yolov7x --video_index 1 --fontSize 1.2 --fontThickness 2 --ypos 34 --initialypos 20 --labelTextSize 2 --weightsType engine  --count "car,person"
+./YoloModelsInference.sh yolov9-c --video_index 2 --fontSize 1.2 --fontThickness 3 --ypos 36 --initialypos 20 --labelTextSize 4 --weightsType pytorch  --count "bus,truck,train"
 
 ```
 Parameters: 
