@@ -75,6 +75,8 @@ $\color{yellow}{\textsf{./YoloModelsEval.sh}}$ <<select_model>> --[datasetPath] 
 Usage example:
   ```bash
  ./YoloModelsEval.sh yolov5m #use default parameters
+ ./YoloModelsEval.sh yolo11l --batchSize 64 --cnfThr 0.1 --iouThr 0.7 --testSplit valid #custom parameters
+
 ```
 $\color{orange}{\textsf{Parameters:}}$ 
  << >> = required parameter; [ ]=optional parameter
@@ -190,6 +192,9 @@ In the **get_coco.sh** script, we can select between downloading the train, test
 The YAML file for COCO dataset is located at path $\color{red}{\textsf{Utility/YAMLconfigs/coco.yaml}}$
 
 Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 train images)
+
+![image](https://github.com/user-attachments/assets/94abb611-7d2e-435f-8930-3674077297f3)
+
 </details>
 
 <details>
