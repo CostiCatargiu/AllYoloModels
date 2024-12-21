@@ -95,7 +95,7 @@ If you want to add more parameters to evaluation task please edit $\color{red}{\
     <th align="center">$\color{red}{\textsf{YoloV9-e}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV9-gelan-e}}$</th>
     <th align="center">$\color{red}{\textsf{YoloV10l}}$</th>
-    <th align="center">$\color{red}{\textsf{Yolo11ll}}$</th>
+    <th align="center">$\color{red}{\textsf{Yolo11l}}$</th>
     
   </tr>
   <tr>
@@ -165,8 +165,8 @@ If you want to add more parameters to evaluation task please edit $\color{red}{\
     <td align="center">4</td>
     <td align="center">9.2</td>
     <td align="center">8</td>
-    <td align="center">8</td>
-    <td align="center">8</td>
+    <td align="center">3.5</td>
+    <td align="center">2.8</td>
 
   </tr>
   <tr>
@@ -245,6 +245,21 @@ Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 
   <summary>Evaluation on COCO dataset using yolov9_gelan-e </summary>
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/451f47b8-ca6a-40b8-ac9b-5e5ef451738f)
+
+</details>
+
+<details>
+  <summary>Evaluation on COCO dataset using yolov10l </summary>
+
+![image](https://github.com/user-attachments/assets/aa676a38-2113-4046-b250-40226026366b)
+
+</details>
+
+
+<details>
+  <summary>Evaluation on COCO dataset using yolo11l </summary>
+
+![image](https://github.com/user-attachments/assets/2a830aa2-9dd7-46ea-a505-d387d1ec7629)
 
 </details>
 
