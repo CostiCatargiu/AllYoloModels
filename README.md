@@ -81,7 +81,7 @@ $\color{orange}{\textsf{Parameters:}}$
 
  ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/2cf3f3c5-df09-402a-9194-ace8c400eb05)
 
- --$\color{orange}{\textsf{testSplit}}$ parameter allows us to select between "train" and "valid" dataset for evaluate the model.
+ -- $\color{orange}{\textsf{testSplit}}$ parameter allows us to select between "train" and "valid" dataset for evaluate the model.
 
 If you want to add more parameters to evaluation task please edit $\color{red}{\textsf{YoloModelsEval.sh}}$ for the desired model. In the table above are presented the results obtained after evaluting the models on COCO2017 dataset.  
 
