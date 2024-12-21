@@ -70,18 +70,18 @@ After the model is cloned it will appear in $\color{magenta}{\textsf{YoloModels}
 
 Syntax:
 
-./YoloModelsEval.sh  <<select_model>> --[datasetPath] val --[weights] val --[batchSize] val --[conf_thr] val --[img_size] val --[testSplit] "val"
+$\color{yellow}{\textsf{./YoloModelsEval.sh}}$ <<select_model>> --[datasetPath] val --[weights] val --[batchSize] val --[conf_thr] val --[img_size] val --[testSplit] "val"
 
 Usage example:
   ```bash
  ./YoloModelsEval.sh yolov5m #use default parameters
 ```
-Parameters: 
+$\color{orange}{\textsf{Parameters:}}$ 
  << >> = required parameter; [ ]=optional parameter
 
  ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/2cf3f3c5-df09-402a-9194-ace8c400eb05)
 
- --testSplit parameter allows us to select between "train" and "valid" dataset for evaluate the model.
+ --$\color{orange}{\textsf{testSplit}}$ parameter allows us to select between "train" and "valid" dataset for evaluate the model.
 
 If you want to add more parameters to evaluation task please edit $\color{red}{\textsf{YoloModelsEval.sh}}$ for the desired model. In the table above are presented the results obtained after evaluting the models on COCO2017 dataset.  
 
@@ -179,7 +179,7 @@ Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 
 </details>
 
 <details>
-  <summary>To see more detailed results obtained on evaluation task please see above.</summary>
+  <summary>$\color{red}{\textsf{To see more detailed results obtained on evaluation task please see above.}}$ </summary>
 
 
 <details>
