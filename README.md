@@ -953,7 +953,6 @@ PYTORCH weights
  ```
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/b0ca25e4-dd37-44ef-8274-7366216f16e8)
 
-
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/227eb041-ec3f-41fd-8a63-9108867ed41f)
 
   ```bash
@@ -964,6 +963,26 @@ PYTORCH weights
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/20fa6841-c21c-4997-9877-d20a427bddc3)
 
 ![image](https://github.com/CostiCatargiu/AllYoloModels/assets/70476115/285a6aab-8eba-4cc2-b3ca-16f623262602)
+
+</details>
+<details>
+  <summary> Inference on video using yolo11L engine and pytorch weights </summary>
+
+  ```bash
+#engine weights
+./YoloModelsInference.sh yolo11x --video_index 2 --fontSize 1.2 --fontThickness 3 --ypos 36 --initialypos 20 --labelTextSize 4 --weightsType engine  --count "car,person,bicycle,bus,truck,train,traffic light"
+ ```
+![image](https://github.com/user-attachments/assets/f266201a-5be4-4529-a6b5-6319f3a74475)
+
+![image](https://github.com/user-attachments/assets/6b963ceb-61bf-49f7-b850-9a6238cf919d)
+
+  ```bash
+#engine weights
+./YoloModelsInference.sh yolo11x --video_index 2 --fontSize 1.2 --fontThickness 3 --ypos 36 --initialypos 20 --labelTextSize 4 --weightsType pytorch  --count "car,person,bicycle,bus,truck,train,traffic light"
+ ```
+![image](https://github.com/user-attachments/assets/436389d8-7666-486d-b68d-b212bf511821)
+
+![image](https://github.com/user-attachments/assets/7d435681-6232-4427-86b1-60fd3a5449ca)
 
 </details>
 </details>
