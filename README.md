@@ -272,6 +272,21 @@ Dataset size is around 27GB ( 5000 valid images, 40 670 test images and 118 287 
 
 </details>
 
+## Export task
+
+The $\color{yellow}{\textsf{YoloModelsExport.sh}}$ script is designated for this task, responsible for generating ONNX or ENGINE files for the desired model. Notably, this script is automatically triggered whenever $\color{yellow}{\textsf{YoloModelsInference.sh}}$ is executed.
+
+![image](https://github.com/user-attachments/assets/fe84e075-35d8-4195-984f-ab252d124932)
+
+Usage example:
+  ```bash
+#convert pretrained yolo11m model version to ENGINE type
+./YoloModelsExport.sh yolo11m --exportType engine
+
+#convert pretrained yolo11x model version to ONNX type
+./YoloModelsExport.sh yolo11x --exportType onnx
+
+```
 ## Inference task
 
  $\color{yellow}{\textsf{YoloModelsInference.sh}}$ file shall be used for this task. This file will trigger the inference script for the selected model.
