@@ -278,6 +278,8 @@ The $\color{yellow}{\textsf{YoloModelsExport.sh}}$ script is designated for this
 
 ![image](https://github.com/user-attachments/assets/fe84e075-35d8-4195-984f-ab252d124932)
 
+![image](https://github.com/user-attachments/assets/ae21b27b-20c1-492c-9be1-8d9c6c09a686)
+
 Usage example:
   ```bash
 #convert pretrained yolo11m model version to ENGINE type
