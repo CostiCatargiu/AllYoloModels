@@ -385,8 +385,8 @@ $\color{darkorange}{\textsf{Advantages of this implementation:}}$
 </details>
   <details>
   <summary> - 🚀 Switching between PyTorch and Engine weights made  very easy modifying a single parameter ( --weightsType)  </summary>
-
-I created the YoloModelsExport.sh script, which is automatically invoked by YoloModelsInference.sh if the Engine file for the specified model has not been generated yet. This script streamlines the process of exporting the model's weights and facilitates seamless switching between PyTorch and Engine file types.
+    
+I created the $\color{orange}{\textsf{YoloModelsExport.sh}}$ script, which is automatically invoked by $\color{orange}{\textsf{YoloModelsInference.sh}}$ if the Engine file for the specified model has not been generated yet. This script streamlines the process of exporting the model's weights and facilitates seamless switching between PyTorch and Engine file types.
 
 ![image](https://github.com/user-attachments/assets/47edfb30-edc6-40fb-b33b-8946c26d1aa5)
 
