@@ -23,8 +23,7 @@ During my experiments, I gained experience with the scripts provided in the orig
 - ⬇️ Clone/Reclone and prepare the setup for which model you want in just a line of code using $\color{yellow}{\textsf{DownloadModel.sh}}$.
 - 🔧 $\color{green}{\textsf{YoloModelsEval.sh}}$, $\color{orange}{\textsf{YoloModelsInference.sh}}$ and $\color{magenta}{\textsf{YoloModelsTrain.sh}}$ offer the possibility to perform training, inference, or evaluation tasks in just a line of code using a selected model.
 - 📤 $\color{red}{\textsf{YoloModelsExport.sh}}$ help us to export a specific model to ONNX or TensorRT.
-- 📈  Experimental results that were obtained during my experiments using all the models mentioned here.
-
+- 📈 The experimental results from my work with all the models discussed here are stored on Google Drive, with some of them also shared here.
 <details>
   <summary>Project overview</summary>
 After this repository is cloned the structure of the project will look like in the images bellow with the mention that the **YoloModels** directory is empty because no model is cloned there.
